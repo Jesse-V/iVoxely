@@ -1,0 +1,90 @@
+
+#ifndef TRIANGLE_FACE_STRUCT
+#define TRIANGLE_FACE_STRUCT
+
+
+/* Defines a three-dimensional point */
+struct Point
+{
+	float x, y, z, w;
+
+
+	Point(float s = float(0.0)):
+		x(s), y(s), z(s), w(1)
+	{}
+
+
+
+	Point(float x, float y, float z):
+		x(x), y(y), z(z), w(1)
+	{}
+
+
+
+	/* Returns the distance between the two given Points */
+	static float length(const Point& a, const Point& b)
+	{ //for some reason cmath's abs function rounds floats, idk why
+		return sqrt(pow(fabs(a.x - b.x), 2) + pow(fabs(a.y - b.y), 2) + pow(fabs(a.z - b.z), 2));
+	}
+
+
+
+	bool operator<(const Point& other) const
+	{
+		if (fabs(x - other.x) <= 0.000001)
+			return y < other.y;
+		return x < other.x;
+	}
+
+
+
+	Point operator+(const Point& other) const
+	{
+		Point result;
+		result.x = x + other.x;
+		result.y = y + other.y;
+		result.z = z + other.z;
+		return result;
+	}
+
+
+
+	Point operator*(const float factor) const
+	{
+		Point result;
+		result.x = x * factor;
+		result.y = y * factor;
+		result.z = z * factor;
+		return result;
+	}
+
+
+
+	Point operator/(const float factor) const
+	{
+		Point result;
+		result.x = x / factor;
+		result.y = y / factor;
+		result.z = z / factor;
+		return result;
+	}
+
+
+
+	Point& operator+=(const Point& other)
+	{
+		x += other.x;
+		y += other.y;
+		z += other.z;
+		return *this;
+	}
+};
+
+
+/* Defines a triangle, consistng of three Points */
+struct TriangleFace
+{
+	Point A, B, C;
+};
+
+#endif
