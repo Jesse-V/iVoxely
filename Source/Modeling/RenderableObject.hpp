@@ -14,7 +14,7 @@ class RenderableObject
 		RenderableObject(const std::shared_ptr<cs5400::Program>& program, const std::vector<std::shared_ptr<DataBuffer>>& dataBuffers);
 		void setVisible(bool visible);
 		void setModelMatrix(const glm::mat4& matrix); // model coords -> world coords matrix
-		void render(GLuint modelMatrixID);
+		void render(GLint modelMatrixID);
 
 		std::shared_ptr<cs5400::Program> getProgram();
 

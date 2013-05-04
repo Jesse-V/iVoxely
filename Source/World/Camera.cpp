@@ -22,8 +22,8 @@ void Camera::reset()
 
 	fieldOfView   = 45.0f; // frustrum viewing apeture
 	aspectRatio   = 4.0f/3.0f;
-	nearFieldClip = 0.0001;   // clip anything closer than this
-	farFieldClip  = 100; // clip anything farther than this
+	nearFieldClip = 0.0001f;   // clip anything closer than this
+	farFieldClip  = 100.0f; // clip anything farther than this
 	projection    = glm::perspective(fieldOfView, aspectRatio, nearFieldClip, farFieldClip);
 }
 
@@ -121,11 +121,11 @@ void Camera::roll(float theta)
 // Sets the perspective of the camera
 void Camera::setPerspective(float fieldOfViewDegrees, float aspectRatio, float nearclipdistance, float farclipdistance)
 {
-	fieldOfView   = fieldOfViewDegrees;
-	aspectRatio   = aspectRatio;
-	nearFieldClip = nearclipdistance;
-	farFieldClip  = farclipdistance;
-	projection = glm::perspective(fieldOfView, aspectRatio, nearFieldClip, farFieldClip);
+	this->fieldOfView   = fieldOfViewDegrees;
+	this->aspectRatio   = aspectRatio;
+	this->nearFieldClip = nearclipdistance;
+	this->farFieldClip  = farclipdistance;
+	this->projection = glm::perspective(fieldOfView, aspectRatio, nearFieldClip, farFieldClip);
 }
 
 

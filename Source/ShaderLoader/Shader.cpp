@@ -18,9 +18,9 @@ namespace
 		}
 
 		fin.seekg(0, std::ios::end);
-		contents.resize(fin.tellg());
+		contents.resize((unsigned long)fin.tellg());
 		fin.seekg(0, std::ios::beg);
-		fin.read(&contents[0], contents.size());
+		fin.read(&contents[0], (long)contents.size());
 		fin.close();
 
 		#ifdef GL_ES_VERSION_2_0

@@ -17,7 +17,7 @@ class Mandelbrot: public CustomObject
 
 	private:
 		const float PI = 3.1415926535897932384626433832795f;
-		const int RESOLUTION = 1024; //1024 is good resolution
+		const unsigned int RESOLUTION = 1024; //1024 is good resolution
 };
 
 #endif

@@ -1,9 +1,15 @@
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpragmas"
+#pragma GCC diagnostic ignored "-Wglobal-constructors"
+#pragma GCC diagnostic ignored "-Wmissing-prototypes"
+#pragma GCC diagnostic ignored "-Wexit-time-destructors"
+#pragma GCC diagnostic ignored "-Wdisabled-macro-expansion"
 
 #include "Application.hpp"
 #include <iostream>
 
 
-std::shared_ptr<Application> application; //make_unique is not included in C++11 yet...
+static std::shared_ptr<Application> application; //make_unique is not included in C++11 yet...
 
 
 void displayCallback()
@@ -75,3 +81,5 @@ int main(int argc, char **argv)
 
 	return EXIT_SUCCESS;
 }
+
+#pragma GCC diagnostic pop

@@ -2,4 +2,3 @@
 cmake .
 make
 ./OpenGL_program
-

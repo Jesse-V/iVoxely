@@ -4,7 +4,7 @@ Voxel-based game in C++ and OpenGL.
 
 ### Compilation instructions
 
-Before attempting to compile and run, please make sure you have the required dependencies installed (see below). Once you have satisfied those requirements, then you should be able to compile it. I'm building this using the Clang/LLVM 3.2 compiler because it has a number of significant advantages over GCC. If you'd to do the same, be sure that Clang 3.2 is installed (see below). Then navigate to the Source directory and run the ./initClang.sh script which will set up two environmental variables for Clang. (If you prefer GCC, don't run that script.) To setup the compilation environment, use the command "cmake ." to generate a makefile, and "make" will compile the code. Run the produced executable with "./OpenGL_program". The ./build.sh will conveniently execute all three of these commands for you.
+Before attempting to compile and run, please make sure you have the required dependencies installed (see below). Once you have satisfied those requirements, then you should be able to compile it. I'm building this using the Clang/LLVM 3.2 compiler because it has a number of significant advantages over GCC. If you'd to do the same, be sure that Clang 3.2 is installed (see below). Then navigate to the Source directory and run "./ClangCompileRun.sh" to point some environmental variables to Clang, compile the code, and then execute the application. If you prefer GCC, run "./compileRun.sh" which will use GCC and then execute the application. The CMakeClean.sh script will remove all build files, producing a clean compilation environment, which is especially useful when preparing to push to git.
 
 ##### Dependencies and prerequisites
 
@@ -24,4 +24,4 @@ Be sure to run the ./initClang.sh executable as described above.
 
 ### Origin
 
-This project is based on the framework developed in the https://github.com/Jesse-V/CS5400_Final_Project repo from which https://github.com/Jesse-V/OpenGL_Texture_Mapping was downstream.
+This project is based on the framework developed in the https://github.com/Jesse-V/CS5400_Final_Project repo from which https://github.com/Jesse-V/OpenGL_Texture_Mapping was based.

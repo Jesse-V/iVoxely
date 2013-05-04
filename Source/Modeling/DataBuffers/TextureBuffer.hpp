@@ -18,8 +18,8 @@ class TextureBuffer: public DataBuffer
 		glm::vec2 tex_coords[36];
 
 	private:
-		GLint textureAttrib;
-		GLuint texture, buffer, vTexCoord;
+		GLint textureAttrib, vTexCoord;
+		GLuint texture, buffer;
 };
 
 #endif

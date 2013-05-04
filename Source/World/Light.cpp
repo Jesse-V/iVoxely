@@ -44,7 +44,7 @@ double Light::getPower() const
 
 void Light::setPower(double power)
 {
-	power = power;
+	this->power = power;
 }
 
 
@@ -57,7 +57,7 @@ bool Light::getEmitting() const
 
 
 // Turn the light on or off
-void setEmitting(bool emitting)
+void Light::setEmitting(bool emitting)
 {
-	emitting = true;
+	this->emitting = emitting;
 }

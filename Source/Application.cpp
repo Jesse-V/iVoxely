@@ -112,6 +112,7 @@ void Application::addCamera()
 	auto camera = std::make_shared<Camera>();
 	camera->lookAt(glm::vec3(-0.041535, -0.813947, -0.579453), glm::vec3(-0.0114782, 0.590822, -0.80672));
 	camera->setPosition(glm::vec3(0.0318538, 0.331304, 2.59333));
+	camera->setAspectRatio(screenWidth / (float)screenHeight);
 	scene.setCamera(camera);
 }
 

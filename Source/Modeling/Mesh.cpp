@@ -47,7 +47,7 @@ void Mesh::calcNormalsMWA()
 			glm::vec3 edge2 = p3 - p1;
 			glm::vec3 edgecross = glm::cross(edge2, edge1);
 			float sinalpha = glm::length(edgecross) / (glm::length(edge1) * glm::length(edge2));
-			float alpha = asin(sinalpha);
+			float alpha = (float)asin(sinalpha);
 
 			normal += alpha * tN[tlist[k]];
 		}

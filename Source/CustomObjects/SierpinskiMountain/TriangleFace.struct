@@ -24,7 +24,7 @@ struct Point
 	/* Returns the distance between the two given Points */
 	static float length(const Point& a, const Point& b)
 	{ //for some reason cmath's abs function rounds floats, idk why
-		return sqrt(pow(fabs(a.x - b.x), 2) + pow(fabs(a.y - b.y), 2) + pow(fabs(a.z - b.z), 2));
+		return (float)sqrt(pow(fabs(a.x - b.x), 2) + pow(fabs(a.y - b.y), 2) + pow(fabs(a.z - b.z), 2));
 	}
 
 

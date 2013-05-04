@@ -71,14 +71,14 @@ void Mandelbrot::addVertices(std::shared_ptr<Mesh>& mesh)
 
 void Mandelbrot::addIndices(std::shared_ptr<Mesh>& mesh)
 {
-	for (int x = 0; x < RESOLUTION * RESOLUTION - RESOLUTION - 1; x++)
+	for (GLuint x = 0; x < RESOLUTION * RESOLUTION - RESOLUTION - 1; x++)
 	{
 		//if (x % RESOLUTION != RESOLUTION - 1)
 		{
-			int y = x + 1;
+			GLuint y = x + 1;
 
-			int z0 = x + RESOLUTION;
-			int z1 = z0 + 1;
+			GLuint z0 = x + RESOLUTION;
+			GLuint z1 = z0 + 1;
 
 			mesh->triangles.push_back(Triangle(x, y, z0));
 			mesh->triangles.push_back(Triangle(y, z1, z0));

@@ -40,7 +40,7 @@ void Scene::render()
 		[&](std::shared_ptr<RenderableObject>& obj)
 		{
 			GLuint handle = obj->getProgram()->getHandle();
-			GLuint modelMatrixUniform = glGetUniformLocation(handle, "matrixModel");
+			GLint modelMatrixUniform = glGetUniformLocation(handle, "matrixModel");
 
 			glUseProgram(handle);
 
@@ -55,8 +55,8 @@ void Scene::render()
 
 void Scene::passCameraMatrix(GLuint handle)
 {
-	GLuint viewMatrixUniform = glGetUniformLocation(handle, "viewMatrix");
-	GLuint projMatrixUniform = glGetUniformLocation(handle, "projMatrix");
+	GLint viewMatrixUniform = glGetUniformLocation(handle, "viewMatrix");
+	GLint projMatrixUniform = glGetUniformLocation(handle, "projMatrix");
 	glm::mat4 viewMatrix = glm::lookAt(camera->getPosition(), camera->getLookDirection(), camera->getUpVector());
 
 	glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(viewMatrix));
@@ -69,8 +69,8 @@ void Scene::passCameraMatrix(GLuint handle)
 void Scene::passLightPosition(GLuint handle)
 {
 	glm::vec3 lightPos = lights[0]->getPosition(); //todo: support for multiple lights
-	GLuint lightPosUniform	= glGetUniformLocation(handle, "worldLightPos");
-	GLuint ambientLightUniform	= glGetUniformLocation(handle, "ambientLight");
+	GLint lightPosUniform	= glGetUniformLocation(handle, "worldLightPos");
+	GLint ambientLightUniform	= glGetUniformLocation(handle, "ambientLight");
 
 	glUniform3f(lightPosUniform, lightPos.x, lightPos.y, lightPos.z);
 	glUniform3f(ambientLightUniform, ambientLight.x, ambientLight.y, ambientLight.z);

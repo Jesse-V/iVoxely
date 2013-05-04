@@ -44,7 +44,7 @@ void VertexBuffer::enable()
 	enableVertices();
 	enableNormals();
 
-	glDrawElements(GL_TRIANGLES, mesh->triangles.size() * 3, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, (int)mesh->triangles.size() * 3, GL_UNSIGNED_INT, 0);
 }
 
 

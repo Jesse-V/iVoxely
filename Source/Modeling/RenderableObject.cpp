@@ -45,7 +45,7 @@ std::shared_ptr<cs5400::Program> RenderableObject::getProgram()
 
 
 // Render the object
-void RenderableObject::render(GLuint modelMatrixID)
+void RenderableObject::render(GLint modelMatrixID)
 {
 	if (isVisible)
 	{
