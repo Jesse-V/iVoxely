@@ -20,8 +20,6 @@ sudo add-apt-repository ppa:kxstudio-team/builds<br>
 sudo apt-get update<br>
 sudo apt-get install clang<br>
 
-Be sure to run the ./initClang.sh executable as described above.
-
 ### Origin
 
 This project is based on the framework developed in the https://github.com/Jesse-V/CS5400_Final_Project repo from which https://github.com/Jesse-V/OpenGL_Texture_Mapping was based.
