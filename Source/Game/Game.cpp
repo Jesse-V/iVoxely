@@ -5,7 +5,8 @@
 
 
 Game::Game(int screenWidth, int screenHeight):
-	screenWidth(screenWidth), screenHeight(screenHeight)
+	scene(std::make_shared<Scene>()),
+	player(std::make_shared<Player>(scene))
 {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -13,7 +14,7 @@ Game::Game(int screenWidth, int screenHeight):
 
 	addModels();
 	addLight();
-	addCamera();
+	addCamera(screenWidth, screenHeight);
 }
 
 
@@ -35,112 +36,27 @@ void Game::addGround()
 	objMatrix = glm::translate(objMatrix, glm::vec3(0, -0.15, 0));
 	rObj->setModelMatrix(objMatrix);
 
-	scene.addModel(rObj);
+	scene->addModel(rObj);
 }
 
 
 
 void Game::addLight()
 {
-	scene.setAmbientLight(glm::vec3(0.75, 0.75, 0.75));
+	scene->setAmbientLight(glm::vec3(0.75, 0.75, 0.75));
 	light->setPosition(glm::vec3(0.0f, 0.0f, 2.0f));
-	scene.addLight(light); //todo: send light color and power to GPU
+	scene->addLight(light); //todo: send light color and power to GPU
 }
 
 
 
-void Game::addCamera()
+void Game::addCamera(int screenWidth, int screenHeight)
 {
 	auto camera = std::make_shared<Camera>();
 	camera->lookAt(glm::vec3(-0.041535, -0.813947, -0.579453), glm::vec3(-0.0114782, 0.590822, -0.80672));
 	camera->setPosition(glm::vec3(0.0318538, 0.331304, 2.59333));
 	camera->setAspectRatio(screenWidth / (float)screenHeight);
-	scene.setCamera(camera);
-}
-
-
-
-void Game::onKeyPress(unsigned char key, int, int)
-{
-	std::shared_ptr<Camera> camera = scene.getCamera();
-
-	switch(key)
-	{
-		case 'a':
-			camera->translateX(-TRANSLATION_SPEED);
-			break;
-
-		case 'd':
-			camera->translateX(TRANSLATION_SPEED);
-			break;
-
-		case 'q':
-			camera->translateY(-TRANSLATION_SPEED);
-			break;
-
-		case 'e':
-			camera->translateY(TRANSLATION_SPEED);
-			break;
-
-		case 'w':
-			camera->translateZ(-TRANSLATION_SPEED);
-			break;
-
-		case 's':
-			camera->translateZ(TRANSLATION_SPEED);
-			break;
-	}
-
-	//std::cout << camera->toString() << std::endl;
-}
-
-
-
-void Game::onSpecialKeyPress(int key, int, int)
-{
-	std::shared_ptr<Camera> camera = scene.getCamera();
-
-	switch(key)
-	{
-		case GLUT_KEY_UP:
-			camera->pitch(ROTATION_SPEED);
-			break;
-
-		case GLUT_KEY_DOWN:
-			camera->pitch(-ROTATION_SPEED);
-			break;
-
-		case GLUT_KEY_LEFT:
-			camera->yaw(ROTATION_SPEED);
-			break;
-
-		case GLUT_KEY_RIGHT:
-			camera->yaw(-ROTATION_SPEED);
-			break;
-	}
-
-	//std::cout << camera->toString() << std::endl;
-}
-
-
-
-void Game::onMouseClick(int button, int state, int x, int y)
-{
-
-}
-
-
-
-void Game::onMouseMotion(int x, int y)
-{
-
-}
-
-
-
-void Game::onMouseDrag(int x, int y)
-{
-
+	scene->setCamera(camera);
 }
 
 
@@ -150,7 +66,7 @@ void Game::render()
 	glClearColor(.39f, 0.58f, 0.93f, 0.0f);	//nice blue background
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-	scene.render();
+	scene->render();
 
 	moveLight();
 
@@ -181,4 +97,39 @@ void Game::sleep(int milliseconds)
 {
 	std::chrono::milliseconds duration(milliseconds);
 	std::this_thread::sleep_for(duration); //forget time.h or windows.h, this is the real way to sleep!
+}
+
+
+
+void Game::onKeyPress(unsigned char key, int, int)
+{
+	player->onKeyPress(key);
+}
+
+
+
+void Game::onSpecialKeyPress(int key, int, int)
+{
+	player->onSpecialKeyPress(key);
+}
+
+
+
+void Game::onMouseClick(int button, int state, int x, int y)
+{
+	player->onMouseClick(button, state, x, y);
+}
+
+
+
+void Game::onMouseMotion(int x, int y)
+{
+	player->onMouseMotion(x, y);
+}
+
+
+
+void Game::onMouseDrag(int x, int y)
+{
+	player->onMouseDrag(x, y);
 }
