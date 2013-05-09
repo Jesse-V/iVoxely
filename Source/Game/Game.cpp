@@ -61,6 +61,13 @@ void Game::addCamera(int screenWidth, int screenHeight)
 
 
 
+void Game::update()
+{
+	moveLight();
+}
+
+
+
 void Game::render()
 {
 	glClearColor(.39f, 0.58f, 0.93f, 0.0f);	//nice blue background
@@ -68,11 +75,7 @@ void Game::render()
 
 	scene->render();
 
-	moveLight();
-
 	glutSwapBuffers();
-	sleep(17); //60 fps
-	glutPostRedisplay();
 }
 
 

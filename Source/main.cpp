@@ -7,14 +7,24 @@
 
 #include "Game/Game.hpp"
 #include <iostream>
+#include <thread>
 
 
 static std::shared_ptr<Game> game; //make_unique is not included in C++11 yet...
 
 
-void displayCallback()
+void updateCallback()
+{
+	game->update();
+	//std::cout << "updating..." << std::endl;
+}
+
+
+
+void renderCallback()
 {
 	game->render();
+	//std::cout << "rendering..." << std::endl;
 }
 
 
@@ -83,7 +93,7 @@ int main(int argc, char **argv)
 	{
 		game = std::make_shared<Game>(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
 
-		glutDisplayFunc(displayCallback);
+		glutDisplayFunc(renderCallback);
 
 		glutKeyboardFunc(keyPressCallback);
 		glutSpecialFunc(specialKeyPressCallback);
@@ -92,7 +102,19 @@ int main(int argc, char **argv)
 		glutMotionFunc(mouseMotionCallback);
 		glutPassiveMotionFunc(mouseDragCallback);
 
+		std::thread gameLooper([&]() {
+			while (true)
+			{
+				updateCallback();
+				glutPostRedisplay();
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(17));
+			}
+		});
+
 		std::cout << "Finished assembly. Launching application..." << std::endl;
+
+		gameLooper.detach();
 		glutMainLoop();
 	}
 	catch (std::exception& e)

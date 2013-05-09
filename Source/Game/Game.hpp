@@ -10,6 +10,7 @@ class Game
 {
 	public:
 		Game(int screenWidth, int screenHeight);
+		void update();
 		void render();
 
 		void onKeyPress(unsigned char key, int, int);
