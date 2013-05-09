@@ -7,17 +7,18 @@
 
 #include "Game/Game.hpp"
 #include <iostream>
-#include <thread>
 
 
 static std::shared_ptr<Game> game; //make_unique is not included in C++11 yet...
+static bool readyToUpdate = false;
 
 
 void updateCallback()
 {
-	game->update();
-	std::cout << "updating..." << std::endl;
-	std::cout.flush();
+	if (readyToUpdate)
+		game->update();
+	else
+		std::this_thread::sleep_for(std::chrono::milliseconds(10)); //sleep for a bit
 }
 
 
@@ -25,9 +26,9 @@ void updateCallback()
 void renderCallback()
 {
 	game->render();
-	std::cout << "rendering..." << std::endl;
-	std::cout.flush();
-	glutPostRedisplay();
+	glutPostRedisplay(); //make a call to render again at screen's FPS
+
+	readyToUpdate = true;
 }
 
 
