@@ -60,7 +60,7 @@ void Application::addCamera()
 
 
 
-void Application::onKey(unsigned char key, int, int)
+void Application::onKeyPress(unsigned char key, int, int)
 {
 	std::shared_ptr<Camera> camera = scene.getCamera();
 
@@ -96,7 +96,7 @@ void Application::onKey(unsigned char key, int, int)
 
 
 
-void Application::onSpecialKey(int key, int, int)
+void Application::onSpecialKeyPress(int key, int, int)
 {
 	std::shared_ptr<Camera> camera = scene.getCamera();
 
@@ -117,17 +117,30 @@ void Application::onSpecialKey(int key, int, int)
 		case GLUT_KEY_RIGHT:
 			camera->yaw(-ROTATION_SPEED);
 			break;
-
-		case GLUT_KEY_PAGE_UP:
-			camera->roll(-ROTATION_SPEED);
-			break;
-
-		case GLUT_KEY_PAGE_DOWN:
-			camera->roll(ROTATION_SPEED);
-			break;
 	}
 
 	//std::cout << camera->toString() << std::endl;
+}
+
+
+
+void Application::onMouseClick(int button, int state, int x, int y)
+{
+
+}
+
+
+
+void Application::onMouseMotion(int x, int y)
+{
+
+}
+
+
+
+void Application::onMouseDrag(int x, int y)
+{
+
 }
 
 

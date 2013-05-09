@@ -14,8 +14,13 @@ class Application
 	public:
 		Application(int screenWidth, int screenHeight);
 		void render();
-		void onKey(unsigned char key, int, int);
-		void onSpecialKey(int key, int, int);
+
+		void onKeyPress(unsigned char key, int, int);
+		void onSpecialKeyPress(int key, int x , int y);
+		void onMouseClick(int button, int state, int x, int y);
+		void onMouseMotion(int x, int y);
+		void onMouseDrag(int x, int y);
+
 
 	private:
 		void addModels();

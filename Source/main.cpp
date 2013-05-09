@@ -1,5 +1,5 @@
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpragmas"
+#pragma GCC diagnostic push //save off current pragma state
+#pragma GCC diagnostic ignored "-Wpragmas" //apply custom warning ignore rules
 #pragma GCC diagnostic ignored "-Wglobal-constructors"
 #pragma GCC diagnostic ignored "-Wmissing-prototypes"
 #pragma GCC diagnostic ignored "-Wexit-time-destructors"
@@ -19,16 +19,37 @@ void displayCallback()
 
 
 
-void keyCallback(unsigned char key, int x, int y)
+void keyPressCallback(unsigned char key, int x, int y)
 {
-	application->onKey(key, x, y);
+	application->onKeyPress(key, x, y);
 }
 
 
 
-void specialKeyCallback(int key, int x, int y)
+void specialKeyPressCallback(int key, int x, int y)
 {
-	application->onSpecialKey(key, x, y);
+	application->onSpecialKeyPress(key, x, y);
+}
+
+
+
+void mouseClickCallback(int button, int state, int x, int y)
+{
+	application->onMouseClick(button, state, x, y);
+}
+
+
+
+void mouseMotionCallback(int x, int y)
+{
+	application->onMouseMotion(x, y);
+}
+
+
+
+void mouseDragCallback(int x, int y)
+{
+	application->onMouseDrag(x, y);
 }
 
 
@@ -63,11 +84,13 @@ int main(int argc, char **argv)
 		application = std::make_shared<Application>(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
 
 		glutDisplayFunc(displayCallback);
-		glutKeyboardFunc(keyCallback);
-		glutSpecialFunc(specialKeyCallback);
 
-		//glutMotionFunc(onMouseMotion);
-		//glutMouseFunc(onMouseClick);
+		glutKeyboardFunc(keyPressCallback);
+		glutSpecialFunc(specialKeyPressCallback);
+
+		glutMouseFunc(mouseClickCallback);
+		glutMotionFunc(mouseMotionCallback);
+		glutPassiveMotionFunc(mouseDragCallback);
 
 		std::cout << "Finished assembly. Launching application..." << std::endl;
 		glutMainLoop();
@@ -82,4 +105,4 @@ int main(int argc, char **argv)
 	return EXIT_SUCCESS;
 }
 
-#pragma GCC diagnostic pop
+#pragma GCC diagnostic pop //store previous pragma state
