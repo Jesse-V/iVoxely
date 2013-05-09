@@ -20,10 +20,6 @@ class Application
 	private:
 		void addModels();
 		void addGround();
-		void addMandelbrot();
-		void addMountains();
-		void addFirstMountain();
-		void addSecondMountain();
 		void addLight();
 		void addCamera();
 		void moveLight();

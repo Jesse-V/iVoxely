@@ -1,8 +1,6 @@
 
 #include "Application.hpp"
 #include "CustomObjects/Ground/Ground.hpp"
-#include "CustomObjects/Mandelbrot/Mandelbrot.hpp"
-#include "CustomObjects/SierpinskiMountain/SierpMountain.hpp"
 #include <thread>
 
 
@@ -23,8 +21,6 @@ Application::Application(int screenWidth, int screenHeight):
 void Application::addModels()
 {
 	addGround();
-	addMandelbrot();
-	addMountains();
 }
 
 
@@ -37,60 +33,6 @@ void Application::addGround()
 	glm::mat4 objMatrix = glm::mat4();
 	objMatrix = glm::scale(objMatrix, glm::vec3(2, 1, 2));
 	objMatrix = glm::translate(objMatrix, glm::vec3(0, -0.15, 0));
-	rObj->setModelMatrix(objMatrix);
-
-	scene.addModel(rObj);
-}
-
-
-
-void Application::addMandelbrot()
-{
-	Mandelbrot mandelbrot;
-	auto rObj = mandelbrot.makeObject();
-
-	glm::mat4 objMatrix = glm::mat4();
-	objMatrix = glm::scale(objMatrix, glm::vec3(1, 1, 2));
-	objMatrix = glm::rotate(objMatrix, 120.0f, glm::vec3(0, 0, 1));
-	objMatrix = glm::translate(objMatrix, glm::vec3(0, 0, -0.5));
-	rObj->setModelMatrix(objMatrix);
-
-	scene.addModel(rObj);
-}
-
-
-
-void Application::addMountains()
-{
-	addFirstMountain();
-	addSecondMountain();
-}
-
-
-
-void Application::addFirstMountain()
-{
-	SierpMountain mountain;
-	auto rObj = mountain.makeObject();
-
-	glm::mat4 objMatrix = glm::mat4();
-	objMatrix = glm::scale(objMatrix, glm::vec3(0.3, 0.3, 0.3));
-	objMatrix = glm::translate(objMatrix, glm::vec3(1.1, -0.5, 0.5));
-	rObj->setModelMatrix(objMatrix);
-
-	scene.addModel(rObj);
-}
-
-
-
-void Application::addSecondMountain()
-{
-	SierpMountain mountain;
-	auto rObj = mountain.makeObject();
-
-	glm::mat4 objMatrix = glm::mat4();
-	objMatrix = glm::scale(objMatrix, glm::vec3(0.3, 0.3, 0.3));
-	objMatrix = glm::translate(objMatrix, glm::vec3(-1.35, -0.5, 0.5));
 	rObj->setModelMatrix(objMatrix);
 
 	scene.addModel(rObj);
