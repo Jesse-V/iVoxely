@@ -7,7 +7,7 @@
 
 #include "Game/Game.hpp"
 #include <iostream>
-
+#include <thread>
 
 static std::shared_ptr<Game> game; //make_unique is not included in C++11 yet...
 static bool readyToUpdate = false;

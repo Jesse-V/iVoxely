@@ -1,6 +1,7 @@
 
 #include "Player.hpp"
 #include "World/Camera.hpp"
+#include <iostream>
 
 
 Player::Player(std::shared_ptr<Scene> scene):
@@ -75,19 +76,19 @@ void Player::onSpecialKeyPress(int key)
 
 void Player::onMouseClick(int button, int state, int x, int y)
 {
-
+	std::cout << button << ", " << ", " << state << ", " << x << ", " << y << std::endl;
 }
 
 
 
 void Player::onMouseMotion(int x, int y)
 {
-
+	std::cout << x << ", " << y << std::endl;
 }
 
 
 
 void Player::onMouseDrag(int x, int y)
 {
-
+	std::cout << x << ", " << y << std::endl;
 }
