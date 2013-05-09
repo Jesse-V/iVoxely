@@ -12,7 +12,7 @@ include_directories(. parsers glm)
 #link_directories()
 
 add_executable(OpenGL_program
-    Application.cpp
+    Game/Game.cpp
     main.cpp
     Modeling/DataBuffers/TextureBuffer.cpp
     Modeling/DataBuffers/VertexBuffer.cpp

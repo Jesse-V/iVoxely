@@ -1,18 +1,18 @@
 
-#ifndef APPLICATION_HPP
-#define APPLICATION_HPP
+#ifndef GAME_HPP
+#define GAME_HPP
 
 #include "World/Scene.hpp"
 #include <memory>
 
-class Application
+class Game
 {
 	public:
 		const float TRANSLATION_SPEED = 0.0078125f;
 		const float ROTATION_SPEED = 0.5f;
 
 	public:
-		Application(int screenWidth, int screenHeight);
+		Game(int screenWidth, int screenHeight);
 		void render();
 
 		void onKeyPress(unsigned char key, int, int);

@@ -1,10 +1,10 @@
 
-#include "Application.hpp"
+#include "Game.hpp"
 #include "CustomObjects/Ground/Ground.hpp"
 #include <thread>
 
 
-Application::Application(int screenWidth, int screenHeight):
+Game::Game(int screenWidth, int screenHeight):
 	screenWidth(screenWidth), screenHeight(screenHeight)
 {
 	glEnable(GL_DEPTH_TEST);
@@ -18,14 +18,14 @@ Application::Application(int screenWidth, int screenHeight):
 
 
 
-void Application::addModels()
+void Game::addModels()
 {
 	addGround();
 }
 
 
 
-void Application::addGround()
+void Game::addGround()
 {
 	Ground ground;
 	auto rObj = ground.makeObject();
@@ -40,7 +40,7 @@ void Application::addGround()
 
 
 
-void Application::addLight()
+void Game::addLight()
 {
 	scene.setAmbientLight(glm::vec3(0.75, 0.75, 0.75));
 	light->setPosition(glm::vec3(0.0f, 0.0f, 2.0f));
@@ -49,7 +49,7 @@ void Application::addLight()
 
 
 
-void Application::addCamera()
+void Game::addCamera()
 {
 	auto camera = std::make_shared<Camera>();
 	camera->lookAt(glm::vec3(-0.041535, -0.813947, -0.579453), glm::vec3(-0.0114782, 0.590822, -0.80672));
@@ -60,7 +60,7 @@ void Application::addCamera()
 
 
 
-void Application::onKeyPress(unsigned char key, int, int)
+void Game::onKeyPress(unsigned char key, int, int)
 {
 	std::shared_ptr<Camera> camera = scene.getCamera();
 
@@ -96,7 +96,7 @@ void Application::onKeyPress(unsigned char key, int, int)
 
 
 
-void Application::onSpecialKeyPress(int key, int, int)
+void Game::onSpecialKeyPress(int key, int, int)
 {
 	std::shared_ptr<Camera> camera = scene.getCamera();
 
@@ -124,28 +124,28 @@ void Application::onSpecialKeyPress(int key, int, int)
 
 
 
-void Application::onMouseClick(int button, int state, int x, int y)
+void Game::onMouseClick(int button, int state, int x, int y)
 {
 
 }
 
 
 
-void Application::onMouseMotion(int x, int y)
+void Game::onMouseMotion(int x, int y)
 {
 
 }
 
 
 
-void Application::onMouseDrag(int x, int y)
+void Game::onMouseDrag(int x, int y)
 {
 
 }
 
 
 
-void Application::render()
+void Game::render()
 {
 	glClearColor(.39f, 0.58f, 0.93f, 0.0f);	//nice blue background
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -161,7 +161,7 @@ void Application::render()
 
 
 
-void Application::moveLight()
+void Game::moveLight()
 {
 	glm::vec3 lightPos = light->getPosition();
 
@@ -177,7 +177,7 @@ void Application::moveLight()
 
 
 /*	Causes the current thread to sleep for the specified number of milliseconds */
-void Application::sleep(int milliseconds)
+void Game::sleep(int milliseconds)
 {
 	std::chrono::milliseconds duration(milliseconds);
 	std::this_thread::sleep_for(duration); //forget time.h or windows.h, this is the real way to sleep!

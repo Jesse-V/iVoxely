@@ -5,51 +5,51 @@
 #pragma GCC diagnostic ignored "-Wexit-time-destructors"
 #pragma GCC diagnostic ignored "-Wdisabled-macro-expansion"
 
-#include "Application.hpp"
+#include "Game/Game.hpp"
 #include <iostream>
 
 
-static std::shared_ptr<Application> application; //make_unique is not included in C++11 yet...
+static std::shared_ptr<Game> game; //make_unique is not included in C++11 yet...
 
 
 void displayCallback()
 {
-	application->render();
+	game->render();
 }
 
 
 
 void keyPressCallback(unsigned char key, int x, int y)
 {
-	application->onKeyPress(key, x, y);
+	game->onKeyPress(key, x, y);
 }
 
 
 
 void specialKeyPressCallback(int key, int x, int y)
 {
-	application->onSpecialKeyPress(key, x, y);
+	game->onSpecialKeyPress(key, x, y);
 }
 
 
 
 void mouseClickCallback(int button, int state, int x, int y)
 {
-	application->onMouseClick(button, state, x, y);
+	game->onMouseClick(button, state, x, y);
 }
 
 
 
 void mouseMotionCallback(int x, int y)
 {
-	application->onMouseMotion(x, y);
+	game->onMouseMotion(x, y);
 }
 
 
 
 void mouseDragCallback(int x, int y)
 {
-	application->onMouseDrag(x, y);
+	game->onMouseDrag(x, y);
 }
 
 
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 
 	try
 	{
-		application = std::make_shared<Application>(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
+		game = std::make_shared<Game>(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
 
 		glutDisplayFunc(displayCallback);
 
