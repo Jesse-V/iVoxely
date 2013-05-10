@@ -17,8 +17,8 @@ add_executable(OpenGL_program
     main.cpp
     Modeling/DataBuffers/TextureBuffer.cpp
     Modeling/DataBuffers/VertexBuffer.cpp
-    ShaderLoader/Program.cpp
-    ShaderLoader/Shader.cpp
+    Resources/OpenGL/Program.cpp
+    Resources/OpenGL/Shader.cpp
     Modeling/Mesh.cpp
     World/Scene.cpp
     World/Camera.cpp
