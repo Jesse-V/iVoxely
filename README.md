@@ -20,6 +20,8 @@ sudo add-apt-repository ppa:kxstudio-team/builds<br>
 sudo apt-get update<br>
 sudo apt-get install clang<br>
 
+Note that Clang 3.2 seems to have issues both with std::thread and std::async, and the problem relates to the stdlibc++ library. For these, GCC works fine. http://permalink.gmane.org/gmane.comp.compilers.clang.scm/70802 apparently fixes Clang's incompatibility with std::thread. There is no threading code currently in this project, so there's no problem here yet. It seems reasonable that this patch would be included in a higher version of Clang, and we'll upgrade to that as it becomes available in the Ubuntu/Mint repositories.
+
 ### Origin
 
 This project is based on the framework developed in the https://github.com/Jesse-V/CS5400_Final_Project repo from which https://github.com/Jesse-V/OpenGL_Texture_Mapping was based.
