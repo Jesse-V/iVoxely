@@ -16,7 +16,15 @@ static bool readyToUpdate = false;
 void updateCallback()
 {
 	if (readyToUpdate)
-		game->update();
+	{
+		static int oldTimeSinceStart = glutGet(GLUT_ELAPSED_TIME);
+
+		int timeSinceStart = glutGet(GLUT_ELAPSED_TIME);
+		int deltaTime = timeSinceStart - oldTimeSinceStart;
+		oldTimeSinceStart = timeSinceStart;
+
+		game->update(deltaTime);
+	}
 	else
 		std::this_thread::sleep_for(std::chrono::milliseconds(10)); //sleep for a bit
 }

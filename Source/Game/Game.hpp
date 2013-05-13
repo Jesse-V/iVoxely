@@ -10,7 +10,7 @@ class Game
 {
 	public:
 		Game(int screenWidth, int screenHeight);
-		void update();
+		void update(int deltaTime);
 		void render();
 
 		void onKeyPress(unsigned char key, int, int);
@@ -24,7 +24,7 @@ class Game
 		void addGround();
 		void addLight();
 		void addCamera(int screenWidth, int screenHeight);
-		void moveLight();
+		void moveLight(int deltaTime);
 		static void sleep(int milliseconds);
 
 	private:
@@ -32,7 +32,7 @@ class Game
 		std::shared_ptr<Player> player;
 
 		std::shared_ptr<Light> light = std::make_shared<Light>();
-		glm::vec3 lightVector = glm::vec3(0.0f, 0.0f, -0.015f);
+		glm::vec3 lightVector = glm::vec3(0.0f, 0.0f, -0.001f);
 };
 
 #endif

@@ -61,9 +61,9 @@ void Game::addCamera(int screenWidth, int screenHeight)
 
 
 
-void Game::update()
+void Game::update(int deltaTime)
 {
-	moveLight();
+	moveLight(deltaTime);
 }
 
 
@@ -80,7 +80,7 @@ void Game::render()
 
 
 
-void Game::moveLight()
+void Game::moveLight(int deltaTime)
 {
 	glm::vec3 lightPos = light->getPosition();
 
@@ -89,7 +89,7 @@ void Game::moveLight()
 	else if (lightPos.z > 2)
 		lightVector.z = -lightVector.z;
 
-	lightPos += lightVector;
+	lightPos += lightVector * (float)deltaTime;
 	light->setPosition(lightPos);
 }
 
