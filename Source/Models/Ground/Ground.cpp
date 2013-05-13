@@ -1,6 +1,7 @@
 
 #include "Ground.hpp"
 #include "Rendering/DataBuffers/VertexBuffer.hpp"
+#include "Rendering/DataBuffers/NormalBuffer.hpp"
 #include <iostream>
 
 
@@ -41,7 +42,7 @@ std::shared_ptr<Mesh> Ground::getMesh()
 	addIndices(mesh);
 
 	std::cout << "normals... ";
-	mesh->calcNormalsMWE();
+	mesh->normals = NormalBuffer::calcNormalsMWE(mesh->vertices, mesh->triangles);
 
 	std::cout << "done" << std::endl;
 	return mesh;

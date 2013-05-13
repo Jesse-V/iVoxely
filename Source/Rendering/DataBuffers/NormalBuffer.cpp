@@ -1,13 +1,13 @@
 
 #include <list>
 #include <cmath>
-#include "Mesh.hpp"
+#include "NormalBuffer.hpp"
 
-
+/*
 // Calculate the normals for a given mesh using the
 // "Mean Weighted by Angle" (MWA) algorithm as seen in the paper
 // "A Comparison of Algorithms for Vertex Normal Computation"
-void Mesh::calcNormalsMWA()
+void NormalBuffer::calcNormalsMWA()
 {
 	// keep track of which triangles a given vertex is part of
 	std::vector<std::vector<size_t>> vtmap;
@@ -57,10 +57,10 @@ void Mesh::calcNormalsMWA()
 }
 
 
-// Calculate the normals for a given mesh using the
-// "Mean Weighted by Angle" (MWASEL) algorithm as seen in the paper
+// Calculate the normals of the mesh using the
+// "Mean Weighted Average By Sine And Edge Reciprocal" (MWASER) algorithm as seen in
 // "A Comparison of Algorithms for Vertex Normal Computation"
-void Mesh::calcNormalsMWASEL()
+void NormalBuffer::calcNormalsMWASER()
 {
 	// keep track of which triangles a given vertex is part of
 	std::vector<std::vector<size_t>> vtmap;
@@ -108,12 +108,12 @@ void Mesh::calcNormalsMWASEL()
 
 		normals.push_back(glm::normalize(normal));
 	}
-}
+}*/
 
 
 // Calculate the normals for a given mesh using the
 // "Mean Weighted Equally" (MWE) algorithm (Naive approach)
-void Mesh::calcNormalsMWE()
+std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles)
 {
 	// keep track of which triangles a given vertex is part of
 	std::vector<std::vector<size_t>> vtmap;
@@ -134,7 +134,7 @@ void Mesh::calcNormalsMWE()
 		vtmap[t.c].push_back(i);
 	}
 
-	normals.clear();
+	std::vector<glm::vec3> normals;
 
 	// Now calculate the vertex normals
 	for (size_t i = 0; i < vertices.size(); i++)
@@ -148,4 +148,6 @@ void Mesh::calcNormalsMWE()
 
 		normals.push_back(glm::normalize(normal));
 	}
+
+	return normals;
 }

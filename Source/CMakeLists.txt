@@ -20,10 +20,9 @@ add_executable(OpenGL_program
     World/Camera.cpp
     World/Light.cpp
     Models/Ground/Ground.cpp
-    Rendering/DataBuffers/TextureBuffer.cpp
-    Rendering/DataBuffers/VertexBuffer.cpp
     Rendering/RenderableObject.cpp
-    Rendering/Mesh.cpp
+    Rendering/DataBuffers/VertexBuffer.cpp
+    Rendering/DataBuffers/NormalBuffer.cpp
     Resources/OpenGL/Program.cpp
     Resources/OpenGL/Shader.cpp
 )
