@@ -4,8 +4,8 @@
 #include <iostream>
 
 
-VertexBuffer::VertexBuffer(const std::shared_ptr<Mesh>& mesh):
-	mesh(mesh)
+VertexBuffer::VertexBuffer(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles, const std::vector<glm::vec3>& normals):
+	vertices(vertices), triangles(triangles), normals(normals)
 {}
 
 
@@ -44,7 +44,7 @@ void VertexBuffer::enable()
 	enableVertices();
 	enableNormals();
 
-	glDrawElements(GL_TRIANGLES, (int)mesh->triangles.size() * 3, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0);
 }
 
 
@@ -62,10 +62,8 @@ void VertexBuffer::disable()
 // Store the vertices in a GPU buffer
 void VertexBuffer::storePoints()
 {
-	const std::vector<glm::vec3> &verts = mesh->vertices;
-
 	std::vector<GLfloat> rawPoints;
-	for_each (verts.begin(), verts.end(),
+	for_each (vertices.begin(), vertices.end(),
 		[&](const glm::vec3& vert)
 		{
 			rawPoints.push_back(vert.x);
@@ -83,7 +81,7 @@ void VertexBuffer::storePoints()
 void VertexBuffer::storeNormals()
 {
 	std::vector<GLfloat> rawNormals;
-	for_each (mesh->normals.begin(), mesh->normals.end(),
+	for_each (normals.begin(), normals.end(),
 		[&](const glm::vec3& norm)
 		{
 			rawNormals.push_back(norm.x);
@@ -97,11 +95,11 @@ void VertexBuffer::storeNormals()
 
 
 
-// Store the mesh in a GPU buffer
+// Store the triangles in a GPU buffer
 void VertexBuffer::storeMesh()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->triangles.size() * 3 * sizeof(GLuint), mesh->triangles.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangles.size() * 3 * sizeof(GLuint), triangles.data(), GL_STATIC_DRAW);
 }
 
 

@@ -3,7 +3,7 @@
 #define CUSTOM_OBJECT
 
 #include "Rendering/RenderableObject.hpp"
-#include "Rendering/Mesh.hpp"
+#include "Rendering/Triangle.struct"
 #include <memory>
 #include <vector>
 
@@ -14,9 +14,9 @@ class CustomObject
 		virtual std::vector<std::shared_ptr<DataBuffer>> getDataBuffers() = 0;
 
 	protected:
-		virtual std::shared_ptr<Mesh> getMesh() = 0;
-		virtual void addVertices(std::shared_ptr<Mesh>& mesh) = 0;
-		virtual void addIndices(std::shared_ptr<Mesh>& mesh) = 0;
+		virtual std::vector<glm::vec3> getVertices() = 0;
+		virtual std::vector<Triangle> getTriangles() = 0;
+		virtual std::vector<glm::vec3> getNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles) = 0;
 };
 
 #endif

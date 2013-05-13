@@ -11,9 +11,9 @@ class Ground: public CustomObject
 
 	protected:
 		virtual std::vector<std::shared_ptr<DataBuffer>> getDataBuffers();
-		virtual std::shared_ptr<Mesh> getMesh();
-		virtual void addVertices(std::shared_ptr<Mesh>& mesh);
-		virtual void addIndices(std::shared_ptr<Mesh>& mesh);
+		virtual std::vector<glm::vec3> getVertices();
+		virtual std::vector<Triangle> getTriangles();
+		virtual std::vector<glm::vec3> getNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
 };
 
 #endif

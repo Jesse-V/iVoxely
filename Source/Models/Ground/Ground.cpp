@@ -19,9 +19,14 @@ std::shared_ptr<RenderableObject> Ground::makeObject()
 
 std::vector<std::shared_ptr<DataBuffer>> Ground::getDataBuffers()
 {
+	std::cout << "Assembling Ground Model, making... ";
 	std::vector<std::shared_ptr<DataBuffer>> buffers;
 
-	auto vBuffer = std::make_shared<VertexBuffer>(getMesh());
+	auto vertices = getVertices();
+	auto triangles = getTriangles();
+	auto normals = getNormals(vertices, triangles);
+
+	auto vBuffer = std::make_shared<VertexBuffer>(vertices, triangles, normals);
 	buffers.push_back(vBuffer);
 
 	return buffers;
@@ -29,39 +34,34 @@ std::vector<std::shared_ptr<DataBuffer>> Ground::getDataBuffers()
 
 
 
-std::shared_ptr<Mesh> Ground::getMesh()
+std::vector<glm::vec3> Ground::getVertices()
 {
-	auto mesh = std::make_shared<Mesh>();
-
-	std::cout << "Assembling Ground Model (4), making... ";
-
 	std::cout << "vertices... ";
-	addVertices(mesh);
 
+	std::vector<glm::vec3> vertices;
+	vertices.push_back(glm::vec3( 1, 0, -1));
+	vertices.push_back(glm::vec3(-1, 0, -1));
+	vertices.push_back(glm::vec3(-1, 0,  1));
+	vertices.push_back(glm::vec3( 1, 0,  1));
+
+	return vertices;
+}
+
+
+
+std::vector<Triangle> Ground::getTriangles()
+{
 	std::cout << "triangles... ";
-	addIndices(mesh);
 
-	std::cout << "normals... ";
-	mesh->normals = NormalBuffer::calcNormalsMWE(mesh->vertices, mesh->triangles);
-
-	std::cout << "done" << std::endl;
-	return mesh;
+	std::vector<Triangle> triangles;
+	triangles.push_back(Triangle(0, 1, 2));
+	triangles.push_back(Triangle(0, 2, 3));
+	return triangles;
 }
 
 
 
-void Ground::addVertices(std::shared_ptr<Mesh>& mesh)
+std::vector<glm::vec3> Ground::getNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles)
 {
-	mesh->vertices.push_back(glm::vec3(	1, 0, -1));
-	mesh->vertices.push_back(glm::vec3(-1, 0, -1));
-	mesh->vertices.push_back(glm::vec3(-1, 0,  1));
-	mesh->vertices.push_back(glm::vec3(	1, 0,  1));
-}
-
-
-
-void Ground::addIndices(std::shared_ptr<Mesh>& mesh)
-{
-	mesh->triangles.push_back(Triangle(0, 1, 2));
-	mesh->triangles.push_back(Triangle(0, 2, 3));
+	return NormalBuffer::calcNormalsMWE(vertices, triangles);
 }

@@ -3,7 +3,7 @@
 #define NORMAL_BUFFER
 
 #include "DataBuffer.hpp"
-#include "../Mesh.hpp"
+#include "../Triangle.struct"
 #include <vector>
 
 class NormalBuffer: public DataBuffer
