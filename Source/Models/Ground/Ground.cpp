@@ -1,6 +1,7 @@
 
 #include "Ground.hpp"
 #include "Rendering/DataBuffers/VertexBuffer.hpp"
+#include "Rendering/DataBuffers/IndexBuffer.hpp"
 #include "Rendering/DataBuffers/NormalBuffer.hpp"
 #include <iostream>
 
@@ -25,8 +26,11 @@ std::vector<std::shared_ptr<DataBuffer>> Ground::getDataBuffers()
 	auto vertices = getVertices();
 	auto triangles = getTriangles();
 
-	auto vBuffer = std::make_shared<VertexBuffer>(vertices, triangles);
+	auto vBuffer = std::make_shared<VertexBuffer>(vertices);
 	buffers.push_back(vBuffer);
+
+	auto iBuffer = std::make_shared<IndexBuffer>(triangles);
+	buffers.push_back(iBuffer);
 
 	auto normals = getNormals(vertices, triangles);
 	auto nBuffer = std::make_shared<NormalBuffer>(normals);

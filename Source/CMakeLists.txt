@@ -22,6 +22,7 @@ add_executable(OpenGL_program
     Models/Ground/Ground.cpp
     Rendering/RenderableObject.cpp
     Rendering/DataBuffers/VertexBuffer.cpp
+    Rendering/DataBuffers/IndexBuffer.cpp
     Rendering/DataBuffers/NormalBuffer.cpp
     Resources/OpenGL/Program.cpp
     Resources/OpenGL/Shader.cpp
