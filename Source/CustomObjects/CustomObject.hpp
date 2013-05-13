@@ -2,8 +2,8 @@
 #ifndef CUSTOM_OBJECT
 #define CUSTOM_OBJECT
 
-#include "Modeling/RenderableObject.hpp"
-#include "Modeling/Mesh.hpp"
+#include "Rendering/RenderableObject.hpp"
+#include "Rendering/Mesh.hpp"
 #include <memory>
 #include <vector>
 

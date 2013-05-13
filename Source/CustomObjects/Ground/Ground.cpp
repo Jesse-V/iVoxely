@@ -1,6 +1,6 @@
 
 #include "Ground.hpp"
-#include "Modeling/DataBuffers/VertexBuffer.hpp"
+#include "Rendering/DataBuffers/VertexBuffer.hpp"
 #include <iostream>
 
 
