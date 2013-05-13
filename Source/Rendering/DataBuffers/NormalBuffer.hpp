@@ -20,7 +20,10 @@ class NormalBuffer: public DataBuffer
 		static std::vector<glm::vec3> calcNormalsMWE(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
 
 	private:
-		std::vector<glm::vec3> normals; // vertex normals
+		static std::vector<glm::vec3> calculateTriangleNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles, std::vector<std::vector<size_t>>& vtmap);
+
+	private:
+		std::vector<glm::vec3> normals;
 
 		GLuint normalBuffer;
 		GLint normalAttrib;

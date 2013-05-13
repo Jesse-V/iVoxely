@@ -62,21 +62,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(const std::vector<glm::vec3>
 	std::vector<std::vector<size_t>> vtmap;
 	vtmap.resize(vertices.size());
 
-	// calculate triangle normals
-	std::vector<glm::vec3> tN;
-	for (size_t i = 0; i < triangles.size(); i++)
-	{
-		const Triangle& t = triangles[i];
-		const glm::vec3& a = vertices[t.a];
-		const glm::vec3& b = vertices[t.b];
-		const glm::vec3& c = vertices[t.c];
-		tN.push_back(glm::cross(b - a, c - a));
-
-		vtmap[t.a].push_back(i);
-		vtmap[t.b].push_back(i);
-		vtmap[t.c].push_back(i);
-	}
-
+	std::vector<glm::vec3> tN = calculateTriangleNormals(vertices, triangles, vtmap);
 	std::vector<glm::vec3> normals;
 
 	// Now calculate the vertex normals
@@ -92,9 +78,11 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(const std::vector<glm::vec3>
 			const glm::vec3& p1 = vertices[t.a];
 			const glm::vec3& p2 = vertices[t.b];
 			const glm::vec3& p3 = vertices[t.c];
+
 			glm::vec3 edge1 = p2 - p1;
 			glm::vec3 edge2 = p3 - p1;
 			glm::vec3 edgecross = glm::cross(edge2, edge1);
+
 			float sinalpha = glm::length(edgecross) / (glm::length(edge1) * glm::length(edge2));
 			float alpha = (float)asin(sinalpha);
 
@@ -117,21 +105,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(const std::vector<glm::ve
 	std::vector<std::vector<size_t>> vtmap;
 	vtmap.resize(vertices.size());
 
-	// calculate triangle normals
-	std::vector<glm::vec3> tN;
-	for (size_t i = 0; i < triangles.size(); i++)
-	{
-		const Triangle& t = triangles[i];
-		const glm::vec3& a = vertices[t.a];
-		const glm::vec3& b = vertices[t.b];
-		const glm::vec3& c = vertices[t.c];
-		tN.push_back(glm::cross(b - a, c - a));
-
-		vtmap[t.a].push_back(i);
-		vtmap[t.b].push_back(i);
-		vtmap[t.c].push_back(i);
-	}
-
+	std::vector<glm::vec3> tN = calculateTriangleNormals(vertices, triangles, vtmap);
 	std::vector<glm::vec3> normals;
 
 	// Now calculate the vertex normals
@@ -147,9 +121,11 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(const std::vector<glm::ve
 			const glm::vec3& p1 = vertices[t.a];
 			const glm::vec3& p2 = vertices[t.b];
 			const glm::vec3& p3 = vertices[t.c];
+
 			glm::vec3 edge1 = p2 - p1;
 			glm::vec3 edge2 = p3 - p1;
 			glm::vec3 edgecross = glm::cross(edge1, edge2);
+
 			float edge1len = glm::length(edge1);
 			float edge2len = glm::length(edge2);
 			float sinalpha = glm::length(edgecross) / (edge1len * edge2len);
@@ -172,21 +148,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(const std::vector<glm::vec3>
 	std::vector<std::vector<size_t>> vtmap;
 	vtmap.resize(vertices.size());
 
-	// calculate triangle normals
-	std::vector<glm::vec3> tN;
-	for (size_t i = 0; i < triangles.size(); i++)
-	{
-		const Triangle& t = triangles[i];
-		const glm::vec3& a = vertices[t.a];
-		const glm::vec3& b = vertices[t.b];
-		const glm::vec3& c = vertices[t.c];
-		tN.push_back(glm::cross(b-a, c-a));
-
-		vtmap[t.a].push_back(i);
-		vtmap[t.b].push_back(i);
-		vtmap[t.c].push_back(i);
-	}
-
+	std::vector<glm::vec3> tN = calculateTriangleNormals(vertices, triangles, vtmap);
 	std::vector<glm::vec3> normals;
 
 	// Now calculate the vertex normals
@@ -195,7 +157,6 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(const std::vector<glm::vec3>
 		const std::vector<size_t>& tlist = vtmap[i];
 
 		glm::vec3 normal(0.0f, 0.0f, 0.0f);
-
 		for (size_t k = 0; k < tlist.size(); k++)
 			normal += tN[tlist[k]];
 
@@ -203,4 +164,26 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(const std::vector<glm::vec3>
 	}
 
 	return normals;
+}
+
+
+
+std::vector<glm::vec3> NormalBuffer::calculateTriangleNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles, std::vector<std::vector<size_t>>& vtmap)
+{
+	std::vector<glm::vec3> tN;
+
+	for (size_t i = 0; i < triangles.size(); i++)
+	{
+		const Triangle& t = triangles[i];
+		const glm::vec3& a = vertices[t.a];
+		const glm::vec3& b = vertices[t.b];
+		const glm::vec3& c = vertices[t.c];
+		tN.push_back(glm::cross(b - a, c - a));
+
+		vtmap[t.a].push_back(i);
+		vtmap[t.b].push_back(i);
+		vtmap[t.c].push_back(i);
+	}
+
+	return tN;
 }

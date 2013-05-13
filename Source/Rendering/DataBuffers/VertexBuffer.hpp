@@ -20,7 +20,7 @@ class VertexBuffer: public DataBuffer
 		void enableVertices();
 
 	private:
-		std::vector<glm::vec3> vertices; // Complete set of vertices
+		std::vector<glm::vec3> vertices;
 
 		GLuint vertexBuffer;
 		GLint vertexAttrib;
