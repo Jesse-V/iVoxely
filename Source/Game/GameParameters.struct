@@ -1,0 +1,10 @@
+
+#ifndef GAME_PARAMETERS
+#define GAME_PARAMETERS
+
+struct GameParameters
+{
+
+};
+
+#endif
