@@ -1,13 +1,62 @@
 
-#include <list>
-#include <cmath>
 #include "NormalBuffer.hpp"
+#include <algorithm>
 
-/*
+
+NormalBuffer::NormalBuffer(const std::vector<glm::vec3>& normals):
+	normals(normals)
+{}
+
+
+
+void NormalBuffer::initialize(GLuint program)
+{
+	glGenBuffers(1, &normalBuffer);
+	normalAttrib = glGetAttribLocation(program, "vertexNormal");
+}
+
+
+
+// Store the normals in a GPU buffer
+void NormalBuffer::store()
+{
+	std::vector<GLfloat> rawNormals;
+	for_each (normals.begin(), normals.end(),
+		[&](const glm::vec3& norm)
+		{
+			rawNormals.push_back(norm.x);
+			rawNormals.push_back(norm.y);
+			rawNormals.push_back(norm.z);
+		});
+
+	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+	glBufferData(GL_ARRAY_BUFFER, rawNormals.size() * sizeof(GLfloat), rawNormals.data(), GL_STATIC_DRAW);
+}
+
+
+
+void NormalBuffer::enable()
+{
+	glEnableVertexAttribArray(normalAttrib);
+	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+	glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+}
+
+
+
+void NormalBuffer::disable()
+{
+	glDisableVertexAttribArray(normalAttrib);
+}
+
+
+//------------------static normal-calculation methods----------------------
+
+
 // Calculate the normals for a given mesh using the
 // "Mean Weighted by Angle" (MWA) algorithm as seen in the paper
 // "A Comparison of Algorithms for Vertex Normal Computation"
-void NormalBuffer::calcNormalsMWA()
+std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles)
 {
 	// keep track of which triangles a given vertex is part of
 	std::vector<std::vector<size_t>> vtmap;
@@ -28,7 +77,7 @@ void NormalBuffer::calcNormalsMWA()
 		vtmap[t.c].push_back(i);
 	}
 
-	normals.clear();
+	std::vector<glm::vec3> normals;
 
 	// Now calculate the vertex normals
 	for (size_t i = 0; i < vertices.size(); i++)
@@ -54,13 +103,15 @@ void NormalBuffer::calcNormalsMWA()
 
 		normals.push_back(glm::normalize(normal));
 	}
+
+	return normals;
 }
 
 
 // Calculate the normals of the mesh using the
 // "Mean Weighted Average By Sine And Edge Reciprocal" (MWASER) algorithm as seen in
 // "A Comparison of Algorithms for Vertex Normal Computation"
-void NormalBuffer::calcNormalsMWASER()
+std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles)
 {
 	// keep track of which triangles a given vertex is part of
 	std::vector<std::vector<size_t>> vtmap;
@@ -81,7 +132,7 @@ void NormalBuffer::calcNormalsMWASER()
 		vtmap[t.c].push_back(i);
 	}
 
-	normals.clear();
+	std::vector<glm::vec3> normals;
 
 	// Now calculate the vertex normals
 	for (size_t i = 0; i < vertices.size(); i++)
@@ -108,7 +159,9 @@ void NormalBuffer::calcNormalsMWASER()
 
 		normals.push_back(glm::normalize(normal));
 	}
-}*/
+
+	return normals;
+}
 
 
 // Calculate the normals for a given mesh using the

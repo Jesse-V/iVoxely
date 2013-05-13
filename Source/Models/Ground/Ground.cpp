@@ -24,10 +24,13 @@ std::vector<std::shared_ptr<DataBuffer>> Ground::getDataBuffers()
 
 	auto vertices = getVertices();
 	auto triangles = getTriangles();
-	auto normals = getNormals(vertices, triangles);
 
-	auto vBuffer = std::make_shared<VertexBuffer>(vertices, triangles, normals);
+	auto vBuffer = std::make_shared<VertexBuffer>(vertices, triangles);
 	buffers.push_back(vBuffer);
+
+	auto normals = getNormals(vertices, triangles);
+	auto nBuffer = std::make_shared<NormalBuffer>(normals);
+	buffers.push_back(nBuffer);
 
 	return buffers;
 }

@@ -9,15 +9,21 @@
 class NormalBuffer: public DataBuffer
 {
 	public:
-		NormalBuffer(std::vector<glm::vec3>, std::vector<Triangle> triangles);
+		NormalBuffer(const std::vector<glm::vec3>& normals);
 		virtual void initialize(GLuint program);
 		virtual void store();
 		virtual void enable();
 		virtual void disable();
 
-		//static void calcNormalsMWA();
-		//static void calcNormalsMWASEL();
-		static std::vector<glm::vec3> calcNormalsMWE(const std::vector<glm::vec3>&, const std::vector<Triangle>& triangles);
+		static std::vector<glm::vec3> calcNormalsMWA(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
+		static std::vector<glm::vec3> calcNormalsMWASER(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
+		static std::vector<glm::vec3> calcNormalsMWE(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
+
+	private:
+		std::vector<glm::vec3> normals; // vertex normals
+
+		GLuint normalBuffer;
+		GLint normalAttrib;
 };
 
 #endif
