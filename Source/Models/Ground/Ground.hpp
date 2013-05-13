@@ -2,7 +2,7 @@
 #ifndef GROUND_HPP
 #define GROUND_HPP
 
-#include "CustomObjects/CustomObject.hpp"
+#include "Models/CustomObject.hpp"
 
 class Ground: public CustomObject
 {

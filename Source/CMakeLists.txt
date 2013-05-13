@@ -19,7 +19,7 @@ add_executable(OpenGL_program
     World/Scene.cpp
     World/Camera.cpp
     World/Light.cpp
-    CustomObjects/Ground/Ground.cpp
+    Models/Ground/Ground.cpp
     Rendering/DataBuffers/TextureBuffer.cpp
     Rendering/DataBuffers/VertexBuffer.cpp
     Rendering/RenderableObject.cpp

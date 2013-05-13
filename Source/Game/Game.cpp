@@ -1,6 +1,6 @@
 
 #include "Game.hpp"
-#include "CustomObjects/Ground/Ground.hpp"
+#include "Models/Ground/Ground.hpp"
 #include <thread>
 
 
