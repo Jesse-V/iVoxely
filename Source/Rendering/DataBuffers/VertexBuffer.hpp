@@ -20,6 +20,7 @@ class VertexBuffer: public DataBuffer
 		void enableVertices();
 
 	private:
+		static constexpr const char* VERTEX_ATTRIB_NAME = "vertex";
 		std::vector<glm::vec3> vertices;
 
 		GLuint vertexBuffer;

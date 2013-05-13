@@ -24,6 +24,7 @@ add_executable(OpenGL_program
     Rendering/DataBuffers/VertexBuffer.cpp
     Rendering/DataBuffers/IndexBuffer.cpp
     Rendering/DataBuffers/NormalBuffer.cpp
+    Rendering/DataBuffers/BumpMap.cpp
     Resources/OpenGL/Program.cpp
     Resources/OpenGL/Shader.cpp
 )

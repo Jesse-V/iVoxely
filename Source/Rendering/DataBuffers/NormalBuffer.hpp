@@ -5,6 +5,7 @@
 #include "DataBuffer.hpp"
 #include "../Triangle.struct"
 #include <vector>
+#include <string>
 
 class NormalBuffer: public DataBuffer
 {
@@ -23,6 +24,7 @@ class NormalBuffer: public DataBuffer
 		static std::vector<glm::vec3> calculateTriangleNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles, std::vector<std::vector<size_t>>& vtmap);
 
 	private:
+		static constexpr const char* NORMAL_ATTRIB_NAME = "vertexNormal";
 		std::vector<glm::vec3> normals;
 
 		GLuint normalBuffer;

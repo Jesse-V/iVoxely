@@ -13,7 +13,7 @@ VertexBuffer::VertexBuffer(const std::vector<glm::vec3>& vertices):
 void VertexBuffer::initialize(GLuint program)
 {
 	glGenBuffers(1, &vertexBuffer);
-	vertexAttrib = glGetAttribLocation(program, "vertex"); //get attributes
+	vertexAttrib = glGetAttribLocation(program, VERTEX_ATTRIB_NAME);
 }
 
 

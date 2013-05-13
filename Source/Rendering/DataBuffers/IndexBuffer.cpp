@@ -27,7 +27,7 @@ void IndexBuffer::store()
 
 void IndexBuffer::enable()
 {
-	glDrawElements(GL_TRIANGLES, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0); //todo: could go somewhere else? Could be changed to draw vertices instead of triangles
+	glDrawElements(GL_TRIANGLES, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0); //todo: this is a call to render so this doesn't exactly belong here long-term
 }
 
 

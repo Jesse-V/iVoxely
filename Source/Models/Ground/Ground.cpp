@@ -20,7 +20,7 @@ std::shared_ptr<RenderableObject> Ground::makeObject()
 
 std::vector<std::shared_ptr<DataBuffer>> Ground::getDataBuffers()
 {
-	std::cout << "Assembling Ground Model, making... ";
+	std::cout << "Assembling Ground Model, making ";
 	std::vector<std::shared_ptr<DataBuffer>> buffers;
 
 	auto vertices = getVertices();
@@ -35,6 +35,8 @@ std::vector<std::shared_ptr<DataBuffer>> Ground::getDataBuffers()
 	auto normals = getNormals(vertices, triangles);
 	auto nBuffer = std::make_shared<NormalBuffer>(normals);
 	buffers.push_back(nBuffer);
+
+	std::cout << " done" << std::endl;
 
 	return buffers;
 }
@@ -70,5 +72,7 @@ std::vector<Triangle> Ground::getTriangles()
 
 std::vector<glm::vec3> Ground::getNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles)
 {
-	return NormalBuffer::calcNormalsMWE(vertices, triangles);
+	std::cout << "normals... ";
+
+	return NormalBuffer::calcNormalsMWASER(vertices, triangles);
 }
