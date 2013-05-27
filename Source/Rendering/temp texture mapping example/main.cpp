@@ -79,10 +79,10 @@ glm::mat4 view;
 GLint uniform_mvp;
 
 //mouse state variables
-bool mouse1 = 0;
-bool mouse2 = 0;
+bool mouse1 = false;
+bool mouse2 = false;
 
-bool doneOnce = 0;
+bool doneOnce = false;
 
 GLuint LightID;
 
@@ -398,26 +398,26 @@ void keyboardInput(unsigned char key, int x, int y)
 		case 'w':
 			eye = eye + lookDir * 0.02f;
 			center = center + lookDir * 0.02f;
-
 			break;
 
 		//zoom out
 		case 's':
 			eye = eye - lookDir * 0.02f;
 			center = center - lookDir * 0.02f;
-
 			break;
+
 		case 'd':
 			//pan right
 			eye = eye + (glm::vec3(1.0,0.0,0.0))*0.02f;
 			center = center + (glm::vec3(1.0,0.0,0.0))*0.02f;
 			break;
+
 		case 'a':
 			//pan left
 			eye = eye - (glm::vec3(1.0,0.0,0.0))*0.02f;
 			center = center - (glm::vec3(1.0,0.0,0.0))*0.02f;
-
 			break;
+
 		case 'q':
 			//pan up
 			eye = eye + (glm::vec3(0.0,1.0,0.0))*0.02f;
@@ -468,43 +468,45 @@ void processPassive(int x, int y)
 	if(mouse1)
 	{
 		glm::vec3 axis_y(0.0, 1.0, 0.0);
-		glm::vec3 axis_x(1.0,0.0,0.0);
+		glm::vec3 axis_x(1.0, 0.0, 0.0);
 
 		float angleX = 0.0f;
 		float angleY = 0.0f;
+
 		if(doneOnce)
 			angleX = (cam_x - x)/5.0f;
 		cam_x = x;
+
 		if(doneOnce)
 			angleY = (cam_y - y)/5.0f;
 		cam_y = y;
 
 		model = glm::rotate(model, angleX, axis_y);
-
 		model = glm::rotate(model, angleY, axis_x);
 
-		doneOnce = 1;
+		doneOnce = true;
 	}
 
 	//yaw
 	if(mouse2)
 	{
-		glm::vec3 axis_z(0.0,0.0,1.0);
+		glm::vec3 axis_z(0.0, 0.0, 1.0);
 
 		float angleX = 0.0f;
 		float angleY = 0.0f;
+
 		if(doneOnce)
 			angleX = (cam_x - x)/5.0f;
 		cam_x = x;
+
 		if(doneOnce)
 			angleY = (cam_y - y)/5.0f;
 		cam_y = y;
 
-
 		model = glm::rotate(model, angleX, axis_z);
 		model = glm::rotate(model, angleY, axis_z);
 
-		doneOnce = 1;
+		doneOnce = true;
 	}
 }
 
@@ -515,13 +517,14 @@ void processMouse(int button, int state, int x, int y)
 {
 
 	if(button == GLUT_LEFT_BUTTON)
-		mouse1 = 1;
+		mouse1 = true;
 	else
-		mouse1 = 0;
+		mouse1 = false;
+
 	if(button == GLUT_RIGHT_BUTTON)
-		mouse2 = 1;
+		mouse2 = true;
 	else
-		mouse2 = 0;
+		mouse2 = false;
 }
 
 
