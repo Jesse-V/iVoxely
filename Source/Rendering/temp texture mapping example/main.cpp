@@ -56,13 +56,7 @@ std::vector<int> polyCount;
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
-
-
-
-
-
 int cam_x, cam_y;
-
 
 //model view projection matrix
 glm::mat4 mvp;
@@ -74,17 +68,13 @@ glm::vec3 up;
 glm::vec3 eye;
 //location being looked at
 glm::vec3 center;
-
-//model matrix
-glm::mat4 model;
-
-glm::mat4 world;
-
-glm::mat4 view;
-
 //unit vector for cam direction
 glm::vec3 lookDir;
 
+//model matrix
+glm::mat4 model;
+glm::mat4 world;
+glm::mat4 view;
 
 GLint uniform_mvp;
 
@@ -94,57 +84,11 @@ bool mouse2 = 0;
 
 bool doneOnce = 0;
 
-
-
-
 GLuint LightID;
 
 
-
-
-
-GLuint loadBMP(const char * imagepath)
+void saveBMPtoGPU(int width, int height, unsigned char* data)
 {
-	unsigned char header[54];
-	unsigned int dataPos;
-	unsigned int width, height;
-	unsigned int imageSize;
-	unsigned char * data;
-
-	FILE * file = fopen(imagepath,"rb");
-	if (!file)
-	{
-		printf("Image could not be opened\n");
-		return -1;
-	}
-	if(fread(header, 1 ,54, file) != 54)
-	{
-		printf("Not a valid BMP file\n");
-		return -2;
-	}
-	if ( header[0]!='B' || header[1]!='M' )
-	{
-		printf("Not a correct BMP file\n");
-		return -3;
-	}
-
-	dataPos    = *(int*)&(header[0x0A]);
-	imageSize  = *(int*)&(header[0x22]);
-	width      = *(int*)&(header[0x12]);
-	height     = *(int*)&(header[0x16]);
-
-	if (imageSize==0)    imageSize=width*height*3;
-	if (dataPos==0)      dataPos=54;
-
-	data = new unsigned char [imageSize];
-
-	// Read the actual data from the file into the buffer
-	fread(data,1,imageSize,file);
-
-	//Everything is in memory now, the file can be closed
-	fclose(file);
-
-
 	// Create one OpenGL texture
 	GLuint textureID;
 	glGenTextures(1, &textureID);
@@ -161,6 +105,49 @@ GLuint loadBMP(const char * imagepath)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	// Generate mipmaps, by the way.
 	glGenerateMipmap(GL_TEXTURE_2D);
+}
+
+
+
+GLuint loadBMP(std::string imagepath)
+{
+	unsigned char header[54];
+
+	FILE * file = fopen(imagepath.c_str(), "rb");
+	if (!file)
+	{
+		printf("Image could not be opened\n");
+		return -1;
+	}
+
+	if(fread(header, 1, 54, file) != 54)
+	{
+		printf("Not a valid BMP file\n");
+		return -2;
+	}
+
+	if (header[0] != 'B' || header[1] != 'M')
+	{
+		printf("Not a correct BMP file\n");
+		return -3;
+	}
+
+	unsigned int imageSize  = *(int*)&(header[0x22]);
+	unsigned int width      = *(int*)&(header[0x12]);
+	unsigned int height     = *(int*)&(header[0x16]);
+
+	if (imageSize == 0)
+		imageSize = width * height * 3;
+
+	unsigned char* data = new unsigned char[imageSize];
+
+	// Read the actual data from the file into the buffer
+	fread(data, 1, imageSize, file);
+
+	//Everything is in memory now, the file can be closed
+	fclose(file);
+
+	saveBMPtoGPU(width, height, data);
 
 	printf("SUCCESS");
 }
@@ -204,7 +191,6 @@ void loadCube()
 	vertices.push_back(vec3(0.1, -0.1, -0.1));
 	vertices.push_back(vec3(0.1, 0.1, -0.1));
 	vertices.push_back(vec3(0.1, 0.1, 0.1));
-
 
 
 	/////////
@@ -259,6 +245,7 @@ void loadCube()
 	normList.push_back(vec3(1.0,0,0));
 	normList.push_back(vec3(1.0,0,0));
 	normList.push_back(vec3(1.0,0,0));
+
 	std::cout << "NORMLIST: " << normList.size() << std::endl;
 	std::cout << "indices: " << indices.size() << std::endl;
 	std::cout << "verts: " << vertices.size() << std::endl;
@@ -267,26 +254,18 @@ void loadCube()
 
 
 
-
-
-
-void load_resources()
+void saveTriangles()
 {
-	//enable backface culling
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
-	glCullFace(GL_FRONT);
-
-
-
-	glUseProgram(program->getHandle());
-
-	GLuint vbo_triangle, normalBuffer, vbo_cube_texcoords;
+	GLuint vbo_triangle;
 	glGenBuffers(1, &vbo_triangle);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_triangle);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), &vertices[0], GL_STATIC_DRAW);
+}
 
 
+
+void saveVertices()
+{
 	//init coord3d
 	auto attribute_coord3d = glGetAttribLocation(program->getHandle(), "coord3d");
 	glEnableVertexAttribArray(attribute_coord3d);
@@ -300,16 +279,19 @@ void load_resources()
 		0,                 // no extra data between each position
 		0 // vec3er to the C array
 	);
+}
 
 
 
+void saveNormals()
+{
+	GLuint normalBuffer;
 	glGenBuffers(1, &normalBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
 	glBufferData(GL_ARRAY_BUFFER, normList.size() * sizeof(vec3), &normList[0], GL_STATIC_DRAW);
 
 	auto attribute_v_normal = glGetAttribLocation(program->getHandle(), "v_normal");
 	glEnableVertexAttribArray(attribute_v_normal);
-
 	glVertexAttribPointer(
 		attribute_v_normal, // attribute
 		3,                 // number of elements per vertex, here (r,g,b)
@@ -318,25 +300,25 @@ void load_resources()
 		0,                 // no extra data between each position
 		0                  // offset of first element
 	);
-
-	// Get a handle for our "LightPosition" uniform
-	LightID = glGetUniformLocation(program->getHandle(), "LightPosition_worldspace");
+}
 
 
 
+void saveCubeTexture()
+{
 	//create UV coordinates for cube
-	GLfloat cube_texcoords[2*4*6] = {
-    // front
-    0.0, 0.0,
-    1.0, 0.0,
-    1.0, 1.0,
-    0.0, 1.0,
+	GLfloat cube_texcoords[2 * 4 * 6] = {
+		// front
+		0.0, 0.0,
+		1.0, 0.0,
+		1.0, 1.0,
+		0.0, 1.0,
 	};
-	for (int i=1;i<6;i++)
-	{
-		memcpy (&cube_texcoords[i*4*2], &cube_texcoords[0], 2*4*sizeof(GLfloat));
-	}
 
+	for (int i = 1; i < 6; i++)
+		memcpy (&cube_texcoords[i*4*2], &cube_texcoords[0], 2*4*sizeof(GLfloat));
+
+	GLuint vbo_cube_texcoords;
 	glGenBuffers(1, &vbo_cube_texcoords);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_texcoords);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(cube_texcoords), cube_texcoords, GL_STATIC_DRAW);
@@ -351,10 +333,29 @@ void load_resources()
 		0,                 // no extra data between each position
 		0                  // offset of first element
 	);
+}
+
+
+
+void load_resources()
+{
+	//enable backface culling
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+	glCullFace(GL_FRONT);
+
+	glUseProgram(program->getHandle());
+
+	saveTriangles();
+	saveVertices();
+	saveNormals();
+	saveCubeTexture();
+
+	// Get a handle for our "LightPosition" uniform
+	LightID = glGetUniformLocation(program->getHandle(), "LightPosition_worldspace");
 
 	glEnableClientState( GL_VERTEX_ARRAY );
 	glEnableClientState( GL_INDEX_ARRAY );
-
 
 	loadBMP("texture.bmp");
 
@@ -363,48 +364,29 @@ void load_resources()
 
 
 
-
 void onDisplay()
 {
+	glClearColor(0.0, 0.0, 0.0, 0.0); //Clear the background as black
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	/* Clear the background as black */
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-
-
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	/* Tell OpenGL which program to use*/
-
-
-	glm::vec3 light = glm::vec3(-1.0f, 1.0f, 1.0f);
-
-
+	//glm::vec3 light = glm::vec3(-1.0f, 1.0f, 1.0f);
 
 	auto uniform_mvp = glGetUniformLocation(program->getHandle(), "mvp");
-	//glUniform3fv(theta, 1, translation);
 	glUniformMatrix4fv(uniform_mvp, 1, GL_FALSE, glm::value_ptr(mvp));
 
-
 	auto uniform_m = glGetUniformLocation(program->getHandle(), "m");
-	//glUniform3fv(theta, 1, translation);
 	glUniformMatrix4fv(uniform_m, 1, GL_FALSE, glm::value_ptr(model));
 
 	auto uniform_v = glGetUniformLocation(program->getHandle(), "v");
-	//glUniform3fv(theta, 1, translation);
 	glUniformMatrix4fv(uniform_v, 1, GL_FALSE, glm::value_ptr(view));
 
 	glm::vec3 lightPos = glm::vec3(4,4,3);
 	glUniform3f(LightID, lightPos.x, lightPos.y, lightPos.z);
 
+	glDrawElements(GL_TRIANGLES, indices.size() * 3, GL_UNSIGNED_INT, &indices[0]);
 
-
-	glDrawElements( GL_TRIANGLES, indices.size() * 3, GL_UNSIGNED_INT, &indices[0] );
-
-
-	/* Display the result */
 	glutSwapBuffers();
 }
-
-
 
 
 
@@ -464,15 +446,12 @@ void keyboardInput(unsigned char key, int x, int y)
 
 	glm::vec3 tempVec = center - eye;
 	lookDir = getUnitVector(tempVec);
-
-
 }
 
 
 
-void idle( int value )
+void idle(int value)
 {
-
 	glm::mat4 projection = glm::perspective(45.0f, 1.0f*(SCREEN_WIDTH/SCREEN_HEIGHT), 0.1f, 255.0f);
 	view = glm::lookAt(eye, center, glm::vec3(0.0,1.0,0.0));
 
@@ -480,6 +459,8 @@ void idle( int value )
 	glutTimerFunc(1, idle,value);
 	glutPostRedisplay();
 }
+
+
 
 void processPassive(int x, int y)
 {
@@ -504,6 +485,7 @@ void processPassive(int x, int y)
 
 		doneOnce = 1;
 	}
+
 	//yaw
 	if(mouse2)
 	{
@@ -522,14 +504,11 @@ void processPassive(int x, int y)
 		model = glm::rotate(model, angleX, axis_z);
 		model = glm::rotate(model, angleY, axis_z);
 
-
 		doneOnce = 1;
-
 	}
-
-
-
 }
+
+
 
 //set whether right or left mouse button is clicked
 void processMouse(int button, int state, int x, int y)
@@ -543,9 +522,55 @@ void processMouse(int button, int state, int x, int y)
 		mouse2 = 1;
 	else
 		mouse2 = 0;
+}
 
 
 
+//initialize model view world projection matrices
+void initializeMatrices()
+{
+	model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0,-1.0));
+	world = glm::mat4(1.0f);
+
+	eye = glm::vec3(0.0,0.0,0.0);
+	center = glm::vec3(0.0,0.0,-1.0);
+	up = glm::vec3(0.0,1.0,0.0);
+	view = glm::lookAt(eye, center, up);
+	lookDir = getUnitVector(center - eye);
+
+	glm::mat4 projection = glm::perspective(45.0f, 1.0f*(SCREEN_WIDTH/SCREEN_HEIGHT), 0.1f, 255.0f);
+	mvp = projection * view * world * model;
+
+	glMatrixMode(GL_PROJECTION);
+	gluPerspective(45,	//view angle
+		1.0,    //aspect ratio
+		10.0,   //near clip
+		200.0); //far clip
+	glMatrixMode(GL_MODELVIEW);
+}
+
+
+
+void generateProgram()
+{
+	std::string vertShader;
+	std::string fragShader;
+	if(WINDOWS)
+	{
+		vertShader = "../vertex.glsl";
+		fragShader = "../fragment.glsl";
+	}
+	else if(!WINDOWS)
+	{
+		vertShader = "vertex.glsl";
+		fragShader = "fragment.glsl";
+	}
+
+	program = cs5400::make_program
+	(
+		cs5400::make_vertexShader(vertShader)
+		,cs5400::make_fragmentShader(fragShader)
+	);
 }
 
 
@@ -553,12 +578,11 @@ void processMouse(int button, int state, int x, int y)
 int main(int argc, char* argv[])
 {
 	srand(time(NULL));
-	/* Glut-related initialising functions */
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB|GLUT_DOUBLE|GLUT_DEPTH);
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	glutCreateWindow("Lighting");
-
 
 	loadCube();
 
@@ -570,49 +594,13 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-
-	//initialize model view world projection matrices
-	model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0,0.0,-1.0));
-	world = glm::mat4(1.0f);
-
-	eye = glm::vec3(0.0,0.0,0.0);
-	center = glm::vec3(0.0,0.0,-1.0);
-	up = glm::vec3(0.0,1.0,0.0);
-
-	view = glm::lookAt(eye, center, up);
-
-	glm::mat4 projection = glm::perspective(45.0f, 1.0f*(SCREEN_WIDTH/SCREEN_HEIGHT), 0.1f, 255.0f);
-
-	lookDir = center - eye;
-	lookDir = getUnitVector(lookDir);
-
-
-
-	mvp = projection * view * world * model;
+	initializeMatrices();
 
 	/* When all init functions runs without errors,
 	the program can initialise the resources */
 	try
 	{
-		char* vertShader;
-		char* fragShader;
-		if(WINDOWS)
-		{
-			vertShader = "../vertex.glsl";
-			fragShader = "../fragment.glsl";
-		}
-		else if(!WINDOWS)
-		{
-			vertShader = "vertex.glsl";
-			fragShader = "fragment.glsl";
-		}
-		program = cs5400::make_program
-		(
-			cs5400::make_vertexShader(vertShader)
-			,cs5400::make_fragmentShader(fragShader)
-		);
-
-
+		generateProgram();
 
 		load_resources();
 
@@ -620,12 +608,6 @@ int main(int argc, char* argv[])
 		glutKeyboardFunc(keyboardInput);
 		glutMotionFunc(processPassive);
 		glutMouseFunc(processMouse);
-		glMatrixMode(GL_PROJECTION);
-		gluPerspective(45, 	//view angle
-             	1.0,    //aspect ratio
-             	10.0,   //near clip
-             	200.0); //far clip
-		glMatrixMode(GL_MODELVIEW);
 
 		glutTimerFunc(5, idle,0);
 		glutMainLoop();
