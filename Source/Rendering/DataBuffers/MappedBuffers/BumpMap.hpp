@@ -2,7 +2,7 @@
 #ifndef BUMP_MAP
 #define BUMP_MAP
 
-#include "DataBuffer.hpp"
+#include "../DataBuffer.hpp"
 
 class BumpMap: public DataBuffer
 {

@@ -83,7 +83,7 @@ void initializeGlutWindow(int width, int height, const std::string& windowTitle)
 	glutInitWindowSize(width, height);
 	glutCreateWindow(windowTitle.c_str());
 
-	std::cout << width << ", " << height << " " << (width / (float)height) << std::endl;
+	std::cout << "window is " << width << " by " << height << ", a ratio of " << (width / (float)height) << std::endl;
 }
 
 
@@ -112,8 +112,8 @@ int main(int argc, char **argv)
 		glutSpecialFunc(specialKeyPressCallback);
 
 		glutMouseFunc(mouseClickCallback);
-		glutMotionFunc(mouseMotionCallback);
-		glutPassiveMotionFunc(mouseDragCallback);
+		glutMotionFunc(mouseDragCallback);
+		glutPassiveMotionFunc(mouseMotionCallback);
 
 		std::cout << "Finished assembly. Launching application..." << std::endl;
 		glutMainLoop();

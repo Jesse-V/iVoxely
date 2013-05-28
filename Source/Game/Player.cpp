@@ -76,19 +76,19 @@ void Player::onSpecialKeyPress(int key)
 
 void Player::onMouseClick(int button, int state, int x, int y)
 {
-	std::cout << button << ", " << ", " << state << ", " << x << ", " << y << std::endl;
+	std::cout << "Click: " << button << ", " << ", " << state << ", " << x << ", " << y << std::endl;
 }
 
 
 
 void Player::onMouseMotion(int x, int y)
 {
-	std::cout << x << ", " << y << std::endl;
+	//std::cout << "Motion: " << x << ", " << y << std::endl;
 }
 
 
 
 void Player::onMouseDrag(int x, int y)
 {
-	std::cout << x << ", " << y << std::endl;
+	std::cout << "Drag: " << x << ", " << y << std::endl;
 }

@@ -109,28 +109,19 @@ void saveBMPtoGPU(int width, int height, unsigned char* data)
 
 
 
-GLuint loadBMP(std::string imagepath)
+void loadBMP(std::string imagepath)
 {
 	unsigned char header[54];
 
 	FILE * file = fopen(imagepath.c_str(), "rb");
 	if (!file)
-	{
 		printf("Image could not be opened\n");
-		return -1;
-	}
 
 	if(fread(header, 1, 54, file) != 54)
-	{
 		printf("Not a valid BMP file\n");
-		return -2;
-	}
 
 	if (header[0] != 'B' || header[1] != 'M')
-	{
 		printf("Not a correct BMP file\n");
-		return -3;
-	}
 
 	unsigned int imageSize  = *(int*)&(header[0x22]);
 	unsigned int width      = *(int*)&(header[0x12]);
