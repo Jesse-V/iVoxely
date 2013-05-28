@@ -2,10 +2,9 @@
 #include "TextureBuffer.hpp"
 
 
-TextureBuffer::TextureBuffer(const std::string imagePath)
-{
-	loadBMP(imagePath);
-}
+TextureBuffer::TextureBuffer(const std::string imagePath):
+	MappedBuffer(imagePath)
+{}
 
 
 
@@ -31,7 +30,7 @@ void TextureBuffer::storeTexture()
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	// Give the image to OpenGL
-	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, imgWidth, imgHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
 	// When MAGnifying the image (no bigger mipmap available), use LINEAR filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -80,36 +79,4 @@ void TextureBuffer::enable()
 void TextureBuffer::disable()
 {
 	//glDisableVertexAttribArray(attribute_texcoord);
-}
-
-
-
-void TextureBuffer::loadBMP(std::string imagepath)
-{
-	unsigned char header[54];
-
-	FILE * file = fopen(imagepath.c_str(), "rb");
-	if (!file)
-		printf("Image could not be opened\n");
-
-	if(fread(header, 1, 54, file) != 54)
-		printf("Not a valid BMP file\n");
-
-	if (header[0] != 'B' || header[1] != 'M')
-		printf("Not a correct BMP file\n");
-
-	width  = *(int*)&(header[0x12]);
-	height = *(int*)&(header[0x16]);
-
-	int imageSize  = *(int*)&(header[0x22]);
-	if (imageSize == 0)
-		imageSize = width * height * 3;
-
-	data = new unsigned char[imageSize];
-
-	// Read the actual data from the file into the buffer
-	fread(data, 1, imageSize, file);
-
-	//Everything is in memory now, the file can be closed
-	fclose(file);
 }

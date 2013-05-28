@@ -2,7 +2,7 @@
 
 //constant data for all vertices
 uniform vec3 worldLightPos, ambientLight;
-uniform sampler2D myTextureSampler;
+uniform sampler2D textureSampler;
 
 //inputs from vertex shader
 varying vec3 pos_world, normal_camera, eyedirection_camera, lightdirection_camera;
@@ -39,7 +39,7 @@ void main()
 	//float theta = diffusedLighting(normal, light); //choice of lighting
 	float theta = specularLighting(normal, light);
 
-	vec3 textureColor = texture(myTextureSampler, UV).rgb;// * vec3(0.5, 0.5, 0.5);
+	vec3 textureColor = texture(textureSampler, UV).rgb;// * vec3(0.5, 0.5, 0.5);
 	vec3 lighting = lightColor * lightPower * theta / (lightDistance * lightDistance);
 	vec3 color =  (vColor + textureColor) * (ambientLight + lighting);
 
