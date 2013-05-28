@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include "Shader.hpp"
+#include <iostream>
 
 namespace
 {
@@ -23,12 +24,7 @@ namespace
 		fin.read(&contents[0], (long)contents.size());
 		fin.close();
 
-		#ifdef GL_ES_VERSION_2_0
-			std::string header = "#version 100\n"  "#define GLES2\n";
-		#else
-			std::string header = "#version 120\n";
-		#endif
-			return header + contents;
+		return contents;
 	}
 
 

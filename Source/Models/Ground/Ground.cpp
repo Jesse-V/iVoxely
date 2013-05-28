@@ -3,6 +3,7 @@
 #include "Rendering/DataBuffers/VertexBuffer.hpp"
 #include "Rendering/DataBuffers/IndexBuffer.hpp"
 #include "Rendering/DataBuffers/NormalBuffer.hpp"
+#include "Rendering/DataBuffers/MappedBuffers/TextureBuffer.hpp"
 #include <iostream>
 
 
@@ -20,7 +21,7 @@ std::shared_ptr<RenderableObject> Ground::makeObject()
 
 std::vector<std::shared_ptr<DataBuffer>> Ground::getDataBuffers()
 {
-	std::cout << "Assembling Ground Model, making ";
+	std::cout << "Assembling Ground Model, assembling ";
 	std::vector<std::shared_ptr<DataBuffer>> buffers;
 
 	auto vertices = getVertices();
@@ -35,6 +36,10 @@ std::vector<std::shared_ptr<DataBuffer>> Ground::getDataBuffers()
 	auto normals = getNormals(vertices, triangles);
 	auto nBuffer = std::make_shared<NormalBuffer>(normals);
 	buffers.push_back(nBuffer);
+
+	std::cout << "texture... ";
+	auto tBuffer = std::make_shared<TextureBuffer>("Resources/textures/test_texture.bmp");
+	buffers.push_back(tBuffer);
 
 	std::cout << " done" << std::endl;
 

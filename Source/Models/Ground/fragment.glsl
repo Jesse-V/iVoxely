@@ -1,10 +1,14 @@
+#version 130
 
 //constant data for all vertices
 uniform vec3 worldLightPos, ambientLight;
+uniform sampler2D myTextureSampler;
 
 //inputs from vertex shader
 varying vec3 pos_world, normal_camera, eyedirection_camera, lightdirection_camera;
 varying vec3 vColor;
+
+in vec2 UV;
 
 
 float specularLighting(inout vec3 normal, inout vec3 light)
@@ -35,8 +39,9 @@ void main()
 	//float theta = diffusedLighting(normal, light); //choice of lighting
 	float theta = specularLighting(normal, light);
 
+	vec3 textureColor = texture(myTextureSampler, UV).rgb;// * vec3(0.5, 0.5, 0.5);
 	vec3 lighting = lightColor * lightPower * theta / (lightDistance * lightDistance);
-	vec3 color =  vColor * (ambientLight + lighting);
+	vec3 color =  (vColor + textureColor) * (ambientLight + lighting);
 
 	gl_FragColor = vec4(color, 1.0);
 }

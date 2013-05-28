@@ -1,6 +1,8 @@
+#version 130
 
 // different for every vertex
 attribute vec3 vertex, vertexNormal;
+attribute vec2 texcoord;
 
 //constant data for all vertices
 uniform mat4 viewMatrix, projMatrix, matrixModel;
@@ -9,6 +11,8 @@ uniform vec3 worldLightPos, ambientLight;
 // Outputs to fragment shader
 varying vec3 pos_world, normal_camera, eyedirection_camera, lightdirection_camera;
 varying vec3 vColor;
+
+out vec2 UV;
 
 
 vec4 projectVertex()
@@ -40,6 +44,8 @@ void main()
 	gl_Position = projectVertex();
 	pos_world = (matrixModel * vec4(vertex, 1)).xyz; //Convert from model space to world space
 	communicateCamera();
+
+	UV = texcoord;
 
 	if (vertex.x == -1)
 	{

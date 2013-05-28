@@ -44,6 +44,7 @@ void TextureBuffer::storeTexture()
 }
 
 
+
 void TextureBuffer::storeCoordMap()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_texcoords);
@@ -78,7 +79,7 @@ void TextureBuffer::enable()
 
 void TextureBuffer::disable()
 {
-	glDisableVertexAttribArray(attribute_texcoord);
+	//glDisableVertexAttribArray(attribute_texcoord);
 }
 
 
@@ -111,6 +112,4 @@ void TextureBuffer::loadBMP(std::string imagepath)
 
 	//Everything is in memory now, the file can be closed
 	fclose(file);
-
-	printf("SUCCESS");
 }
