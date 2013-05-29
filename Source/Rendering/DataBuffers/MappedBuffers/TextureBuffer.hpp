@@ -7,16 +7,15 @@
 class TextureBuffer: public MappedBuffer
 {
 	public:
-		TextureBuffer(const std::string imagePath);
+		TextureBuffer(const std::string& imagePath);
 
 		virtual void initialize(GLuint program);
-		virtual void store();
 		virtual void enable();
 		virtual void disable();
 
-	private:
-		void storeTexture();
-		void storeCoordMap();
+	protected:
+		virtual void storeImage();
+		virtual void storeCoordMap();
 
 	private:
 		GLuint textureID, vbo_cube_texcoords;

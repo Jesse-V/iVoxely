@@ -2,7 +2,7 @@
 #include "TextureBuffer.hpp"
 
 
-TextureBuffer::TextureBuffer(const std::string imagePath):
+TextureBuffer::TextureBuffer(const std::string& imagePath):
 	MappedBuffer(imagePath)
 {}
 
@@ -18,19 +18,12 @@ void TextureBuffer::initialize(GLuint program)
 
 
 
-void TextureBuffer::store()
-{
-	storeTexture();
-	storeCoordMap();
-}
-
-
-void TextureBuffer::storeTexture()
+void TextureBuffer::storeImage()
 {
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	// Give the image to OpenGL
-	glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, imgWidth, imgHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
 	// When MAGnifying the image (no bigger mipmap available), use LINEAR filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

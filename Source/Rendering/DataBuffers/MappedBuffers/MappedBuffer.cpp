@@ -2,18 +2,35 @@
 #include "MappedBuffer.hpp"
 
 
-MappedBuffer::MappedBuffer(const std::string imagePath)
+MappedBuffer::MappedBuffer(const std::string& imagePath)
 {
 	loadBMP(imagePath);
 }
 
 
 
-void MappedBuffer::loadBMP(const std::string imagePath)
+MappedBuffer::~MappedBuffer()
+{
+	deleteBufferFromRAM();
+}
+
+
+
+void MappedBuffer::store()
+{
+	storeImage();
+	storeCoordMap();
+
+	deleteBufferFromRAM();
+}
+
+
+
+void MappedBuffer::loadBMP(const std::string& imagePath)
 {
 	unsigned char header[54];
 
-	FILE * file = fopen(imagePath.c_str(), "rb");
+	FILE * file = fopen(imagePath.c_str(), "rb"); //read binary .bmp file
 	if (!file)
 		printf("Image could not be opened\n");
 
@@ -33,8 +50,21 @@ void MappedBuffer::loadBMP(const std::string imagePath)
 	data = new unsigned char[imageSize];
 
 	// Read the actual data from the file into the buffer
-	fread(data, 1, imageSize, file);
+	fread(data, 1, (unsigned long)imageSize, file);
 
 	//Everything is in memory now, the file can be closed
 	fclose(file);
+
+	isValid = true;
+}
+
+
+
+void MappedBuffer::deleteBufferFromRAM()
+{
+	if (isValid)
+	{
+		delete [] data;
+		isValid = false;
+	}
 }
