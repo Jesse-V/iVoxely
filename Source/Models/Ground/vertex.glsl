@@ -10,7 +10,6 @@ uniform vec3 worldLightPos, ambientLight;
 
 // Outputs to fragment shader
 varying vec3 pos_world, normal_camera, eyedirection_camera, lightdirection_camera;
-varying vec3 vColor;
 
 out vec2 UV;
 
@@ -46,19 +45,4 @@ void main()
 	communicateCamera();
 
 	UV = texcoord;
-
-	if (vertex.x == -1)
-	{
-		if (vertex.z == -1)
-			vColor = vec3(1, 0, 0);
-		else
-			vColor = vec3(0, 0, 1);
-	}
-	else
-	{
-		if (vertex.z == 1)
-			vColor = vec3(1, 0, 0);
-		else
-			vColor = vec3(0, 1, 0);
-	}
 }

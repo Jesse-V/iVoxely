@@ -6,7 +6,6 @@ uniform sampler2D textureSampler;
 
 //inputs from vertex shader
 varying vec3 pos_world, normal_camera, eyedirection_camera, lightdirection_camera;
-varying vec3 vColor;
 
 in vec2 UV;
 
@@ -41,7 +40,7 @@ void main()
 
 	vec3 textureColor = texture(textureSampler, UV).rgb;// * vec3(0.5, 0.5, 0.5);
 	vec3 lighting = lightColor * lightPower * theta / (lightDistance * lightDistance);
-	vec3 color =  (vColor + textureColor) * (ambientLight + lighting);
+	vec3 color =  textureColor * (ambientLight + lighting);
 
 	gl_FragColor = vec4(color, 1.0);
 }

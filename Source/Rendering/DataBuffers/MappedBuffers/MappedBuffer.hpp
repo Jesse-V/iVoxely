@@ -13,7 +13,7 @@ class MappedBuffer: public DataBuffer
 		~MappedBuffer();
 		//default copy constructor should be fine
 
-		void loadBMP(const std::string& imagePath);
+		std::string loadBMP(const std::string& imagePath);
 		void deleteBufferFromRAM();
 
 		virtual void store();

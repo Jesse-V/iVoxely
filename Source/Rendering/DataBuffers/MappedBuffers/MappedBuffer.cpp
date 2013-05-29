@@ -1,10 +1,13 @@
 
 #include "MappedBuffer.hpp"
+#include <iostream>
 
 
 MappedBuffer::MappedBuffer(const std::string& imagePath)
 {
-	loadBMP(imagePath);
+	std::string status = loadBMP("dfsd");
+	if (status != "success")
+		std::cout << "Error loading \"" + imagePath + "\" image: " << status << std::endl;
 }
 
 
@@ -26,19 +29,19 @@ void MappedBuffer::store()
 
 
 
-void MappedBuffer::loadBMP(const std::string& imagePath)
+std::string MappedBuffer::loadBMP(const std::string& imagePath)
 {
 	unsigned char header[54];
 
 	FILE * file = fopen(imagePath.c_str(), "rb"); //read binary .bmp file
 	if (!file)
-		printf("Image could not be opened\n");
+		return "File could not be opened";
 
 	if(fread(header, 1, 54, file) != 54)
-		printf("Not a valid BMP file\n");
+		return "Invalid BMP file";
 
 	if (header[0] != 'B' || header[1] != 'M')
-		printf("Not a correct BMP file\n");
+		return "Not a correct BMP file";
 
 	imgWidth  = *(int*)&(header[0x12]);
 	imgHeight = *(int*)&(header[0x16]);
@@ -56,6 +59,7 @@ void MappedBuffer::loadBMP(const std::string& imagePath)
 	fclose(file);
 
 	isValid = true;
+	return "success";
 }
 
 
