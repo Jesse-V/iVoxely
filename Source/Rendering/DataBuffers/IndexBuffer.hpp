@@ -14,6 +14,7 @@ class IndexBuffer: public DataBuffer
 		virtual void store();
 		virtual void enable();
 		virtual void disable();
+		virtual bool draw(GLenum mode);
 
 	private:
 		std::vector<Triangle> triangles; // indexes for triangles, {(0,1,2), (3,4,5)}

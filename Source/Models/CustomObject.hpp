@@ -11,7 +11,7 @@ class CustomObject
 {
 	public:
 		virtual std::shared_ptr<RenderableObject> makeObject() = 0;
-		virtual std::vector<std::shared_ptr<DataBuffer>> getDataBuffers() = 0;
+		virtual std::vector<std::shared_ptr<DataBuffer>> getOptionalDataBuffers(const std::vector<glm::vec3>& vertices) = 0;
 
 	protected:
 		virtual std::vector<glm::vec3> getVertices() = 0;

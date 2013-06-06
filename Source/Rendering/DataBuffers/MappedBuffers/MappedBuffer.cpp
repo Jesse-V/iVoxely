@@ -29,6 +29,13 @@ void MappedBuffer::store()
 
 
 
+bool MappedBuffer::draw(GLenum mode)
+{
+	return false;
+}
+
+
+
 std::string MappedBuffer::loadBMP(const std::string& imagePath)
 {
 	unsigned char header[54];

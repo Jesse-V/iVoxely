@@ -26,11 +26,17 @@ void IndexBuffer::store()
 
 
 void IndexBuffer::enable()
-{
-	glDrawElements(GL_TRIANGLES, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0); //todo: this is a call to render so this doesn't exactly belong here long-term
-}
+{}
 
 
 
 void IndexBuffer::disable()
 {}
+
+
+
+bool IndexBuffer::draw(GLenum mode)
+{
+	glDrawElements(mode, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0);
+	return true;
+}

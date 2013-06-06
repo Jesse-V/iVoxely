@@ -14,36 +14,37 @@ std::shared_ptr<RenderableObject> Ground::makeObject()
 		cs5400::makeFragmentShader("Models/Ground/fragment.glsl")
 	);
 
-	return std::make_shared<RenderableObject>(program, getDataBuffers());
+	std::cout << "Assembling Ground Model, loading ";
+
+	auto vertices = getVertices();
+	return std::make_shared<RenderableObject>(
+		program,
+		std::make_shared<VertexBuffer>(vertices),
+		getOptionalDataBuffers(vertices)
+	);
 }
 
 
 
-std::vector<std::shared_ptr<DataBuffer>> Ground::getDataBuffers()
+std::vector<std::shared_ptr<DataBuffer>> Ground::getOptionalDataBuffers(const std::vector<glm::vec3>& vertices)
 {
-	std::cout << "Assembling Ground Model, assembling ";
-	std::vector<std::shared_ptr<DataBuffer>> buffers;
+	std::vector<std::shared_ptr<DataBuffer>> optionalBuffers;
 
-	auto vertices = getVertices();
 	auto triangles = getTriangles();
-
-	auto vBuffer = std::make_shared<VertexBuffer>(vertices);
-	buffers.push_back(vBuffer);
-
 	auto iBuffer = std::make_shared<IndexBuffer>(triangles);
-	buffers.push_back(iBuffer);
+	optionalBuffers.push_back(iBuffer);
 
 	auto normals = getNormals(vertices, triangles);
 	auto nBuffer = std::make_shared<NormalBuffer>(normals);
-	buffers.push_back(nBuffer);
+	optionalBuffers.push_back(nBuffer);
 
 	std::cout << "texture... ";
 	auto tBuffer = std::make_shared<TextureBuffer>("Resources/textures/test_texture.bmp");
-	buffers.push_back(tBuffer);
+	optionalBuffers.push_back(tBuffer);
 
 	std::cout << " done" << std::endl;
 
-	return buffers;
+	return optionalBuffers;
 }
 
 

@@ -50,6 +50,13 @@ void NormalBuffer::disable()
 }
 
 
+
+bool NormalBuffer::draw(GLenum mode)
+{
+	return false;
+}
+
+
 //------------------static normal-calculation methods----------------------
 
 

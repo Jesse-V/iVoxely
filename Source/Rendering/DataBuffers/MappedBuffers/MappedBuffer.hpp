@@ -17,6 +17,7 @@ class MappedBuffer: public DataBuffer
 		void deleteBufferFromRAM();
 
 		virtual void store();
+		virtual bool draw(GLenum mode);
 
 	protected:
 		virtual void storeImage() = 0;

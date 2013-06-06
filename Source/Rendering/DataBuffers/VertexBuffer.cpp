@@ -49,3 +49,11 @@ void VertexBuffer::disable()
 {
 	glDisableVertexAttribArray(vertexAttrib);
 }
+
+
+
+bool VertexBuffer::draw(GLenum mode)
+{
+	glDrawElements(mode, (int)vertices.size() * 3, GL_UNSIGNED_INT, 0);
+	return true;
+}

@@ -14,6 +14,7 @@ class VertexBuffer: public DataBuffer
 		virtual void store();
 		virtual void enable();
 		virtual void disable();
+		virtual bool draw(GLenum mode);
 
 	private:
 		void storePoints();
