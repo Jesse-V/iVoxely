@@ -48,16 +48,9 @@ void TextureBuffer::storeCoordMap()
 		1.0, 1.0,
 		0.0, 1.0,
 	};
-	glBufferData(GL_ARRAY_BUFFER, sizeof(map), map, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(
-		attribute_texcoord, // attribute
-		2,                 // number of elements per vertex, here (r,g,b)
-		GL_FLOAT,          // the type of each element
-		GL_FALSE,          // take our values as-is
-		0,                 // no extra data between each position
-		0                  // offset of first element
-	);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(map), map, GL_STATIC_DRAW);
+	glVertexAttribPointer(attribute_texcoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 
