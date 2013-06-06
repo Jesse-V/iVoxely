@@ -26,7 +26,9 @@ void IndexBuffer::store()
 
 
 void IndexBuffer::enable()
-{}
+{
+	glDrawElements(GL_TRIANGLES, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0);
+}
 
 
 
