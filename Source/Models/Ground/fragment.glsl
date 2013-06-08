@@ -1,7 +1,8 @@
 #version 130
 
 //constant data for all vertices
-uniform vec3 worldLightPos, ambientLight;
+uniform vec3 ambientLight, lightPosition, lightColor;
+uniform float lightPower;
 uniform sampler2D textureSampler;
 
 //inputs from vertex shader
@@ -28,9 +29,7 @@ float diffusedLighting(inout vec3 normal, inout vec3 light)
 
 void main()
 {
-	vec3 lightColor   = vec3(1, 1, 1); //todo: get this in from the Light obj
-	float lightDistance = length(worldLightPos - pos_world);
-	float lightPower  = 0.03f; //todo: get this in from the Light obj
+	float lightDistance = length(lightPosition - pos_world);
 
 	vec3 normal = normalize(normal_camera);
 	vec3 light  = normalize(lightdirection_camera);

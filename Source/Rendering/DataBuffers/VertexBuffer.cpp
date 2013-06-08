@@ -38,7 +38,7 @@ void VertexBuffer::store()
 void VertexBuffer::enable()
 {
 	glEnableVertexAttribArray(vertexAttrib);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); //why is this second bindBuffer call necessary?
 	glVertexAttribPointer(vertexAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 

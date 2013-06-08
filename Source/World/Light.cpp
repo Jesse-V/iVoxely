@@ -2,7 +2,7 @@
 #include "Light.hpp"
 
 
-Light::Light(const glm::vec3& position, const glm::vec3& color, double power):
+Light::Light(const glm::vec3& position, const glm::vec3& color, float power):
 	position(position), color(color), power(power), emitting(true)
 {}
 
@@ -35,21 +35,21 @@ void Light::setColor(const glm::vec3& newColor)
 
 
 
-double Light::getPower() const
+float Light::getPower() const
 {
 	return power;
 }
 
 
 
-void Light::setPower(double power)
+void Light::setPower(float power)
 {
 	this->power = power;
 }
 
 
 
-bool Light::getEmitting() const
+bool Light::isEmitting() const
 {
 	return emitting;
 }

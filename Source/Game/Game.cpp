@@ -45,8 +45,11 @@ void Game::addGround()
 void Game::addLight()
 {
 	scene->setAmbientLight(glm::vec3(0.75, 0.75, 0.75));
+
 	light->setPosition(glm::vec3(0.0f, 0.0f, 2.0f));
-	scene->addLight(light); //todo: send light color and power to GPU
+	light->setColor(glm::vec3(1)); //white light
+	light->setPower(0.03f);
+	scene->addLight(light);
 }
 
 

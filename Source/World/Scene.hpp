@@ -25,8 +25,8 @@ class Scene
 		std::shared_ptr<cs5400::Program> getProgram();
 
 	private:
-		void passCameraMatrix(GLuint handle);
-		void passLightPosition(GLuint handle);
+		void updateCamera(GLuint handle);
+		void updateLights(GLuint handle);
 
 	private:
 		std::vector<std::shared_ptr<RenderableObject>> sceneObjects;

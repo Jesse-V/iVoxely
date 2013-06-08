@@ -49,8 +49,8 @@ void Scene::render()
 
 			glUseProgram(handle);
 
-			passCameraMatrix(handle);
-			passLightPosition(handle);
+			updateCamera(handle);
+			updateLights(handle);
 
 			obj->render(modelMatrixUniform);
 		});
@@ -58,7 +58,7 @@ void Scene::render()
 
 
 
-void Scene::passCameraMatrix(GLuint handle)
+void Scene::updateCamera(GLuint handle)
 {
 	GLint viewMatrixUniform = glGetUniformLocation(handle, "viewMatrix");
 	GLint projMatrixUniform = glGetUniformLocation(handle, "projMatrix");
@@ -71,14 +71,20 @@ void Scene::passCameraMatrix(GLuint handle)
 
 
 //tell the shaders where the light is
-void Scene::passLightPosition(GLuint handle)
+void Scene::updateLights(GLuint handle)
 {
-	glm::vec3 lightPos = lights[0]->getPosition(); //todo: support for multiple lights
-	GLint lightPosUniform	= glGetUniformLocation(handle, "worldLightPos");
 	GLint ambientLightUniform	= glGetUniformLocation(handle, "ambientLight");
-
-	glUniform3f(lightPosUniform, lightPos.x, lightPos.y, lightPos.z);
 	glUniform3f(ambientLightUniform, ambientLight.x, ambientLight.y, ambientLight.z);
+
+	GLint lightPosUniform = glGetUniformLocation(handle, "lightPosition");
+	glUniform3fv(lightPosUniform, 1, glm::value_ptr(lights[0]->getPosition()));
+
+	GLint lightColorUniform = glGetUniformLocation(handle, "lightColor");
+	glUniform3fv(lightColorUniform, 1, glm::value_ptr(lights[0]->getColor()));
+
+	GLint lightPowUniform = glGetUniformLocation(handle, "lightPower");
+	float power = lights[0]->isEmitting() ? lights[0]->getPower() : 0;
+	glUniform1f(lightPowUniform, power);
 }
 
 

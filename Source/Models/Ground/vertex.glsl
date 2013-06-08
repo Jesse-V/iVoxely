@@ -6,7 +6,7 @@ attribute vec2 texcoord;
 
 //constant data for all vertices
 uniform mat4 viewMatrix, projMatrix, matrixModel;
-uniform vec3 worldLightPos, ambientLight;
+uniform vec3 lightPosition;
 
 // Outputs to fragment shader
 varying vec3 pos_world, normal_camera, eyedirection_camera, lightdirection_camera;
@@ -29,7 +29,7 @@ void communicateCamera()
 	eyedirection_camera = vec3(0, 0, 0) - vpos_camera;
 
 	// vector from vertex to light in camera space
-	vec3 lightpos_camera = (viewMatrix * vec4(worldLightPos, 1)).xyz;
+	vec3 lightpos_camera = (viewMatrix * vec4(lightPosition, 1)).xyz;
 	lightdirection_camera = normalize(lightpos_camera + eyedirection_camera);
 
 	// normal of the vertex in camera space

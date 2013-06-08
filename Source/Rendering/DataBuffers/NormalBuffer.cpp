@@ -38,7 +38,7 @@ void NormalBuffer::store()
 void NormalBuffer::enable()
 {
 	glEnableVertexAttribArray(normalAttrib);
-	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalBuffer); //why is this second bindBuffer call necessary?
 	glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
