@@ -1,7 +1,6 @@
 
 #include "IndexBuffer.hpp"
 #include <algorithm>
-#include <iostream>
 
 
 IndexBuffer::IndexBuffer(const std::vector<Triangle>& triangles):
@@ -26,9 +25,7 @@ void IndexBuffer::store()
 
 
 void IndexBuffer::enable()
-{
-	glDrawElements(GL_TRIANGLES, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0);
-}
+{}
 
 
 
@@ -39,6 +36,6 @@ void IndexBuffer::disable()
 
 bool IndexBuffer::draw(GLenum mode)
 {
-	glDrawElements(mode, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0);
 	return true;
 }

@@ -64,5 +64,5 @@ void TextureBuffer::enable()
 
 void TextureBuffer::disable()
 {
-	//glDisableVertexAttribArray(attribute_texcoord);
+	glDisableVertexAttribArray(attribute_texcoord);
 }

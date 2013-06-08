@@ -65,7 +65,7 @@ void RenderableObject::render(GLint modelMatrixID)
 		glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 
 		enableDataBuffers();
-		//drawDataBuffers();
+		drawDataBuffers();
 		disableDataBuffers();
 	}
 }

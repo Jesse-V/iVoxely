@@ -1,7 +1,6 @@
 
 #include "VertexBuffer.hpp"
 #include <algorithm>
-#include <iostream>
 
 
 VertexBuffer::VertexBuffer(const std::vector<glm::vec3>& vertices):
