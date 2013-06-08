@@ -15,6 +15,8 @@ Game::Game(int screenWidth, int screenHeight):
 	addModels();
 	addLight();
 	addCamera(screenWidth, screenHeight);
+
+	glutSetCursor(GLUT_CURSOR_NONE); //hides the mouse
 }
 
 

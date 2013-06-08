@@ -36,6 +36,6 @@ void IndexBuffer::disable()
 
 bool IndexBuffer::draw(GLenum mode)
 {
-	glDrawElements(GL_TRIANGLES, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0);
+	glDrawElements(mode, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0);
 	return true;
 }
