@@ -5,7 +5,7 @@
 
 
 Game::Game(int screenWidth, int screenHeight):
-	scene(std::make_shared<Scene>()),
+	scene(std::make_shared<Scene>(getCamera(screenWidth, screenHeight))),
 	player(std::make_shared<Player>(scene))
 {
 	glEnable(GL_DEPTH_TEST);
@@ -14,7 +14,6 @@ Game::Game(int screenWidth, int screenHeight):
 
 	addModels();
 	addLight();
-	addCamera(screenWidth, screenHeight);
 
 	glutSetCursor(GLUT_CURSOR_NONE); //hides the mouse
 }
@@ -52,13 +51,13 @@ void Game::addLight()
 
 
 
-void Game::addCamera(int screenWidth, int screenHeight)
+std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 {
 	auto camera = std::make_shared<Camera>();
 	camera->lookAt(glm::vec3(-0.041535, -0.813947, -0.579453), glm::vec3(-0.0114782, 0.590822, -0.80672));
 	camera->setPosition(glm::vec3(0.0318538, 0.331304, 2.59333));
 	camera->setAspectRatio(screenWidth / (float)screenHeight);
-	scene->setCamera(camera);
+	return camera;
 }
 
 

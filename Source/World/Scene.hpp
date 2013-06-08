@@ -13,6 +13,7 @@
 class Scene
 {
 	public:
+		Scene(const std::shared_ptr<Camera>& camera);
 		void addModel(const std::shared_ptr<RenderableObject>& obj);
 		void setCamera(const std::shared_ptr<Camera>& camera);
 		void clear();

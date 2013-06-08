@@ -4,6 +4,11 @@
 #include <algorithm>
 
 
+Scene::Scene(const std::shared_ptr<Camera>& camera):
+	camera(camera)
+{}
+
+
 
 void Scene::addModel(const std::shared_ptr<RenderableObject>& obj)
 {

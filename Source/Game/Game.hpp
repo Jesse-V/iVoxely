@@ -23,7 +23,7 @@ class Game
 		void addModels();
 		void addGround();
 		void addLight();
-		void addCamera(int screenWidth, int screenHeight);
+		std::shared_ptr<Camera> getCamera(int screenWidth, int screenHeight);
 		void moveLight(int deltaTime);
 		static void sleep(int milliseconds);
 
