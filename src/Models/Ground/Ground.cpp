@@ -3,7 +3,7 @@
 #include "Rendering/DataBuffers/VertexBuffer.hpp"
 #include "Rendering/DataBuffers/IndexBuffer.hpp"
 #include "Rendering/DataBuffers/NormalBuffer.hpp"
-#include "Rendering/DataBuffers/MappedBuffers/TextureBuffer.hpp"
+#include "Rendering/DataBuffers/SampledBuffers/TextureBuffer.hpp"
 #include <iostream>
 
 

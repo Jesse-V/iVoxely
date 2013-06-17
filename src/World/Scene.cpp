@@ -2,6 +2,7 @@
 #include "Scene.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <algorithm>
+#include <iostream>
 
 
 Scene::Scene(const std::shared_ptr<Camera>& camera):
@@ -76,15 +77,30 @@ void Scene::updateLights(GLuint handle)
 	GLint ambientLightUniform	= glGetUniformLocation(handle, "ambientLight");
 	glUniform3f(ambientLightUniform, ambientLight.x, ambientLight.y, ambientLight.z);
 
-	GLint lightPosUniform = glGetUniformLocation(handle, "lightPosition");
-	glUniform3fv(lightPosUniform, 1, glm::value_ptr(lights[0]->getPosition()));
+	for_each (lights.begin(), lights.end(),
+		[&](const std::shared_ptr<Light>& light)
+		{
+			/*std::cout << "hi" << std::endl;
+			std::cout.flush();
+			GLint lightPosUniform = glGetUniformLocation(handle, "lights[0].position");
+			std::cout << lightPosUniform << std::endl;
+			std::cout.flush();
+			glUniform3fv(lightPosUniform, 1, glm::value_ptr(light->getPosition()));
 
-	GLint lightColorUniform = glGetUniformLocation(handle, "lightColor");
-	glUniform3fv(lightColorUniform, 1, glm::value_ptr(lights[0]->getColor()));
+			GLint lightColorUniform = glGetUniformLocation(handle, "lights[0].color");
+			glUniform3fv(lightColorUniform, 1, glm::value_ptr(light->getColor()));
 
-	GLint lightPowUniform = glGetUniformLocation(handle, "lightPower");
-	float power = lights[0]->isEmitting() ? lights[0]->getPower() : 0;
-	glUniform1f(lightPowUniform, power);
+			GLint lightPowUniform = glGetUniformLocation(handle, "lights[0].power");
+			float power = light->isEmitting() ? light->getPower() : 0;
+			glUniform1f(lightPowUniform, power);*/
+
+			//http://www.opengl.org/discussion_boards/showthread.php/164100-GLSL-multiple-lights
+			//http://en.wikibooks.org/wiki/GLSL_Programming/GLUT/Multiple_Lights
+			//http://www.geeks3d.com/20091013/shader-library-phong-shader-with-multiple-lights-glsl/
+			//http://gamedev.stackexchange.com/questions/53822/variable-number-of-lights-in-a-glsl-shader
+			//http://stackoverflow.com/questions/8202173/setting-the-values-of-a-struct-array-from-js-to-glsl
+		}
+	);
 }
 
 

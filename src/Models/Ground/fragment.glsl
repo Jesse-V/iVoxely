@@ -1,5 +1,13 @@
 #version 130
 
+struct Light
+{
+	vec3 position, color;
+	float power;
+};
+// http://stackoverflow.com/questions/8202173/setting-the-values-of-a-struct-array-from-js-to-glsl
+uniform Light light[1];
+
 //constant data for all vertices
 uniform vec3 ambientLight, lightPosition, lightColor;
 uniform float lightPower;

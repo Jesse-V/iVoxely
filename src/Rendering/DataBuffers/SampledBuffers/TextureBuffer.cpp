@@ -3,7 +3,7 @@
 
 
 TextureBuffer::TextureBuffer(const std::string& imagePath):
-	MappedBuffer(imagePath)
+	SampledBuffer(imagePath)
 {}
 
 

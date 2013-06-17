@@ -1,9 +1,9 @@
 
-#include "MappedBuffer.hpp"
+#include "SampledBuffer.hpp"
 #include <iostream>
 
 
-MappedBuffer::MappedBuffer(const std::string& imagePath)
+SampledBuffer::SampledBuffer(const std::string& imagePath)
 {
 	std::string status = loadBMP(imagePath);
 	if (status != "success")
@@ -12,14 +12,14 @@ MappedBuffer::MappedBuffer(const std::string& imagePath)
 
 
 
-MappedBuffer::~MappedBuffer()
+SampledBuffer::~SampledBuffer()
 {
 	deleteBufferFromRAM();
 }
 
 
 
-void MappedBuffer::store()
+void SampledBuffer::store()
 {
 	storeImage();
 	storeCoordMap();
@@ -29,14 +29,14 @@ void MappedBuffer::store()
 
 
 
-bool MappedBuffer::draw(GLenum mode)
+bool SampledBuffer::draw(GLenum mode)
 {
 	return false;
 }
 
 
 
-std::string MappedBuffer::loadBMP(const std::string& imagePath)
+std::string SampledBuffer::loadBMP(const std::string& imagePath)
 {
 	unsigned char header[54];
 
@@ -71,7 +71,7 @@ std::string MappedBuffer::loadBMP(const std::string& imagePath)
 
 
 
-void MappedBuffer::deleteBufferFromRAM()
+void SampledBuffer::deleteBufferFromRAM()
 {
 	if (isValid)
 	{

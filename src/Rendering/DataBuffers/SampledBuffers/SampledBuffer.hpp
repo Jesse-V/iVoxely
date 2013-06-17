@@ -6,11 +6,11 @@
 #include "glm/glm.hpp"
 #include <string>
 
-class MappedBuffer: public DataBuffer
+class SampledBuffer: public DataBuffer
 {
 	public:
-		MappedBuffer(const std::string& imagePath);
-		~MappedBuffer();
+		SampledBuffer(const std::string& imagePath);
+		~SampledBuffer();
 		//default copy constructor should be fine
 
 		std::string loadBMP(const std::string& imagePath);

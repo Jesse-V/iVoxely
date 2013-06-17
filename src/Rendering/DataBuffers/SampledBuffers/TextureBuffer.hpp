@@ -2,9 +2,9 @@
 #ifndef TEXTURE_BUFFER
 #define TEXTURE_BUFFER
 
-#include "MappedBuffer.hpp"
+#include "SampledBuffer.hpp"
 
-class TextureBuffer: public MappedBuffer
+class TextureBuffer: public SampledBuffer
 {
 	public:
 		TextureBuffer(const std::string& imagePath);

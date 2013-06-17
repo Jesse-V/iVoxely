@@ -2,9 +2,9 @@
 #ifndef BUMP_MAP
 #define BUMP_MAP
 
-#include "MappedBuffer.hpp"
+#include "SampledBuffer.hpp"
 
-class BumpMap: public MappedBuffer
+class BumpMap: public SampledBuffer
 {
 	public:
 		BumpMap(const std::string& mapPath);
