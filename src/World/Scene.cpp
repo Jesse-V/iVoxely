@@ -46,7 +46,7 @@ void Scene::render()
 		[&](std::shared_ptr<RenderableObject>& obj)
 		{
 			GLuint handle = obj->getProgram()->getHandle();
-			GLint modelMatrixUniform = glGetUniformLocation(handle, "matrixModel");
+			GLint modelMatrixUniform = glGetUniformLocation(handle, "modelMatrix");
 
 			glUseProgram(handle);
 
