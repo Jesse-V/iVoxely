@@ -20,6 +20,7 @@ add_executable(ivoxely
     World/Camera.cpp
     World/Light.cpp
     Models/Ground/Ground.cpp
+    Models/PlyParser.cpp
     Rendering/RenderableObject.cpp
     Rendering/DataBuffers/VertexBuffer.cpp
     Rendering/DataBuffers/IndexBuffer.cpp
