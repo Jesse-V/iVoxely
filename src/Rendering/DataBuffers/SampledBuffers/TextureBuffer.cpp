@@ -71,37 +71,37 @@ void TextureBuffer::disable()
 
 std::shared_ptr<VertexShaderSnippet> TextureBuffer::getVertexShaderGLSL()
 {
-	return std::make_shared<VertexShaderSnippet>();/*
-		"
+	return std::make_shared<VertexShaderSnippet>(
+		R".(
 			//TextureBuffer fields
 			attribute vec2 texcoord;
 			out vec2 UV;
-		",
-		"
+		).",
+		R".(
 			//TextureBuffer methods
-		",
-		"
+		).",
+		R".(
 			//TextureBuffer main method code
 			UV = texcoord;
-		"
-	);*/
+		)."
+	);
 }
 
 
 
 std::shared_ptr<FragmentShaderSnippet> TextureBuffer::getFragmentShaderGLSL()
 {
-	return std::make_shared<FragmentShaderSnippet>();/*
-		"
+	return std::make_shared<FragmentShaderSnippet>(
+		R".(
 			//TextureBuffer fields
 			in vec2 UV;
-		",
-		"
+		).",
+		R".(
 			//TextureBuffer methods
-		",
-		"
+		).",
+		R".(
 			//TextureBuffer main method code
 			vec3 textureColor = texture(textureSampler, UV).rgb;
-		"
-	);*/
+		)."
+	);
 }

@@ -66,34 +66,34 @@ void Light::setEmitting(bool emitting)
 
 std::shared_ptr<VertexShaderSnippet> Light::getVertexShaderGLSL()
 {
-	return std::make_shared<VertexShaderSnippet>();/*
-		"
+	return std::make_shared<VertexShaderSnippet>(
+		R".(
 			//Light fields
 			uniform vec3 lightPosition; //position of the light
 			varying vec3 lightdirection_camera;
-		",
-		"
+		).",
+		R".(
 			//Light methods
-		",
-		"
+		).",
+		R".(
 			//Light main method code
 			vec3 lightpos_camera = (viewMatrix * vec4(lightPosition, 1)).xyz;
 			lightdirection_camera = normalize(lightpos_camera + eyedirection_camera);
-		"
-	);*/
+		)."
+	);
 }
 
 
 
 std::shared_ptr<FragmentShaderSnippet> Light::getFragmentShaderGLSL()
 {
-	return std::make_shared<FragmentShaderSnippet>();/*
-		"
+	return std::make_shared<FragmentShaderSnippet>(
+		R".(
 			//Light fields
 			uniform vec3 lightPosition, lightColor; //Light, optional
 			uniform float lightPower; //Light, optional
-		",
-		"
+		).",
+		R".(
 			//Light methods
 			float specularLighting(inout vec3 normal, inout vec3 light) //Light, optional
 			{
@@ -106,13 +106,13 @@ std::shared_ptr<FragmentShaderSnippet> Light::getFragmentShaderGLSL()
 			{
 				return max(0.0, clamp(dot(normal, -light), 0, 1));
 			}
-		",
-		"
+		).",
+		R".(
 			//Light main method code
 			float lightDistance = length(lightPosition - pos_world);
 			float theta = specularLighting(normal_camera, lightdirection_camera);
 			vec3 lighting = lightColor * lightPower * theta / pow(lightDistance, 2);
 			//blend Light?
-		"
-	);*/
+		)."
+	);
 }

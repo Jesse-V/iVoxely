@@ -1,6 +1,7 @@
 
 #include "NormalBuffer.hpp"
 #include <algorithm>
+#include <iostream>
 
 
 NormalBuffer::NormalBuffer(const std::vector<glm::vec3>& normals):
@@ -60,39 +61,39 @@ bool NormalBuffer::draw(GLenum mode)
 
 std::shared_ptr<VertexShaderSnippet> NormalBuffer::getVertexShaderGLSL()
 {
-	return std::make_shared<VertexShaderSnippet>();/*
-		"
+	return std::make_shared<VertexShaderSnippet>(
+		R".(
 			//NormalBuffer fields
 			attribute vec3 vertexNormal; //normal vector of the vertex
 			varying vec3 normal_camera;
-		",
-		"
+		).",
+		R".(
 			//NormalBuffer methods
-		",
-		"
+		).",
+		R".(
 			//NormalBuffer main method code
 			normal_camera = normalize((viewMatrix * modelMatrix * vec4(vertexNormal, 0)).xyz;
-		"
-	);*/
+		)."
+	);
 }
 
 
 
 std::shared_ptr<FragmentShaderSnippet> NormalBuffer::getFragmentShaderGLSL()
 {
-	return std::make_shared<FragmentShaderSnippet>();/*
-		"
+	return std::make_shared<FragmentShaderSnippet>(
+		R".(
 			//NormalBuffer fields
 			varying vec3 normal_camera;
-		",
-		"
+		).",
+		R".(
 			//NormalBuffer methods
-		",
-		"
+		).",
+		R".(
 			//NormalBuffer main method code
 			vec3 normal = normal_camera;
-		"
-	);*/
+		)."
+	);
 }
 
 

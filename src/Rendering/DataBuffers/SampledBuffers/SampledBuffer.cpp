@@ -84,33 +84,33 @@ void SampledBuffer::deleteBufferFromRAM()
 
 std::shared_ptr<VertexShaderSnippet> SampledBuffer::getVertexShaderGLSL()
 {
-	return std::make_shared<VertexShaderSnippet>();/*
-		"
+	return std::make_shared<VertexShaderSnippet>(
+		R".(
 			//SampledBuffer fields
-		",
-		"
+		).",
+		R".(
 			//SampledBuffer methods
-		",
-		"
+		).",
+		R".(
 			//SampledBuffer main method code
-		"
-	);*/
+		)."
+	);
 }
 
 
 
 std::shared_ptr<FragmentShaderSnippet> SampledBuffer::getFragmentShaderGLSL()
 {
-	return std::make_shared<FragmentShaderSnippet>();/*
-		"
+	return std::make_shared<FragmentShaderSnippet>(
+		R".(
 			//SampledBuffer fields
 			uniform sampler2D textureSampler;
-		",
-		"
+		).",
+		R".(
 			//SampledBuffer methods
-		",
-		"
+		).",
+		R".(
 			//SampledBuffer main method code
-		"
-	);*/
+		)."
+	);
 }

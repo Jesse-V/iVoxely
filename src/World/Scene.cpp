@@ -128,8 +128,8 @@ std::shared_ptr<Camera> Scene::getCamera()
 
 std::shared_ptr<VertexShaderSnippet> Scene::getVertexShaderGLSL()
 {
-	return std::make_shared<VertexShaderSnippet>();/*
-		"
+	return std::make_shared<VertexShaderSnippet>(
+		R".(
 			//Scene fields
 			attribute vec3 vertex; //position of the vertex
 			uniform mat4 viewMatrix, projMatrix; //Camera view and projection matrices
@@ -137,42 +137,42 @@ std::shared_ptr<VertexShaderSnippet> Scene::getVertexShaderGLSL()
 
 			varying vec3 pos_world;
 			varying vec3 eyedirection_camera;
-		",
-		"
+		).",
+		R".(
 			//Scene methods
 			vec4 projectVertex()
 			{
 				mat4 MVP = projMatrix * viewMatrix * modelMatrix; //Calculate the Model-View-Projection matrix
 				return MVP * vec4(vertex, 1); // Convert from model space to clip space
 			}
-		",
-		"
+		).",
+		R".(
 			//Scene main method code
 			gl_Position = projectVertex();
 			pos_world = (modelMatrix * vec4(vertex, 1)).xyz; //Convert from model space to world space
 
 			vec3 vpos_camera = (viewMatrix * modelMatrix * vec4(vertex, 1)).xyz;
 			eyedirection_camera = -vpos_camera;
-		"
-	);*/
+		)."
+	);
 }
 
 
 
 std::shared_ptr<FragmentShaderSnippet> Scene::getFragmentShaderGLSL()
 {
-	return std::make_shared<FragmentShaderSnippet>();/*
-		"
+	return std::make_shared<FragmentShaderSnippet>(
+		R".(
 			//Scene fields
 			uniform vec3 ambientLight;
 			varying vec3 pos_world;
 			varying vec3 eyedirection_camera;
-		",
-		"
+		).",
+		R".(
 			//Scene methods
-		",
-		"
+		).",
+		R".(
 			//Scene main method code
-		"
-	);*/
+		)."
+	);
 }
