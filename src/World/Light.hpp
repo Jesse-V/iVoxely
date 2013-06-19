@@ -2,9 +2,10 @@
 #ifndef LIGHT_HPP
 #define LIGHT_HPP
 
+#include "Resources/OpenGL/ShaderUtilizer.hpp"
 #include "glm/glm.hpp"
 
-class Light
+class Light: public ShaderUtilizer
 {
 	public:
 		Light(const glm::vec3& position = glm::vec3(0.0, 0.0, 0.0), const glm::vec3& color = glm::vec3(1, 1, 1), float power = 20);
@@ -18,6 +19,9 @@ class Light
 		glm::vec3 getColor() const;
 		float getPower() const;
 		bool isEmitting() const;
+
+		virtual std::shared_ptr<VertexShaderSnippet> getVertexShaderGLSL();
+		virtual std::shared_ptr<FragmentShaderSnippet> getFragmentShaderGLSL();
 
 	private:
 		glm::vec3 position, color;

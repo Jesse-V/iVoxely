@@ -39,3 +39,17 @@ bool IndexBuffer::draw(GLenum mode)
 	glDrawElements(mode, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0);
 	return true;
 }
+
+
+
+std::shared_ptr<VertexShaderSnippet> IndexBuffer::getVertexShaderGLSL()
+{
+	return std::make_shared<VertexShaderSnippet>();
+}
+
+
+
+std::shared_ptr<FragmentShaderSnippet> IndexBuffer::getFragmentShaderGLSL()
+{
+	return std::make_shared<FragmentShaderSnippet>();
+}

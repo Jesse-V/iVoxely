@@ -16,6 +16,9 @@ class VertexBuffer: public DataBuffer
 		virtual void disable();
 		virtual bool draw(GLenum mode);
 
+		virtual std::shared_ptr<VertexShaderSnippet> getVertexShaderGLSL();
+		virtual std::shared_ptr<FragmentShaderSnippet> getFragmentShaderGLSL();
+
 	private:
 		void storePoints();
 		void enableVertices();

@@ -66,3 +66,42 @@ void TextureBuffer::disable()
 {
 	glDisableVertexAttribArray(attribute_texcoord);
 }
+
+
+
+std::shared_ptr<VertexShaderSnippet> TextureBuffer::getVertexShaderGLSL()
+{
+	return std::make_shared<VertexShaderSnippet>();/*
+		"
+			//TextureBuffer fields
+			attribute vec2 texcoord;
+			out vec2 UV;
+		",
+		"
+			//TextureBuffer methods
+		",
+		"
+			//TextureBuffer main method code
+			UV = texcoord;
+		"
+	);*/
+}
+
+
+
+std::shared_ptr<FragmentShaderSnippet> TextureBuffer::getFragmentShaderGLSL()
+{
+	return std::make_shared<FragmentShaderSnippet>();/*
+		"
+			//TextureBuffer fields
+			in vec2 UV;
+		",
+		"
+			//TextureBuffer methods
+		",
+		"
+			//TextureBuffer main method code
+			vec3 textureColor = texture(textureSampler, UV).rgb;
+		"
+	);*/
+}

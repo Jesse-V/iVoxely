@@ -13,6 +13,9 @@ class TextureBuffer: public SampledBuffer
 		virtual void enable();
 		virtual void disable();
 
+		virtual std::shared_ptr<VertexShaderSnippet> getVertexShaderGLSL();
+		virtual std::shared_ptr<FragmentShaderSnippet> getFragmentShaderGLSL();
+
 	protected:
 		virtual void storeImage();
 		virtual void storeCoordMap();

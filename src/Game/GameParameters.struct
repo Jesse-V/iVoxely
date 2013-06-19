@@ -4,7 +4,7 @@
 
 struct GameParameters
 {
-
+	static constexpr const char* HERP = "derp";
 };
 
 #endif

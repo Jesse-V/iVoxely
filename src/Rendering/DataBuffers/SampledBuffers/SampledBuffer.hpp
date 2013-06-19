@@ -19,6 +19,9 @@ class SampledBuffer: public DataBuffer
 		virtual void store();
 		virtual bool draw(GLenum mode);
 
+		virtual std::shared_ptr<VertexShaderSnippet> getVertexShaderGLSL();
+		virtual std::shared_ptr<FragmentShaderSnippet> getFragmentShaderGLSL();
+
 	protected:
 		virtual void storeImage() = 0;
 		virtual void storeCoordMap() = 0;

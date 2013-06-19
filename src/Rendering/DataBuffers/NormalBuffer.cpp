@@ -12,7 +12,7 @@ NormalBuffer::NormalBuffer(const std::vector<glm::vec3>& normals):
 void NormalBuffer::initialize(GLuint program)
 {
 	glGenBuffers(1, &normalBuffer);
-	normalAttrib = glGetAttribLocation(program, NORMAL_ATTRIB_NAME);
+	normalAttrib = glGetAttribLocation(program, "vertexNormal");
 }
 
 
@@ -54,6 +54,45 @@ void NormalBuffer::disable()
 bool NormalBuffer::draw(GLenum mode)
 {
 	return false;
+}
+
+
+
+std::shared_ptr<VertexShaderSnippet> NormalBuffer::getVertexShaderGLSL()
+{
+	return std::make_shared<VertexShaderSnippet>();/*
+		"
+			//NormalBuffer fields
+			attribute vec3 vertexNormal; //normal vector of the vertex
+			varying vec3 normal_camera;
+		",
+		"
+			//NormalBuffer methods
+		",
+		"
+			//NormalBuffer main method code
+			normal_camera = normalize((viewMatrix * modelMatrix * vec4(vertexNormal, 0)).xyz;
+		"
+	);*/
+}
+
+
+
+std::shared_ptr<FragmentShaderSnippet> NormalBuffer::getFragmentShaderGLSL()
+{
+	return std::make_shared<FragmentShaderSnippet>();/*
+		"
+			//NormalBuffer fields
+			varying vec3 normal_camera;
+		",
+		"
+			//NormalBuffer methods
+		",
+		"
+			//NormalBuffer main method code
+			vec3 normal = normal_camera;
+		"
+	);*/
 }
 
 

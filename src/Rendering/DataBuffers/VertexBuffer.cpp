@@ -56,3 +56,18 @@ bool VertexBuffer::draw(GLenum mode)
 	glDrawElements(mode, (int)vertices.size() * 3, GL_UNSIGNED_INT, 0);
 	return true;
 }
+
+
+
+
+std::shared_ptr<VertexShaderSnippet> VertexBuffer::getVertexShaderGLSL()
+{
+	return std::make_shared<VertexShaderSnippet>();
+}
+
+
+
+std::shared_ptr<FragmentShaderSnippet> VertexBuffer::getFragmentShaderGLSL()
+{
+	return std::make_shared<FragmentShaderSnippet>();
+}

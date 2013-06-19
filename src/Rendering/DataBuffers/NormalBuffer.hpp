@@ -17,6 +17,9 @@ class NormalBuffer: public DataBuffer
 		virtual void disable();
 		virtual bool draw(GLenum mode);
 
+		virtual std::shared_ptr<VertexShaderSnippet> getVertexShaderGLSL();
+		virtual std::shared_ptr<FragmentShaderSnippet> getFragmentShaderGLSL();
+
 		static std::vector<glm::vec3> calcNormalsMWA(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
 		static std::vector<glm::vec3> calcNormalsMWASER(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
 		static std::vector<glm::vec3> calcNormalsMWE(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
@@ -25,7 +28,6 @@ class NormalBuffer: public DataBuffer
 		static std::vector<glm::vec3> calculateTriangleNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles, std::vector<std::vector<size_t>>& vtmap);
 
 	private:
-		static constexpr const char* NORMAL_ATTRIB_NAME = "vertexNormal";
 		std::vector<glm::vec3> normals;
 
 		GLuint normalBuffer;

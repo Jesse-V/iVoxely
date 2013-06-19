@@ -79,3 +79,38 @@ void SampledBuffer::deleteBufferFromRAM()
 		isValid = false;
 	}
 }
+
+
+
+std::shared_ptr<VertexShaderSnippet> SampledBuffer::getVertexShaderGLSL()
+{
+	return std::make_shared<VertexShaderSnippet>();/*
+		"
+			//SampledBuffer fields
+		",
+		"
+			//SampledBuffer methods
+		",
+		"
+			//SampledBuffer main method code
+		"
+	);*/
+}
+
+
+
+std::shared_ptr<FragmentShaderSnippet> SampledBuffer::getFragmentShaderGLSL()
+{
+	return std::make_shared<FragmentShaderSnippet>();/*
+		"
+			//SampledBuffer fields
+			uniform sampler2D textureSampler;
+		",
+		"
+			//SampledBuffer methods
+		",
+		"
+			//SampledBuffer main method code
+		"
+	);*/
+}

@@ -16,6 +16,9 @@ class IndexBuffer: public DataBuffer
 		virtual void disable();
 		virtual bool draw(GLenum mode);
 
+		virtual std::shared_ptr<VertexShaderSnippet> getVertexShaderGLSL();
+		virtual std::shared_ptr<FragmentShaderSnippet> getFragmentShaderGLSL();
+
 	private:
 		std::vector<Triangle> triangles; // indexes for triangles, {(0,1,2), (3,4,5)}
 		GLuint meshBuffer;
