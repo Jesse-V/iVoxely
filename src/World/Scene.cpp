@@ -16,11 +16,12 @@ void Scene::initialize()
 	for_each (sceneObjects.begin(), sceneObjects.end(),
 		[&](std::shared_ptr<RenderableObject>& obj)
 		{
-			//obj->initializeAndStore(ShaderManager::getProgram(obj, this, lights)); //assembles and creates shaders
+			auto program = ShaderManager::createProgram(obj, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights); //assembles and creates shaders
+			//obj->initializeAndStore(program);
 		}
 	);
 
-	beenInitialized = false;
+	beenInitialized = true;
 }
 
 
@@ -41,6 +42,9 @@ void Scene::setCamera(const std::shared_ptr<Camera>& sceneCamera)
 
 void Scene::addLight(const std::shared_ptr<Light>& light)
 {
+	if (lights.size() > 0)
+		throw std::runtime_error("Multiple lights not supported at this time. See issue #9");
+
 	lights.push_back(light);
 }
 

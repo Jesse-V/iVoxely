@@ -27,6 +27,7 @@ add_executable(ivoxely
     Rendering/DataBuffers/SampledBuffers/SampledBuffer.cpp
     Rendering/DataBuffers/SampledBuffers/TextureBuffer.cpp
     Rendering/DataBuffers/SampledBuffers/BumpMap.cpp
+    Resources/OpenGL/ShaderManager.cpp
     Resources/OpenGL/ShaderSnippet.cpp
     Resources/OpenGL/Program.cpp
     Resources/OpenGL/Shader.cpp

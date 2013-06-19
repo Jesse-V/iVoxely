@@ -67,6 +67,15 @@ std::shared_ptr<cs5400::Program> RenderableObject::getProgram()
 
 
 
+std::vector<std::shared_ptr<DataBuffer>> RenderableObject::getAllDataBuffers()
+{
+	std::vector<std::shared_ptr<DataBuffer>> all(dataBuffers);
+	all.insert(all.begin(), vertexBuffer);
+	return all;
+}
+
+
+
 // Render the object
 void RenderableObject::render(GLint modelMatrixID)
 {

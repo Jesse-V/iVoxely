@@ -21,6 +21,7 @@ class RenderableObject
 		void render(GLint modelMatrixID);
 
 		std::shared_ptr<cs5400::Program> getProgram();
+		std::vector<std::shared_ptr<DataBuffer>> getAllDataBuffers();
 
 	private:
 		void enableDataBuffers();

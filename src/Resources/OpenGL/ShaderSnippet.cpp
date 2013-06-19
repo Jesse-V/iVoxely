@@ -5,21 +5,31 @@
 
 ShaderSnippet::ShaderSnippet():
 	ShaderSnippet("", "", "")
-{
-	std::cout << "default ShaderSnippet" << std::endl;
-}
+{}
 
 
 
 ShaderSnippet::ShaderSnippet(const std::string& fields, const std::string& methods, const std::string& mainBodyCode):
 	fields(fields), methods(methods), mainBodyCode(mainBodyCode)
+{}
+
+
+
+std::string ShaderSnippet::getFields()
 {
-	std::cout << "recorded GLSL snippets" << std::endl;
+	return fields;
 }
 
 
 
-void ShaderSnippet::print()
+std::string ShaderSnippet::getMethods()
 {
-	std::cout << fields << std::endl << methods << std::endl << mainBodyCode << std::endl;
+	return methods;
+}
+
+
+
+std::string ShaderSnippet::getMainBodyCode()
+{
+	return mainBodyCode;
 }
