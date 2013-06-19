@@ -15,63 +15,112 @@ static bool readyToUpdate = false;
 
 void updateCallback()
 {
-	if (readyToUpdate)
+	try
 	{
-		static int oldTimeSinceStart = glutGet(GLUT_ELAPSED_TIME);
+		if (readyToUpdate)
+		{
+			static int oldTimeSinceStart = glutGet(GLUT_ELAPSED_TIME);
 
-		int timeSinceStart = glutGet(GLUT_ELAPSED_TIME);
-		int deltaTime = timeSinceStart - oldTimeSinceStart;
-		oldTimeSinceStart = timeSinceStart;
+			int timeSinceStart = glutGet(GLUT_ELAPSED_TIME);
+			int deltaTime = timeSinceStart - oldTimeSinceStart;
+			oldTimeSinceStart = timeSinceStart;
 
-		game->update(deltaTime);
+			game->update(deltaTime);
+		}
+		else
+			std::this_thread::sleep_for(std::chrono::milliseconds(10)); //sleep for a bit
 	}
-	else
-		std::this_thread::sleep_for(std::chrono::milliseconds(10)); //sleep for a bit
+	catch (std::exception& e)
+	{
+		std::cout << std::endl << "Exception during update: " << e.what() << std::endl;
+	}
 }
 
 
 
 void renderCallback()
 {
-	game->render();
-	glutPostRedisplay(); //make a call to render again at screen's FPS
+	try
+	{
+		game->render();
+		glutPostRedisplay(); //make a call to render again at screen's FPS
 
-	readyToUpdate = true;
+		readyToUpdate = true;
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << std::endl << "Exception during render: " << e.what() << std::endl;
+	}
 }
 
 
 
 void keyPressCallback(unsigned char key, int x, int y)
 {
-	game->onKeyPress(key, x, y);
+	try
+	{
+		game->onKeyPress(key, x, y);
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << std::endl << "Exception during key press: " << e.what() << std::endl;
+	}
 }
 
 
 
 void specialKeyPressCallback(int key, int x, int y)
 {
-	game->onSpecialKeyPress(key, x, y);
+	try
+	{
+		game->onSpecialKeyPress(key, x, y);
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << std::endl << "Exception during special key press: " << e.what() << std::endl;
+	}
 }
 
 
 
 void mouseClickCallback(int button, int state, int x, int y)
 {
-	game->onMouseClick(button, state, x, y);
+	try
+	{
+		game->onMouseClick(button, state, x, y);
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << std::endl << "Exception during mouse click: " << e.what() << std::endl;
+	}
 }
 
 
 
 void mouseMotionCallback(int x, int y)
 {
-	game->onMouseMotion(x, y);
+	try
+	{
+		game->onMouseMotion(x, y);
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << std::endl << "Exception during mouse motion: " << e.what() << std::endl;
+	}
 }
 
 
 
 void mouseDragCallback(int x, int y)
 {
-	game->onMouseDrag(x, y);
+	try
+	{
+		game->onMouseDrag(x, y);
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << std::endl << "Exception during mouse drag: " << e.what() << std::endl;
+	}
 }
 
 
@@ -121,8 +170,9 @@ int main(int argc, char **argv)
 	catch (std::exception& e)
 	{
 		std::cerr << std::endl;
-		std::cerr << e.what();
+		std::cerr << "Exception during initiation: " << e.what();
 		std::cerr << std::endl;
+		return EXIT_FAILURE;
 	}
 
 	return EXIT_SUCCESS;

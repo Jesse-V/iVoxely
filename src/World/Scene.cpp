@@ -1,9 +1,9 @@
 
 #include "Scene.hpp"
+#include "Resources/OpenGL/ShaderManager.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <algorithm>
 #include <iostream>
-
 
 Scene::Scene(const std::shared_ptr<Camera>& camera):
 	camera(camera)
@@ -16,7 +16,7 @@ void Scene::initialize()
 	for_each (sceneObjects.begin(), sceneObjects.end(),
 		[&](std::shared_ptr<RenderableObject>& obj)
 		{
-			obj->initializeAndStore(ShaderManager::getProgram(obj, this, lights)); //assembles and creates shaders
+			//obj->initializeAndStore(ShaderManager::getProgram(obj, this, lights)); //assembles and creates shaders
 		}
 	);
 

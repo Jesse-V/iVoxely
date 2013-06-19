@@ -15,9 +15,6 @@ RenderableObject::RenderableObject(const std::shared_ptr<cs5400::Program>& progr
 RenderableObject::RenderableObject(const std::shared_ptr<cs5400::Program>& program, std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode):
 	program(program), vertexBuffer(vertexBuffer), dataBuffers(optionalDBs), modelMatrix(glm::mat4()), isVisible(true), beenInitialized(false), renderMode(renderMode)
 {
-	if (program->getHandle() > 0)
-		throw new std::runtime_error("derp");
-
 	initializeAndStore(program->getHandle());
 }
 
