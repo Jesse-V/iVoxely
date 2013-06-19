@@ -1,13 +1,11 @@
 
+#include "PlyParser.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <vector>
 #include <thread>
 #include <stdexcept>
-
-#include "Point.hpp"
-#include "PlyParser.hpp"
 
 
 // **************  Public functions:  **************
@@ -45,7 +43,7 @@ void PlyParser::loadPlyModel(const std::string& fileName)
 /* 	Returns the vertices from the PLY file.
 	Call loadPlyModel before calling this function.
 */
-std::vector<cs5400::Point> PlyParser::getVertices()
+std::vector<glm::vec3> PlyParser::getVertices()
 {
 	return vertices;
 }
@@ -74,9 +72,9 @@ std::string PlyParser::readFile(const std::string& fileName)
 		throw std::runtime_error("Error opening ply file: " + fileName);
 
 	fin.seekg(0, std::ios::end);
-	fileContents.resize(fin.tellg()); //allocate enough space to avoid multiple expansions
+	fileContents.resize((unsigned long)fin.tellg()); //allocate enough space to avoid multiple expansions
 	fin.seekg(0, std::ios::beg);
-	fin.read(&fileContents[0], fileContents.size()); //read entire file at once
+	fin.read(&fileContents[0], (long)fileContents.size()); //read entire file at once
 	fin.close();
 
 	return fileContents;
@@ -91,15 +89,15 @@ std::string PlyParser::readFile(const std::string& fileName)
 std::vector<std::string> PlyParser::seperatePly(const std::string& fileContents)
 {
 	std::vector<std::string> pieces;
-	int headerEnd = fileContents.find(HEADER_DELIMITER);
-	int dataBegin = headerEnd + HEADER_DELIMITER.size() + 1;
+	unsigned long headerEnd = fileContents.find(HEADER_DELIMITER);
+	unsigned long dataBegin = headerEnd + HEADER_DELIMITER.size() + 1;
 
 	std::string header = fileContents.substr(0, headerEnd - 1);
 	pieces.push_back(header); //add header
 	auto sizes = getSizes(header); //fetches count of vertices and indices
 
 	//skips from the end of the header to the end of vertices data
-	int location = dataBegin;
+	unsigned long location = dataBegin;
 	for (int lineCount = 0; lineCount < sizes.first; lineCount++)
 		location = fileContents.find('\n', location + 1);
 
@@ -114,16 +112,16 @@ std::vector<std::string> PlyParser::seperatePly(const std::string& fileContents)
 /*	Accepts the raw characters that represent the vertices,
 	parses the characters into a list of Points and returns the result.
 */
-std::vector<cs5400::Point> PlyParser::parseVertices(std::string verticesData)
+std::vector<glm::vec3> PlyParser::parseVertices(std::string verticesData)
 {
-	std::vector<cs5400::Point> vertices;
+	std::vector<glm::vec3> vertices;
 	std::stringstream sstream(verticesData);
 
 	//loop through each line, pull out and store the relevant data
 	std::string line;
 	while (std::getline(sstream, line))
 	{
-		cs5400::Point pt;
+		glm::vec3 pt;
 		sstream >> pt.x >> pt.y >> pt.z;
 		vertices.push_back(pt);
 	}

@@ -20,7 +20,7 @@ add_executable(ivoxely
     World/Camera.cpp
     World/Light.cpp
     Models/Ground/Ground.cpp
-
+    Models/PlyParser.cpp
     Rendering/RenderableObject.cpp
     Rendering/DataBuffers/VertexBuffer.cpp
     Rendering/DataBuffers/IndexBuffer.cpp
@@ -33,7 +33,6 @@ add_executable(ivoxely
     Resources/OpenGL/Program.cpp
     Resources/OpenGL/Shader.cpp
 )
-#Models/PlyParser.cpp
 
 IF(WIN32)
     target_link_libraries(ivoxely glut glew32 GL)
