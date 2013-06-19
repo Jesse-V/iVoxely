@@ -29,12 +29,14 @@ class Scene
 	private:
 		void updateCamera(GLuint handle);
 		void updateLights(GLuint handle);
+		void initialize();
 
 	private:
 		std::vector<std::shared_ptr<RenderableObject>> sceneObjects;
 		std::vector<std::shared_ptr<Light>> lights;
 		std::shared_ptr<Camera> camera;
 		glm::vec3 ambientLight;
+		bool beenInitialized;
 };
 
 

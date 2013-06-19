@@ -11,6 +11,20 @@ Scene::Scene(const std::shared_ptr<Camera>& camera):
 
 
 
+void Scene::initialize()
+{
+	for_each (sceneObjects.begin(), sceneObjects.end(),
+		[&](std::shared_ptr<RenderableObject>& obj)
+		{
+			obj->initializeAndStore(ShaderManager::getProgram(obj, this, lights)); //assembles and creates shaders
+		}
+	);
+
+	beenInitialized = false;
+}
+
+
+
 void Scene::addModel(const std::shared_ptr<RenderableObject>& obj)
 {
 	sceneObjects.push_back(obj);
@@ -42,6 +56,9 @@ void Scene::setAmbientLight(const glm::vec3& rgb)
 //render all objects and lights in the scene, as viewed from the camera
 void Scene::render()
 {
+	if (!beenInitialized)
+		initialize();
+
 	for_each (sceneObjects.begin(), sceneObjects.end(),
 		[&](std::shared_ptr<RenderableObject>& obj)
 		{

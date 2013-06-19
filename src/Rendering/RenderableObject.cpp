@@ -3,6 +3,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <algorithm>
+#include <iostream>
 
 
 RenderableObject::RenderableObject(const std::shared_ptr<cs5400::Program>& program, std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs):
@@ -12,21 +13,29 @@ RenderableObject::RenderableObject(const std::shared_ptr<cs5400::Program>& progr
 
 
 RenderableObject::RenderableObject(const std::shared_ptr<cs5400::Program>& program, std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode):
-	program(program), vertexBuffer(vertexBuffer), dataBuffers(optionalDBs), modelMatrix(glm::mat4()), isVisible(true), renderMode(renderMode)
+	program(program), vertexBuffer(vertexBuffer), dataBuffers(optionalDBs), modelMatrix(glm::mat4()), isVisible(true), beenInitialized(false), renderMode(renderMode)
+{
+	if (program->getHandle() > 0)
+		throw new std::runtime_error("derp");
+
+	initializeAndStore(program->getHandle());
+}
+
+
+
+void RenderableObject::initializeAndStore(GLuint handle)
 {
 	vertexBuffer->initialize(program->getHandle());
 	vertexBuffer->store();
-	vertexBuffer->getVertexShaderGLSL()->print();
-	vertexBuffer->getFragmentShaderGLSL()->print();
 
 	for_each (dataBuffers.begin(), dataBuffers.end(),
 		[&](const std::shared_ptr<DataBuffer>& buffer)
 		{
 			buffer->initialize(program->getHandle());
 			buffer->store();
-			buffer->getVertexShaderGLSL()->print();
-			buffer->getFragmentShaderGLSL()->print();
 		});
+
+	beenInitialized = true;
 }
 
 
@@ -64,6 +73,9 @@ std::shared_ptr<cs5400::Program> RenderableObject::getProgram()
 // Render the object
 void RenderableObject::render(GLint modelMatrixID)
 {
+	if (!beenInitialized)
+		throw new std::runtime_error("RenderableObject has not been initialized!");
+
 	if (isVisible)
 	{
 		glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, glm::value_ptr(modelMatrix));

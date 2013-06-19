@@ -14,6 +14,7 @@ class RenderableObject
 	public:
 		RenderableObject(const std::shared_ptr<cs5400::Program>& program, std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode);
 		RenderableObject(const std::shared_ptr<cs5400::Program>& program, std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs);
+		void initializeAndStore(GLuint handle);
 		void setVisible(bool visible);
 		void setModelMatrix(const glm::mat4& matrix); // model coords -> world coords matrix
 		void setRenderMode(GLenum newMode);
@@ -31,7 +32,7 @@ class RenderableObject
 		std::shared_ptr<VertexBuffer> vertexBuffer;
 		std::vector<std::shared_ptr<DataBuffer>> dataBuffers;
 		glm::mat4 modelMatrix;
-		bool isVisible;
+		bool isVisible, beenInitialized;
 		GLenum renderMode;
 };
 
