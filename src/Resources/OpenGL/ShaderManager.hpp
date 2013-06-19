@@ -2,6 +2,7 @@
 #define SHADER_MANAGER_HPP
 
 #include "Rendering/RenderableObject.hpp"
+#include "Rendering/DataBuffers/DataBuffer.hpp"
 #include "World/Light.hpp"
 #include <memory>
 #include <vector>
@@ -20,26 +21,21 @@ class ShaderManager
 		);
 
 	private:
-		static std::vector<ShaderSnippet> assembleVertexSnippets(
-			const std::shared_ptr<RenderableObject>& obj,
+		static std::vector<std::shared_ptr<ShaderSnippet>> assembleVertexSnippets(
 			const std::shared_ptr<ShaderSnippet>& sceneVertexShader,
-			const std::vector<std::shared_ptr<Light>> lights
+			const std::vector<std::shared_ptr<DataBuffer>> dataBuffers,
+			const std::vector<std::shared_ptr<Light>>& lights
 		);
-		static std::vector<ShaderSnippet> assembleFragmentSnippets(
-			const std::shared_ptr<RenderableObject>& obj,
+		static std::vector<std::shared_ptr<ShaderSnippet>> assembleFragmentSnippets(
 			const std::shared_ptr<ShaderSnippet>& sceneFragmentShader,
-			const std::vector<std::shared_ptr<Light>> lights
+			const std::vector<std::shared_ptr<DataBuffer>> dataBuffers,
+			const std::vector<std::shared_ptr<Light>>& lights
 		);
 
-		static std::string assembleFields(std::vector<ShaderSnippet> fields);
-		static std::string assembleMethods();
-		static std::string assembleMainBodyCode();
+		static std::string assembleFields(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets);
+		static std::string assembleMethods(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets);
+		static std::string assembleMainBodyCode(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets);
 		static std::string buildShader(const std::string& fields, const std::string& methods, const std::string& mainBodyCode);
-
-		//assembleFields
-	//assembleMethods
-	//assembleMainBodyCode
-	//assemble
 };
 
 #endif

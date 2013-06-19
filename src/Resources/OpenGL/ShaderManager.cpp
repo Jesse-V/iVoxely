@@ -16,87 +16,138 @@ GLuint ShaderManager::createProgram(
 	auto vertexSnippets = assembleVertexSnippets(sceneVertexShader, dataBuffers, lights);
 	auto fragmentSnippets = assembleFragmentSnippets(sceneFragmentShader, dataBuffers, lights);
 
-	sceneVertexShader
-	auto lightVertexSnippet = lights[0]->getVertexShaderGLSL();
+	std::string vertexShader = buildShader(assembleFields(vertexSnippets), assembleMethods(vertexSnippets), assembleMainBodyCode(vertexSnippets));
+	std::string fragmentShader = buildShader(assembleFields(fragmentSnippets), assembleMethods(fragmentSnippets), assembleMainBodyCode(fragmentSnippets));
 
-
-
-
-	std::stringstream stream("");
-	stream << sceneVertexShader->getFields() << lightVertexSnippet->getFields();
-
-	auto dataBuffers = obj->getAllDataBuffers();
-	for_each (dataBuffers.begin(), dataBuffers.end(),
-		[&](const std::shared_ptr<DataBuffer>& buffer)
-		{
-			stream << buffer->getVertexShaderGLSL()->getFields();
-		}
-	);
-
-	std::cout << stream.str() << std::endl;
-
-
-	//std::string vertexShaderFields = stream.str();
+	std::cout << vertexShader << std::endl;
+	std::cout << fragmentShader << std::endl;
 
 	return 5;
 }
 
 
 
-std::vector<ShaderSnippet> ShaderManager::assembleVertexSnippets(
+std::vector<std::shared_ptr<ShaderSnippet>> ShaderManager::assembleVertexSnippets(
 	const std::shared_ptr<ShaderSnippet>& sceneVertexShader,
-	const std::vector<std::shared_ptr<Light>> lights,
-	const std::vector<std::shared_ptr<DataBuffer>>& dataBuffers
+	const std::vector<std::shared_ptr<DataBuffer>> dataBuffers,
+	const std::vector<std::shared_ptr<Light>>& lights
 )
 {
-	std::vector<ShaderSnippet> vertexSnippets();
+	std::vector<std::shared_ptr<ShaderSnippet>> vertexSnippets;
 	vertexSnippets.push_back(sceneVertexShader);
-
-	std::vector<ShaderSnippet> dataBufferVertexSnippets;
-	//dataBufferVertexSnippets.ensureCapacity(dataBuffers.size());
 
 	for_each (dataBuffers.begin(), dataBuffers.end(),
 		[&](const std::shared_ptr<DataBuffer>& buffer)
 		{
-			dataBufferVertexSnippets.push_back(buffer->getVertexShaderGLSL());
+			vertexSnippets.push_back(buffer->getVertexShaderGLSL());
 		}
 	);
 
 
 	for_each (lights.begin(), lights.end(),
-		[&](const std::shared_ptr<DataBuffer>& buffer)
+		[&](const std::shared_ptr<Light>& light)
 		{
-
+			vertexSnippets.push_back(light->getVertexShaderGLSL());
 		}
 	);
+
+	return vertexSnippets;
 }
 
 
 
-std::vector<ShaderSnippet> ShaderManager::assembleFragmentSnippets(
-	const std::shared_ptr<RenderableObject>& obj,
+std::vector<std::shared_ptr<ShaderSnippet>> ShaderManager::assembleFragmentSnippets(
 	const std::shared_ptr<ShaderSnippet>& sceneFragmentShader,
-	const std::vector<std::shared_ptr<Light>> lights
+	const std::vector<std::shared_ptr<DataBuffer>> dataBuffers,
+	const std::vector<std::shared_ptr<Light>>& lights
 )
 {
+	std::vector<std::shared_ptr<ShaderSnippet>> fragmentSnippets;
+	fragmentSnippets.push_back(sceneFragmentShader);
 
+	for_each (dataBuffers.begin(), dataBuffers.end(),
+		[&](const std::shared_ptr<DataBuffer>& buffer)
+		{
+			fragmentSnippets.push_back(buffer->getFragmentShaderGLSL());
+		}
+	);
+
+
+	for_each (lights.begin(), lights.end(),
+		[&](const std::shared_ptr<Light>& light)
+		{
+			fragmentSnippets.push_back(light->getFragmentShaderGLSL());
+		}
+	);
+
+	return fragmentSnippets;
 }
 
 
 
-
-/* //Common shader:
-
-#SAFE_FIELDS#
-#OPTIONAL_FIELDS#
-
-#SAFE_METHODS#
-#OPTIONAL_METHODS#
-
-void main()
+std::string ShaderManager::assembleFields(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets)
 {
-	#SAFE_BODY#
-	#OPTIONAL_BODY#
+	std::stringstream stream("");
+
+	for_each (snippets.begin(), snippets.end(),
+		[&](const std::shared_ptr<ShaderSnippet>& snippet)
+		{
+			stream << snippet->getFields();
+		}
+	);
+
+	return stream.str();
 }
 
-*/
+
+
+std::string ShaderManager::assembleMethods(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets)
+{
+	std::stringstream stream("");
+
+	for_each (snippets.begin(), snippets.end(),
+		[&](const std::shared_ptr<ShaderSnippet>& snippet)
+		{
+			stream << snippet->getMethods();
+		}
+	);
+
+	return stream.str();
+}
+
+
+
+std::string ShaderManager::assembleMainBodyCode(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets)
+{
+	std::stringstream stream("");
+
+	for_each (snippets.begin(), snippets.end(),
+		[&](const std::shared_ptr<ShaderSnippet>& snippet)
+		{
+			stream << snippet->getMainBodyCode();
+		}
+	);
+
+	return stream.str();
+}
+
+
+
+std::string ShaderManager::buildShader(const std::string& fields, const std::string& methods, const std::string& mainBodyCode)
+{
+	//return fields + methods + mainBodyCode;
+	return R".(
+			#version 130
+		)."
+		+ fields
+		+ "\n"
+		+ methods
+		+ R".(
+			void main()
+			{
+		)."
+		+ mainBodyCode
+		+ R".(
+			}
+		).";
+}
