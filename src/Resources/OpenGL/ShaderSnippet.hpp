@@ -8,6 +8,10 @@ class ShaderSnippet
 	public:
 		ShaderSnippet();
 		ShaderSnippet(const std::string& fields, const std::string& methods, const std::string& mainBodyCode);
+		void print();
+
+	private:
+		std::string fields, methods, mainBodyCode;
 };
 
 #endif

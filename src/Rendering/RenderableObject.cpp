@@ -16,12 +16,16 @@ RenderableObject::RenderableObject(const std::shared_ptr<cs5400::Program>& progr
 {
 	vertexBuffer->initialize(program->getHandle());
 	vertexBuffer->store();
+	vertexBuffer->getVertexShaderGLSL()->print();
+	vertexBuffer->getFragmentShaderGLSL()->print();
 
 	for_each (dataBuffers.begin(), dataBuffers.end(),
 		[&](const std::shared_ptr<DataBuffer>& buffer)
 		{
 			buffer->initialize(program->getHandle());
 			buffer->store();
+			buffer->getVertexShaderGLSL()->print();
+			buffer->getFragmentShaderGLSL()->print();
 		});
 }
 
