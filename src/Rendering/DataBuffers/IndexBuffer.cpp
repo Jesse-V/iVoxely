@@ -42,14 +42,14 @@ bool IndexBuffer::draw(GLenum mode)
 
 
 
-std::shared_ptr<VertexShaderSnippet> IndexBuffer::getVertexShaderGLSL()
+std::shared_ptr<ShaderSnippet> IndexBuffer::getVertexShaderGLSL()
 {
-	return std::make_shared<VertexShaderSnippet>();
+	return std::make_shared<ShaderSnippet>();
 }
 
 
 
-std::shared_ptr<FragmentShaderSnippet> IndexBuffer::getFragmentShaderGLSL()
+std::shared_ptr<ShaderSnippet> IndexBuffer::getFragmentShaderGLSL()
 {
-	return std::make_shared<FragmentShaderSnippet>();
+	return std::make_shared<ShaderSnippet>();
 }

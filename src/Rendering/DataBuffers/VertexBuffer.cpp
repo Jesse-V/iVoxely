@@ -12,7 +12,7 @@ VertexBuffer::VertexBuffer(const std::vector<glm::vec3>& vertices):
 void VertexBuffer::initialize(GLuint program)
 {
 	glGenBuffers(1, &vertexBuffer);
-	vertexAttrib = glGetAttribLocation(program, VERTEX_ATTRIB_NAME);
+	vertexAttrib = glGetAttribLocation(program, "vertex");
 }
 
 
@@ -60,14 +60,14 @@ bool VertexBuffer::draw(GLenum mode)
 
 
 
-std::shared_ptr<VertexShaderSnippet> VertexBuffer::getVertexShaderGLSL()
+std::shared_ptr<ShaderSnippet> VertexBuffer::getVertexShaderGLSL()
 {
-	return std::make_shared<VertexShaderSnippet>();
+	return std::make_shared<ShaderSnippet>();
 }
 
 
 
-std::shared_ptr<FragmentShaderSnippet> VertexBuffer::getFragmentShaderGLSL()
+std::shared_ptr<ShaderSnippet> VertexBuffer::getFragmentShaderGLSL()
 {
-	return std::make_shared<FragmentShaderSnippet>();
+	return std::make_shared<ShaderSnippet>();
 }

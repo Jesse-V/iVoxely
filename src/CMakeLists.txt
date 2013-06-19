@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 
-project(OpenGL_program)
+project(ivoxely)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS  "-g --std=c++0x -Weverything -Wno-documentation -Wno-c++98-compat-pedantic -Wno-shadow -Wno-cast-align -Wno-padded -Wno-weak-vtables -Wno-non-virtual-dtor -Wno-unknown-pragmas -Wno-unused-parameter")
@@ -12,7 +12,7 @@ include_directories(. glm)
 #link_directories()
 
 # Let's keep this organized and logically sorted
-add_executable(OpenGL_program
+add_executable(ivoxely
     main.cpp
     Game/Game.cpp
     Game/Player.cpp
@@ -27,12 +27,13 @@ add_executable(OpenGL_program
     Rendering/DataBuffers/SampledBuffers/SampledBuffer.cpp
     Rendering/DataBuffers/SampledBuffers/TextureBuffer.cpp
     Rendering/DataBuffers/SampledBuffers/BumpMap.cpp
+    Resources/OpenGL/ShaderSnippet.cpp
     Resources/OpenGL/Program.cpp
     Resources/OpenGL/Shader.cpp
 )
 
 IF(WIN32)
-    target_link_libraries(OpenGL_program glut glew32 GL)
+    target_link_libraries(ivoxely glut glew32 GL)
 ELSE()
-    target_link_libraries(OpenGL_program glut GLEW GL)
+    target_link_libraries(ivoxely glut GLEW GL)
 ENDIF()

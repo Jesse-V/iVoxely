@@ -69,9 +69,9 @@ void TextureBuffer::disable()
 
 
 
-std::shared_ptr<VertexShaderSnippet> TextureBuffer::getVertexShaderGLSL()
+std::shared_ptr<ShaderSnippet> TextureBuffer::getVertexShaderGLSL()
 {
-	return std::make_shared<VertexShaderSnippet>(
+	return std::make_shared<ShaderSnippet>(
 		R".(
 			//TextureBuffer fields
 			attribute vec2 texcoord;
@@ -89,11 +89,12 @@ std::shared_ptr<VertexShaderSnippet> TextureBuffer::getVertexShaderGLSL()
 
 
 
-std::shared_ptr<FragmentShaderSnippet> TextureBuffer::getFragmentShaderGLSL()
+std::shared_ptr<ShaderSnippet> TextureBuffer::getFragmentShaderGLSL()
 {
-	return std::make_shared<FragmentShaderSnippet>(
+	return std::make_shared<ShaderSnippet>(
 		R".(
 			//TextureBuffer fields
+			uniform sampler2D textureSampler;
 			in vec2 UV;
 		).",
 		R".(

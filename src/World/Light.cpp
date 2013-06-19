@@ -64,9 +64,9 @@ void Light::setEmitting(bool emitting)
 
 
 
-std::shared_ptr<VertexShaderSnippet> Light::getVertexShaderGLSL()
+std::shared_ptr<ShaderSnippet> Light::getVertexShaderGLSL()
 {
-	return std::make_shared<VertexShaderSnippet>(
+	return std::make_shared<ShaderSnippet>(
 		R".(
 			//Light fields
 			uniform vec3 lightPosition; //position of the light
@@ -85,9 +85,9 @@ std::shared_ptr<VertexShaderSnippet> Light::getVertexShaderGLSL()
 
 
 
-std::shared_ptr<FragmentShaderSnippet> Light::getFragmentShaderGLSL()
+std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
 {
-	return std::make_shared<FragmentShaderSnippet>(
+	return std::make_shared<ShaderSnippet>(
 		R".(
 			//Light fields
 			uniform vec3 lightPosition, lightColor; //Light, optional

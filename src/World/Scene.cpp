@@ -126,9 +126,9 @@ std::shared_ptr<Camera> Scene::getCamera()
 
 
 
-std::shared_ptr<VertexShaderSnippet> Scene::getVertexShaderGLSL()
+std::shared_ptr<ShaderSnippet> Scene::getVertexShaderGLSL()
 {
-	return std::make_shared<VertexShaderSnippet>(
+	return std::make_shared<ShaderSnippet>(
 		R".(
 			//Scene fields
 			attribute vec3 vertex; //position of the vertex
@@ -159,9 +159,9 @@ std::shared_ptr<VertexShaderSnippet> Scene::getVertexShaderGLSL()
 
 
 
-std::shared_ptr<FragmentShaderSnippet> Scene::getFragmentShaderGLSL()
+std::shared_ptr<ShaderSnippet> Scene::getFragmentShaderGLSL()
 {
-	return std::make_shared<FragmentShaderSnippet>(
+	return std::make_shared<ShaderSnippet>(
 		R".(
 			//Scene fields
 			uniform vec3 ambientLight;

@@ -16,15 +16,14 @@ class VertexBuffer: public DataBuffer
 		virtual void disable();
 		virtual bool draw(GLenum mode);
 
-		virtual std::shared_ptr<VertexShaderSnippet> getVertexShaderGLSL();
-		virtual std::shared_ptr<FragmentShaderSnippet> getFragmentShaderGLSL();
+		virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
+		virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
 	private:
 		void storePoints();
 		void enableVertices();
 
 	private:
-		static constexpr const char* VERTEX_ATTRIB_NAME = "vertex";
 		std::vector<glm::vec3> vertices;
 
 		GLuint vertexBuffer;

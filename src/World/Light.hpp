@@ -20,8 +20,8 @@ class Light: public ShaderUtilizer
 		float getPower() const;
 		bool isEmitting() const;
 
-		virtual std::shared_ptr<VertexShaderSnippet> getVertexShaderGLSL();
-		virtual std::shared_ptr<FragmentShaderSnippet> getFragmentShaderGLSL();
+		virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
+		virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
 	private:
 		glm::vec3 position, color;

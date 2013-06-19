@@ -59,9 +59,9 @@ bool NormalBuffer::draw(GLenum mode)
 
 
 
-std::shared_ptr<VertexShaderSnippet> NormalBuffer::getVertexShaderGLSL()
+std::shared_ptr<ShaderSnippet> NormalBuffer::getVertexShaderGLSL()
 {
-	return std::make_shared<VertexShaderSnippet>(
+	return std::make_shared<ShaderSnippet>(
 		R".(
 			//NormalBuffer fields
 			attribute vec3 vertexNormal; //normal vector of the vertex
@@ -79,9 +79,9 @@ std::shared_ptr<VertexShaderSnippet> NormalBuffer::getVertexShaderGLSL()
 
 
 
-std::shared_ptr<FragmentShaderSnippet> NormalBuffer::getFragmentShaderGLSL()
+std::shared_ptr<ShaderSnippet> NormalBuffer::getFragmentShaderGLSL()
 {
-	return std::make_shared<FragmentShaderSnippet>(
+	return std::make_shared<ShaderSnippet>(
 		R".(
 			//NormalBuffer fields
 			varying vec3 normal_camera;

@@ -17,8 +17,8 @@ class NormalBuffer: public DataBuffer
 		virtual void disable();
 		virtual bool draw(GLenum mode);
 
-		virtual std::shared_ptr<VertexShaderSnippet> getVertexShaderGLSL();
-		virtual std::shared_ptr<FragmentShaderSnippet> getFragmentShaderGLSL();
+		virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
+		virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
 		static std::vector<glm::vec3> calcNormalsMWA(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
 		static std::vector<glm::vec3> calcNormalsMWASER(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);

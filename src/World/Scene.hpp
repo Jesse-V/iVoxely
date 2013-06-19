@@ -23,8 +23,8 @@ class Scene
 		std::shared_ptr<Camera> getCamera();
 		std::shared_ptr<cs5400::Program> getProgram();
 
-		virtual std::shared_ptr<VertexShaderSnippet> getVertexShaderGLSL();
-		virtual std::shared_ptr<FragmentShaderSnippet> getFragmentShaderGLSL();
+		virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
+		virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
 	private:
 		void updateCamera(GLuint handle);
