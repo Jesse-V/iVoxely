@@ -90,19 +90,20 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
 	return std::make_shared<ShaderSnippet>(
 		R".(
 			//Light fields
-			uniform vec3 lightPosition, lightColor; //Light, optional
-			uniform float lightPower; //Light, optional
+			uniform vec3 lightPosition, lightColor;
+			uniform float lightPower;
+			varying vec3 lightdirection_camera;
 		).",
 		R".(
 			//Light methods
-			float specularLighting(inout vec3 normal, inout vec3 light) //Light, optional
+			float specularLighting(inout vec3 normal, inout vec3 light)
 			{
 				vec3 eye = normalize(eyedirection_camera);
 				vec3 reflect = reflect(-light, normal);
 				return clamp(dot(eye, reflect), 0, 1);
 			}
 
-			float diffusedLighting(inout vec3 normal, inout vec3 light) //Light, optional
+			float diffusedLighting(inout vec3 normal, inout vec3 light)
 			{
 				return max(0.0, clamp(dot(normal, -light), 0, 1));
 			}
@@ -112,7 +113,10 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
 			float lightDistance = length(lightPosition - pos_world);
 			float theta = specularLighting(normal_camera, lightdirection_camera);
 			vec3 lighting = lightColor * lightPower * theta / pow(lightDistance, 2);
-			//blend Light?
+
+			//Blending code (from Light class, need to be more dynamic)
+			vec3 color =  textureColor * (ambientLight + lighting); //temporary
+			gl_FragColor = vec4(color, 1.0); //temporary
 		)."
 	);
 }

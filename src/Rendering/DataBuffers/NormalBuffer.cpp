@@ -72,7 +72,7 @@ std::shared_ptr<ShaderSnippet> NormalBuffer::getVertexShaderGLSL()
 		).",
 		R".(
 			//NormalBuffer main method code
-			normal_camera = normalize((viewMatrix * modelMatrix * vec4(vertexNormal, 0)).xyz;
+			normal_camera = normalize((viewMatrix * modelMatrix * vec4(vertexNormal, 0)).xyz);
 		)."
 	);
 }

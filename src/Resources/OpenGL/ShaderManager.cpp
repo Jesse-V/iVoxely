@@ -1,5 +1,6 @@
 
 #include "ShaderManager.hpp"
+#include "Program.hpp"
 #include <sstream>
 #include <algorithm>
 #include <iostream>
@@ -22,7 +23,9 @@ GLuint ShaderManager::createProgram(
 	std::cout << vertexShader << std::endl;
 	std::cout << fragmentShader << std::endl;
 
-	return 5;
+	auto program = cs5400::makeProgram(cs5400::makeVertexShaderStr(vertexShader), cs5400::makeFragmentShaderStr(fragmentShader));
+
+	return program->getHandle();
 }
 
 

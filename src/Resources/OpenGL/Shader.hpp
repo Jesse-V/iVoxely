@@ -58,7 +58,10 @@ namespace cs5400
 	typedef Shader<detail::FragmentShaderTag> FragmentShader;
 
 	std::shared_ptr<VertexShader> makeVertexShader(const std::string& path);
+	std::shared_ptr<VertexShader> makeVertexShaderStr(const std::string& shaderCode);
+
 	std::shared_ptr<FragmentShader> makeFragmentShader(const std::string& path);
+	std::shared_ptr<FragmentShader> makeFragmentShaderStr(const std::string& shaderCode);
 }
 
 #endif

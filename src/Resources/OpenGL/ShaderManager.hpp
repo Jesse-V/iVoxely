@@ -1,3 +1,4 @@
+
 #ifndef SHADER_MANAGER_HPP
 #define SHADER_MANAGER_HPP
 
@@ -6,9 +7,7 @@
 #include "World/Light.hpp"
 #include <memory>
 #include <vector>
-//#include <GL/glew.h>
 #include <GL/glut.h>
-
 
 class ShaderManager
 {
