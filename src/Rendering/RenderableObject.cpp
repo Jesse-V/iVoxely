@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <iostream>
 
+#include "Resources/OpenGL/Program.hpp"
+
 
 RenderableObject::RenderableObject( std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs):
 	RenderableObject(vertexBuffer, optionalDBs, GL_TRIANGLES)
@@ -16,7 +18,8 @@ RenderableObject::RenderableObject( std::shared_ptr<VertexBuffer> vertexBuffer, 
 RenderableObject::RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode):
 	vertexBuffer(vertexBuffer), dataBuffers(optionalDBs), modelMatrix(glm::mat4()), isVisible(true), beenInitialized(false), renderMode(renderMode)
 {
-	//initializeAndStore(program->getHandle());
+	auto program = cs5400::makeProgram(cs5400::makeVertexShader("Models/Ground/vertex.glsl"), cs5400::makeFragmentShader("Models/Ground/fragment.glsl"));
+	initializeAndStore(program->getHandle());
 }
 
 

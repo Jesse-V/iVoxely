@@ -49,6 +49,7 @@ void Game::addLight()
 	light->setPosition(glm::vec3(0.0f, 0.0f, 2.0f));
 	light->setColor(glm::vec3(1)); //white light
 	light->setPower(0.03f);
+
 	scene->addLight(light);
 }
 

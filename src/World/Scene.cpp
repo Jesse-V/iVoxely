@@ -20,7 +20,7 @@ void Scene::initialize()
 		[&](std::shared_ptr<RenderableObject>& obj)
 		{
 			auto program = ShaderManager::createProgram(obj, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights); //assembles and creates shaders
-			obj->initializeAndStore(program);
+			//obj->initializeAndStore(program);
 		}
 	);
 
