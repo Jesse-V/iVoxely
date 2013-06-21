@@ -9,10 +9,16 @@
 
 std::shared_ptr<RenderableObject> Ground::makeObject()
 {
+	auto program = cs5400::makeProgram(
+		cs5400::makeVertexShader("Models/Ground/vertex.glsl"),
+		cs5400::makeFragmentShader("Models/Ground/fragment.glsl")
+	);
+
 	std::cout << "Assembling Ground Model, loading ";
 
 	auto vertices = getVertices();
 	return std::make_shared<RenderableObject>(
+		program,
 		std::make_shared<VertexBuffer>(vertices),
 		getOptionalDataBuffers(vertices)
 	);

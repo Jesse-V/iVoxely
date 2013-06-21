@@ -3,22 +3,18 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <algorithm>
-#include <stdexcept>
 #include <iostream>
 
-#include "Resources/OpenGL/Program.hpp"
 
-
-RenderableObject::RenderableObject( std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs):
-	RenderableObject(vertexBuffer, optionalDBs, GL_TRIANGLES)
+RenderableObject::RenderableObject(const std::shared_ptr<cs5400::Program>& program, std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs):
+	RenderableObject(program, vertexBuffer, optionalDBs, GL_TRIANGLES)
 {}
 
 
 
-RenderableObject::RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode):
-	vertexBuffer(vertexBuffer), dataBuffers(optionalDBs), modelMatrix(glm::mat4()), isVisible(true), beenInitialized(false), renderMode(renderMode)
+RenderableObject::RenderableObject(const std::shared_ptr<cs5400::Program>& program, std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode):
+	program(program), vertexBuffer(vertexBuffer), dataBuffers(optionalDBs), modelMatrix(glm::mat4()), isVisible(true), beenInitialized(false), renderMode(renderMode)
 {
-	auto program = cs5400::makeProgram(cs5400::makeVertexShader("Models/Ground/vertex.glsl"), cs5400::makeFragmentShader("Models/Ground/fragment.glsl"));
 	initializeAndStore(program->getHandle());
 }
 
@@ -26,15 +22,13 @@ RenderableObject::RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer, c
 
 void RenderableObject::initializeAndStore(GLuint handle)
 {
-	_handle = handle;
-
-	vertexBuffer->initialize(handle);
+	vertexBuffer->initialize(program->getHandle());
 	vertexBuffer->store();
 
 	for_each (dataBuffers.begin(), dataBuffers.end(),
 		[&](const std::shared_ptr<DataBuffer>& buffer)
 		{
-			buffer->initialize(handle);
+			buffer->initialize(program->getHandle());
 			buffer->store();
 		});
 
@@ -66,9 +60,9 @@ void RenderableObject::setRenderMode(GLenum newMode)
 
 
 
-GLuint RenderableObject::getHandle()
+std::shared_ptr<cs5400::Program> RenderableObject::getProgram()
 {
-	return _handle;
+	return program;
 }
 
 
@@ -86,7 +80,7 @@ std::vector<std::shared_ptr<DataBuffer>> RenderableObject::getAllDataBuffers()
 void RenderableObject::render(GLint modelMatrixID)
 {
 	if (!beenInitialized)
-		throw std::runtime_error("RenderableObject has not been initialized!");
+		throw new std::runtime_error("RenderableObject has not been initialized!");
 
 	if (isVisible)
 	{

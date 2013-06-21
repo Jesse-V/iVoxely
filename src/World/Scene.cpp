@@ -70,7 +70,7 @@ void Scene::render()
 	for_each (sceneObjects.begin(), sceneObjects.end(),
 		[&](std::shared_ptr<RenderableObject>& obj)
 		{
-			GLuint handle = obj->getHandle();
+			GLuint handle = obj->getProgram()->getHandle();
 			GLint modelMatrixUniform = glGetUniformLocation(handle, "modelMatrix");
 
 			glUseProgram(handle);
