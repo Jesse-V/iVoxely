@@ -110,8 +110,10 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
 		).",
 		R".(
 			//Light main method code
+			vec3 light = normalize(lightdirection_camera);
+
 			float lightDistance = length(lightPosition - pos_world);
-			float theta = specularLighting(normal_camera, lightdirection_camera);
+			float theta = specularLighting(normal, light);
 			vec3 lighting = lightColor * lightPower * theta / pow(lightDistance, 2);
 
 			//Blending code (from Light class, need to be more dynamic)

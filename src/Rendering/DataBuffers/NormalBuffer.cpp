@@ -91,7 +91,7 @@ std::shared_ptr<ShaderSnippet> NormalBuffer::getFragmentShaderGLSL()
 		).",
 		R".(
 			//NormalBuffer main method code
-			vec3 normal = normal_camera;
+			vec3 normal = normalize(normal_camera);
 		)."
 	);
 }

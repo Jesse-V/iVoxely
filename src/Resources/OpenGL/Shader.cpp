@@ -41,6 +41,8 @@ namespace
 		{
 			GLchar buf[8192];
 			glGetShaderInfoLog(handle, sizeof(buf), NULL, buf);
+
+			std::cerr << code << std::endl;
 			throw std::runtime_error(buf);
 		}
 	}
