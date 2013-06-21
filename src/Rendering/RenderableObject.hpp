@@ -12,8 +12,8 @@
 class RenderableObject
 {
 	public:
-		RenderableObject(const std::shared_ptr<cs5400::Program>& program, std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode);
-		RenderableObject(const std::shared_ptr<cs5400::Program>& program, std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs);
+		RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode);
+		RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs);
 		void initializeAndStore(std::shared_ptr<cs5400::Program> program);
 		void setVisible(bool visible);
 		void setModelMatrix(const glm::mat4& matrix); // model coords -> world coords matrix
