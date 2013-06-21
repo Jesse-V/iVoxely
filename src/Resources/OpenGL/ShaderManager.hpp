@@ -5,6 +5,7 @@
 #include "Rendering/RenderableObject.hpp"
 #include "Rendering/DataBuffers/DataBuffer.hpp"
 #include "World/Light.hpp"
+#include "Program.hpp"
 #include <memory>
 #include <vector>
 #include <GL/glut.h>
@@ -12,7 +13,7 @@
 class ShaderManager
 {
 	public:
-		static GLuint createProgram(
+		static std::shared_ptr<cs5400::Program> createProgram(
 			const std::shared_ptr<RenderableObject>& obj,
 			const std::shared_ptr<ShaderSnippet>& sceneVertexShader,
 			const std::shared_ptr<ShaderSnippet>& sceneFragmentShader,

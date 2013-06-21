@@ -6,14 +6,14 @@
 #include <iostream>
 
 
-GLuint ShaderManager::createProgram(
+std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
 	const std::shared_ptr<RenderableObject>& obj,
 	const std::shared_ptr<ShaderSnippet>& sceneVertexShader,
 	const std::shared_ptr<ShaderSnippet>& sceneFragmentShader,
 	const std::vector<std::shared_ptr<Light>> lights
 )
 {
-	/*auto dataBuffers = obj->getAllDataBuffers();
+	auto dataBuffers = obj->getAllDataBuffers();
 	auto vertexSnippets = assembleVertexSnippets(sceneVertexShader, dataBuffers, lights);
 	auto fragmentSnippets = assembleFragmentSnippets(sceneFragmentShader, dataBuffers, lights);
 
@@ -24,12 +24,9 @@ GLuint ShaderManager::createProgram(
 	std::cout << fragmentShader << std::endl;
 
 	auto program = cs5400::makeProgram(cs5400::makeVertexShaderStr(vertexShader), cs5400::makeFragmentShaderStr(fragmentShader));
-*/
-	//auto program = cs5400::makeProgram(cs5400::makeVertexShader("Models/Ground/vertex.glsl"), cs5400::makeFragmentShader("Models/Ground/fragment.glsl"));
 
-	//return program->getHandle();
-	//
-	return 5;
+	//auto program = cs5400::makeProgram(cs5400::makeVertexShader("Models/Ground/vertex.glsl"), cs5400::makeFragmentShader("Models/Ground/fragment.glsl"));
+	return program;
 }
 
 

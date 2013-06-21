@@ -16,14 +16,6 @@ Scene::Scene(const std::shared_ptr<Camera>& camera):
 
 void Scene::initialize()
 {
-	for_each (sceneObjects.begin(), sceneObjects.end(),
-		[&](std::shared_ptr<RenderableObject>& obj)
-		{
-			auto program = ShaderManager::createProgram(obj, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights); //assembles and creates shaders
-			//obj->initializeAndStore(program);
-		}
-	);
-
 	beenInitialized = true;
 }
 
@@ -64,22 +56,22 @@ void Scene::setAmbientLight(const glm::vec3& rgb)
 //render all objects and lights in the scene, as viewed from the camera
 void Scene::render()
 {
-	if (!beenInitialized)
-		initialize();
-
 	for_each (sceneObjects.begin(), sceneObjects.end(),
 		[&](std::shared_ptr<RenderableObject>& obj)
 		{
+			if (!obj->hasBeenInitialized())
+				obj->initializeAndStore(ShaderManager::createProgram(obj, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights));
+
 			GLuint handle = obj->getProgram()->getHandle();
-			GLint modelMatrixUniform = glGetUniformLocation(handle, "modelMatrix");
 
 			glUseProgram(handle);
 
 			updateCamera(handle);
 			updateLights(handle);
 
-			obj->render(modelMatrixUniform);
-		});
+			obj->render(glGetUniformLocation(handle, "modelMatrix"));
+		}
+	);
 }
 
 
