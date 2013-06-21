@@ -25,7 +25,6 @@ std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
 
 	auto program = cs5400::makeProgram(cs5400::makeVertexShaderStr(vertexShader), cs5400::makeFragmentShaderStr(fragmentShader));
 
-	//auto program = cs5400::makeProgram(cs5400::makeVertexShader("Models/Ground/vertex.glsl"), cs5400::makeFragmentShader("Models/Ground/fragment.glsl"));
 	return program;
 }
 

@@ -6,17 +6,15 @@
 #include <iostream>
 
 
-RenderableObject::RenderableObject(const std::shared_ptr<cs5400::Program>& program, std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs):
-	RenderableObject(program, vertexBuffer, optionalDBs, GL_TRIANGLES)
+RenderableObject::RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs):
+	RenderableObject(vertexBuffer, optionalDBs, GL_TRIANGLES)
 {}
 
 
 
-RenderableObject::RenderableObject(const std::shared_ptr<cs5400::Program>& program, std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode):
+RenderableObject::RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode):
 	vertexBuffer(vertexBuffer), dataBuffers(optionalDBs), modelMatrix(glm::mat4()), isVisible(true), beenInitialized(false), renderMode(renderMode)
-{
-	//initializeAndStore(program);
-}
+{} //Scene will call initializeAndStore
 
 
 
