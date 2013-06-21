@@ -62,7 +62,6 @@ template<typename T>
 std::shared_ptr<cs5400::Shader<T>> make_shader(const std::string& path)
 {
 	auto code = getCode(path);
-	std::cout << code << std::endl;
 	auto shader = std::make_shared<cs5400::Shader<T>>();
 	setCode(shader->getHandle(), code);
 	return shader;

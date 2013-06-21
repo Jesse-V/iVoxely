@@ -1,9 +1,12 @@
 
 #include "Scene.hpp"
 #include "Resources/OpenGL/ShaderManager.hpp"
+#include "Rendering/DataBuffers/NormalBuffer.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <algorithm>
+#include <sstream>
 #include <iostream>
+
 
 Scene::Scene(const std::shared_ptr<Camera>& camera):
 	camera(camera)
@@ -45,6 +48,7 @@ void Scene::addLight(const std::shared_ptr<Light>& light)
 	if (lights.size() > 0)
 		throw std::runtime_error("Multiple lights not supported at this time. See issue #9");
 
+	assertRenderableObjectsContainNormalBuffers();
 	lights.push_back(light);
 }
 
@@ -195,5 +199,36 @@ std::shared_ptr<ShaderSnippet> Scene::getFragmentShaderGLSL()
 		R".(
 			//Scene main method code
 		)."
+	);
+}
+
+
+void Scene::assertRenderableObjectsContainNormalBuffers()
+{
+	std::vector<glm::vec3> emptyVec;
+	auto normBuffer = std::make_shared<NormalBuffer>(emptyVec);
+	for_each (sceneObjects.begin(), sceneObjects.end(),
+		[&](std::shared_ptr<RenderableObject>& obj)
+		{
+			auto optionalBuffers = obj->getAllDataBuffers();
+			bool containsNormalBuffer = false;
+			for_each (optionalBuffers.begin(), optionalBuffers.end(),
+				[&](std::shared_ptr<DataBuffer>& buffer)
+				{
+					if (typeid(*buffer) == typeid(*normBuffer))
+						containsNormalBuffer = true;
+				}
+			);
+
+			if (!containsNormalBuffer)
+			{
+				std::stringstream stream;
+				stream << "Light added to Scene, yet ";
+				stream << typeid(*obj).name();
+				stream << " does not contain a NormalBuffer!";
+
+				throw std::runtime_error(stream.str());
+			}
+		}
 	);
 }

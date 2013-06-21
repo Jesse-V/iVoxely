@@ -30,6 +30,7 @@ class Scene
 		void updateCamera(GLuint handle);
 		void updateLights(GLuint handle);
 		void initialize();
+		void assertRenderableObjectsContainNormalBuffers();
 
 	private:
 		std::vector<std::shared_ptr<RenderableObject>> sceneObjects;

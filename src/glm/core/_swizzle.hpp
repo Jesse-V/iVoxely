@@ -8,10 +8,10 @@
 /// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 /// copies of the Software, and to permit persons to whom the Software is
 /// furnished to do so, subject to the following conditions:
-/// 
+///
 /// The above copyright notice and this permission notice shall be included in
 /// all copies or substantial portions of the Software.
-/// 
+///
 /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 /// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 /// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -65,7 +65,7 @@ namespace detail
 
 		// Use an opaque buffer to *ensure* the compiler doesn't call a constructor.
 		// The size 1 buffer is assumed to aligned to the actual members so that the
-		// elem() 
+		// elem()
 		char    _buffer[1];
 	};
 
@@ -88,7 +88,7 @@ namespace detail
 
 	template <typename T, typename V, int E0, int E1, int E2, int E3>
 	struct _swizzle_base1<T,V,E0,E1,E2,E3,4> : public _swizzle_base0<T,4>
-	{ 
+	{
 		V operator ()()  const { return V(this->elem(E0), this->elem(E1), this->elem(E2), this->elem(E3)); }
 	};
 
@@ -102,7 +102,7 @@ namespace detail
 		E0...3    = what index the n-th element of this swizzle refers to in the unswizzled vec
 
 		DUPLICATE_ELEMENTS = 1 if there is a repeated element, 0 otherwise (used to specialize swizzles
-			containing duplicate elements so that they cannot be used as r-values).            
+			containing duplicate elements so that they cannot be used as r-values).
 	*/
 	template <typename ValueType, typename VecType, int N, int E0, int E1, int E2, int E3, int DUPLICATE_ELEMENTS>
 	struct _swizzle_base2 : public _swizzle_base1<ValueType,VecType,E0,E1,E2,E3,N>
@@ -119,8 +119,8 @@ namespace detail
 
 		_swizzle_base2& operator= (const VecType& that)
 		{
-			struct op { 
-				void operator() (value_type& e, value_type& t) { e = t; } 
+			struct op {
+				void operator() (value_type& e, value_type& t) { e = t; }
 			};
 			_apply_op(that, op());
 			return *this;
@@ -128,44 +128,44 @@ namespace detail
 
 		void operator -= (const VecType& that)
 		{
-			struct op { 
-				void operator() (value_type& e, value_type& t) { e -= t; } 
+			struct op {
+				void operator() (value_type& e, value_type& t) { e -= t; }
 			};
 			_apply_op(that, op());
 		}
 
 		void operator += (const VecType& that)
 		{
-			struct op { 
-				void operator() (value_type& e, value_type& t) { e += t; } 
+			struct op {
+				void operator() (value_type& e, value_type& t) { e += t; }
 			};
 			_apply_op(that, op());
 		}
 
 		void operator *= (const VecType& that)
 		{
-			struct op { 
-				void operator() (value_type& e, value_type& t) { e *= t; } 
+			struct op {
+				void operator() (value_type& e, value_type& t) { e *= t; }
 			};
 			_apply_op(that, op());
 		}
 
 		void operator /= (const VecType& that)
 		{
-			struct op { 
-				void operator() (value_type& e, value_type& t) { e /= t; } 
+			struct op {
+				void operator() (value_type& e, value_type& t) { e /= t; }
 			};
 			_apply_op(that, op());
 		}
 
 		value_type& operator[]  (size_t i)
 		{
-			static const int offset_dst[4] = { E0, E1, E2, E3 };
+			const int offset_dst[4] = { E0, E1, E2, E3 };
 			return this->elem(offset_dst[i]);
 		}
 		value_type  operator[]  (size_t i) const
 		{
-			static const int offset_dst[4] = { E0, E1, E2, E3 };
+			const int offset_dst[4] = { E0, E1, E2, E3 };
 			return this->elem(offset_dst[i]);
 		}
 	protected:
@@ -187,7 +187,7 @@ namespace detail
 	template <typename ValueType, typename VecType, int N, int E0, int E1, int E2, int E3>
 	struct _swizzle_base2<ValueType,VecType,N,E0,E1,E2,E3,1> : public _swizzle_base1<ValueType,VecType,E0,E1,E2,E3,N>
 	{
-		typedef VecType         vec_type;        
+		typedef VecType         vec_type;
 		typedef ValueType       value_type;
 
 		struct Stub {};
@@ -195,7 +195,7 @@ namespace detail
 
 		value_type  operator[]  (size_t i) const
 		{
-			static const int offset_dst[4] = { E0, E1, E2, E3 };
+			const int offset_dst[4] = { E0, E1, E2, E3 };
 			return this->elem(offset_dst[i]);
 		}
 	};
@@ -286,7 +286,7 @@ namespace detail
 	typename _GLM_SWIZZLE_TYPE1::RETURN_TYPE FUNCTION(const V& a, const _GLM_SWIZZLE_TYPE1& b)                  \
 	{                                                                                                           \
 		return FUNCTION(a, b());                                                                                \
-	} 
+	}
 
 //
 // Macro for wrapping a function take 2 vec arguments followed by a scalar (e.g. mix()).
@@ -311,9 +311,9 @@ namespace detail
 	typename _GLM_SWIZZLE_TYPE1::RETURN_TYPE FUNCTION(const typename V& a, const _GLM_SWIZZLE_TYPE1& b, const T& c)           \
 	{                                                                                                                         \
 		return FUNCTION(a, b(), c);                                                                                           \
-	} 
- 
-}//namespace detail 
+	}
+
+}//namespace detail
 }//namespace glm
 
 namespace glm
@@ -346,7 +346,7 @@ namespace glm
 
 	//_GLM_SWIZZLE_FUNCTION_2_ARGS(value_type,  dot);
 	//_GLM_SWIZZLE_FUNCTION_2_ARGS(vec_type,    cross);
-	//_GLM_SWIZZLE_FUNCTION_2_ARGS(vec_type,    step);    
+	//_GLM_SWIZZLE_FUNCTION_2_ARGS(vec_type,    step);
 	//_GLM_SWIZZLE_FUNCTION_2_ARGS_SCALAR(vec_type, mix);
 }
 
@@ -354,7 +354,7 @@ namespace glm
 	struct { glm::detail::swizzle<2,T,P,0,0,-1,-2> E0 ## E0; }; \
 	struct { glm::detail::swizzle<2,T,P,0,1,-1,-2> E0 ## E1; }; \
 	struct { glm::detail::swizzle<2,T,P,1,0,-1,-2> E1 ## E0; }; \
-	struct { glm::detail::swizzle<2,T,P,1,1,-1,-2> E1 ## E1; }; 
+	struct { glm::detail::swizzle<2,T,P,1,1,-1,-2> E1 ## E1; };
 
 #define _GLM_SWIZZLE2_3_MEMBERS(T,P2,E0,E1) \
 	struct { glm::detail::swizzle<3,T,P2,0,0,0,-1> E0 ## E0 ## E0; }; \
@@ -364,7 +364,7 @@ namespace glm
 	struct { glm::detail::swizzle<3,T,P2,1,0,0,-1> E1 ## E0 ## E0; }; \
 	struct { glm::detail::swizzle<3,T,P2,1,0,1,-1> E1 ## E0 ## E1; }; \
 	struct { glm::detail::swizzle<3,T,P2,1,1,0,-1> E1 ## E1 ## E0; }; \
-	struct { glm::detail::swizzle<3,T,P2,1,1,1,-1> E1 ## E1 ## E1; };  
+	struct { glm::detail::swizzle<3,T,P2,1,1,1,-1> E1 ## E1 ## E1; };
 
 #define _GLM_SWIZZLE2_4_MEMBERS(T,P2,E0,E1) \
 	struct { glm::detail::swizzle<4,T,P2,0,0,0,0> E0 ## E0 ## E0 ## E0; }; \
@@ -382,7 +382,7 @@ namespace glm
 	struct { glm::detail::swizzle<4,T,P2,1,1,0,0> E1 ## E1 ## E0 ## E0; }; \
 	struct { glm::detail::swizzle<4,T,P2,1,1,0,1> E1 ## E1 ## E0 ## E1; }; \
 	struct { glm::detail::swizzle<4,T,P2,1,1,1,0> E1 ## E1 ## E1 ## E0; }; \
-	struct { glm::detail::swizzle<4,T,P2,1,1,1,1> E1 ## E1 ## E1 ## E1; };  
+	struct { glm::detail::swizzle<4,T,P2,1,1,1,1> E1 ## E1 ## E1 ## E1; };
 
 #define _GLM_SWIZZLE3_2_MEMBERS(T,P2,E0,E1,E2) \
 	struct { glm::detail::swizzle<2,T,P2,0,0,-1,-2> E0 ## E0; }; \
@@ -393,7 +393,7 @@ namespace glm
 	struct { glm::detail::swizzle<2,T,P2,1,2,-1,-2> E1 ## E2; }; \
 	struct { glm::detail::swizzle<2,T,P2,2,0,-1,-2> E2 ## E0; }; \
 	struct { glm::detail::swizzle<2,T,P2,2,1,-1,-2> E2 ## E1; }; \
-	struct { glm::detail::swizzle<2,T,P2,2,2,-1,-2> E2 ## E2; }; 
+	struct { glm::detail::swizzle<2,T,P2,2,2,-1,-2> E2 ## E2; };
 
 #define _GLM_SWIZZLE3_3_MEMBERS(T,P,E0,E1,E2) \
 	struct { glm::detail::swizzle<3,T,P,0,0,0,-1> E0 ## E0 ## E0; }; \
@@ -505,7 +505,7 @@ namespace glm
 	struct { glm::detail::swizzle<4,T,P2,2,2,1,2> E2 ## E2 ## E1 ## E2; }; \
 	struct { glm::detail::swizzle<4,T,P2,2,2,2,0> E2 ## E2 ## E2 ## E0; }; \
 	struct { glm::detail::swizzle<4,T,P2,2,2,2,1> E2 ## E2 ## E2 ## E1; }; \
-	struct { glm::detail::swizzle<4,T,P2,2,2,2,2> E2 ## E2 ## E2 ## E2; }; 
+	struct { glm::detail::swizzle<4,T,P2,2,2,2,2> E2 ## E2 ## E2 ## E2; };
 
 #define _GLM_SWIZZLE4_2_MEMBERS(T,P,E0,E1,E2,E3) \
 	struct { glm::detail::swizzle<2,T,P,0,0,-1,-2> E0 ## E0; }; \
@@ -523,7 +523,7 @@ namespace glm
 	struct { glm::detail::swizzle<2,T,P,3,0,-1,-2> E3 ## E0; }; \
 	struct { glm::detail::swizzle<2,T,P,3,1,-1,-2> E3 ## E1; }; \
 	struct { glm::detail::swizzle<2,T,P,3,2,-1,-2> E3 ## E2; }; \
-	struct { glm::detail::swizzle<2,T,P,3,3,-1,-2> E3 ## E3; }; 
+	struct { glm::detail::swizzle<2,T,P,3,3,-1,-2> E3 ## E3; };
 
 #define _GLM_SWIZZLE4_3_MEMBERS(T,P,E0,E1,E2,E3) \
 	struct { glm::detail::swizzle<3,T,P,0,0,0,-1> E0 ## E0 ## E0; }; \
@@ -589,7 +589,7 @@ namespace glm
 	struct { glm::detail::swizzle<3,T,P,3,3,0,-1> E3 ## E3 ## E0; }; \
 	struct { glm::detail::swizzle<3,T,P,3,3,1,-1> E3 ## E3 ## E1; }; \
 	struct { glm::detail::swizzle<3,T,P,3,3,2,-1> E3 ## E3 ## E2; }; \
-	struct { glm::detail::swizzle<3,T,P,3,3,3,-1> E3 ## E3 ## E3; };  
+	struct { glm::detail::swizzle<3,T,P,3,3,3,-1> E3 ## E3 ## E3; };
 
 #define _GLM_SWIZZLE4_4_MEMBERS(T,P,E0,E1,E2,E3) \
 	struct { glm::detail::swizzle<4,T,P,0,0,0,0> E0 ## E0 ## E0 ## E0; }; \
@@ -831,6 +831,6 @@ namespace glm
 	struct { glm::detail::swizzle<4,T,P,3,3,3,0> E3 ## E3 ## E3 ## E0; }; \
 	struct { glm::detail::swizzle<4,T,P,3,3,3,1> E3 ## E3 ## E3 ## E1; }; \
 	struct { glm::detail::swizzle<4,T,P,3,3,3,2> E3 ## E3 ## E3 ## E2; }; \
-	struct { glm::detail::swizzle<4,T,P,3,3,3,3> E3 ## E3 ## E3 ## E3; }; 
+	struct { glm::detail::swizzle<4,T,P,3,3,3,3> E3 ## E3 ## E3 ## E3; };
 
 #endif//glm_core_swizzle
