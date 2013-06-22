@@ -67,13 +67,13 @@ void Light::setEmitting(bool emitting)
 
 void Light::sync(GLuint handle)
 {
-	GLint lightPosUniform = glGetUniformLocation(handle, "lightPosition");
+	GLint lightPosUniform = glGetUniformLocation(handle, "lights[0].position");
 	glUniform3fv(lightPosUniform, 1, glm::value_ptr(getPosition()));
 
-	GLint lightColorUniform = glGetUniformLocation(handle, "lightColor");
+	GLint lightColorUniform = glGetUniformLocation(handle, "lights[0].color");
 	glUniform3fv(lightColorUniform, 1, glm::value_ptr(getColor()));
 
-	GLint lightPowUniform = glGetUniformLocation(handle, "lightPower");
+	GLint lightPowUniform = glGetUniformLocation(handle, "lights[0].power");
 	float power = isEmitting() ? getPower() : 0;
 	glUniform1f(lightPowUniform, power);
 }
@@ -85,7 +85,13 @@ std::shared_ptr<ShaderSnippet> Light::getVertexShaderGLSL()
 	return std::make_shared<ShaderSnippet>(
 		R".(
 			//Light fields
-			uniform vec3 lightPosition; //position of the light
+			struct Light
+			{
+				vec3 position, color;
+				float power;
+			};
+
+			uniform Light lights[1];
 			varying vec3 lightdirection_camera;
 		).",
 		R".(
@@ -93,7 +99,7 @@ std::shared_ptr<ShaderSnippet> Light::getVertexShaderGLSL()
 		).",
 		R".(
 			//Light main method code
-			vec3 lightpos_camera = (viewMatrix * vec4(lightPosition, 1)).xyz;
+			vec3 lightpos_camera = (viewMatrix * vec4(lights[0].position, 1)).xyz;
 			lightdirection_camera = normalize(lightpos_camera + eyedirection_camera);
 		)."
 	);
@@ -106,8 +112,15 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
 	return std::make_shared<ShaderSnippet>(
 		R".(
 			//Light fields
-			uniform vec3 lightPosition, lightColor;
-			uniform float lightPower;
+			// http://stackoverflow.com/questions/8202173/setting-the-values-of-a-struct-array-from-js-to-glsl
+
+			struct Light
+			{
+				vec3 position, color;
+				float power;
+			};
+
+			uniform Light lights[1];
 			varying vec3 lightdirection_camera;
 		).",
 		R".(
@@ -128,9 +141,9 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
 			//Light main method code
 			vec3 light = normalize(lightdirection_camera);
 
-			float lightDistance = length(lightPosition - pos_world);
+			float lightDistance = length(lights[0].position - pos_world);
 			float theta = specularLighting(normal, light);
-			vec3 lighting = lightColor * lightPower * theta / pow(lightDistance, 2);
+			vec3 lighting = lights[0].color * lights[0].power * theta / pow(lightDistance, 2);
 
 			//Blending code (from Light class, need to be more dynamic)
 			vec3 color =  textureColor * (ambientLight + lighting); //temporary
