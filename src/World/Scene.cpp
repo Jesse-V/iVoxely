@@ -66,8 +66,8 @@ void Scene::render()
 
 			glUseProgram(handle);
 
-			updateCamera(handle);
-			updateLights(handle);
+			syncCamera(handle);
+			syncLights(handle);
 
 			obj->render(glGetUniformLocation(handle, "modelMatrix"));
 		}
@@ -76,7 +76,7 @@ void Scene::render()
 
 
 
-void Scene::updateCamera(GLuint handle)
+void Scene::syncCamera(GLuint handle)
 {
 	GLint viewMatrixUniform = glGetUniformLocation(handle, "viewMatrix");
 	GLint projMatrixUniform = glGetUniformLocation(handle, "projMatrix");
@@ -88,29 +88,17 @@ void Scene::updateCamera(GLuint handle)
 
 
 
-//tell the shaders where the light is
-void Scene::updateLights(GLuint handle)
+void Scene::syncLights(GLuint handle)
 {
-	std::shared_ptr<Light> light = lights[0];
-
 	GLint ambientLightUniform = glGetUniformLocation(handle, "ambientLight");
 	glUniform3f(ambientLightUniform, ambientLight.x, ambientLight.y, ambientLight.z);
 
-	GLint lightPosUniform = glGetUniformLocation(handle, "lightPosition");
-	glUniform3fv(lightPosUniform, 1, glm::value_ptr(light->getPosition()));
-
-	GLint lightColorUniform = glGetUniformLocation(handle, "lightColor");
-	glUniform3fv(lightColorUniform, 1, glm::value_ptr(light->getColor()));
-
-	GLint lightPowUniform = glGetUniformLocation(handle, "lightPower");
-	float power = light->isEmitting() ? light->getPower() : 0;
-	glUniform1f(lightPowUniform, power);
-
-	/*
 	for_each (lights.begin(), lights.end(),
 		[&](const std::shared_ptr<Light>& light)
 		{
-			std::cout << "hi" << std::endl;
+			light->sync(handle);
+
+			/*std::cout << "hi" << std::endl;
 			std::cout.flush();
 			GLint lightPosUniform = glGetUniformLocation(handle, "lights[0].position");
 			std::cout << lightPosUniform << std::endl;
@@ -122,7 +110,7 @@ void Scene::updateLights(GLuint handle)
 
 			GLint lightPowUniform = glGetUniformLocation(handle, "lights[0].power");
 			float power = light->isEmitting() ? light->getPower() : 0;
-			glUniform1f(lightPowUniform, power);
+			glUniform1f(lightPowUniform, power);*/
 
 			//http://www.opengl.org/discussion_boards/showthread.php/164100-GLSL-multiple-lights
 			//http://en.wikibooks.org/wiki/GLSL_Programming/GLUT/Multiple_Lights
@@ -131,7 +119,6 @@ void Scene::updateLights(GLuint handle)
 			//http://stackoverflow.com/questions/8202173/setting-the-values-of-a-struct-array-from-js-to-glsl
 		}
 	);
-	*/
 }
 
 

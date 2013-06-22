@@ -27,8 +27,8 @@ class Scene
 		virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
 	private:
-		void updateCamera(GLuint handle);
-		void updateLights(GLuint handle);
+		void syncCamera(GLuint handle);
+		void syncLights(GLuint handle);
 		void initialize();
 		void assertRenderableObjectsContainNormalBuffers();
 

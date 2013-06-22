@@ -20,12 +20,7 @@ std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
 	std::string vertexShader = buildShader(assembleFields(vertexSnippets), assembleMethods(vertexSnippets), assembleMainBodyCode(vertexSnippets));
 	std::string fragmentShader = buildShader(assembleFields(fragmentSnippets), assembleMethods(fragmentSnippets), assembleMainBodyCode(fragmentSnippets));
 
-	std::cout << vertexShader << std::endl;
-	std::cout << fragmentShader << std::endl;
-
-	auto program = cs5400::makeProgram(cs5400::makeVertexShaderStr(vertexShader), cs5400::makeFragmentShaderStr(fragmentShader));
-
-	return program;
+	return cs5400::makeProgram(cs5400::makeVertexShaderStr(vertexShader), cs5400::makeFragmentShaderStr(fragmentShader));
 }
 
 

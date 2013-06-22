@@ -4,6 +4,7 @@
 
 #include "Resources/OpenGL/ShaderUtilizer.hpp"
 #include "glm/glm.hpp"
+#include <GL/glew.h>
 
 class Light: public ShaderUtilizer
 {
@@ -19,6 +20,8 @@ class Light: public ShaderUtilizer
 		glm::vec3 getColor() const;
 		float getPower() const;
 		bool isEmitting() const;
+
+		void sync(GLuint handle);
 
 		virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
 		virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();

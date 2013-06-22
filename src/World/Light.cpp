@@ -1,5 +1,6 @@
 
 #include "Light.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 
 Light::Light(const glm::vec3& position, const glm::vec3& color, float power):
@@ -60,6 +61,21 @@ bool Light::isEmitting() const
 void Light::setEmitting(bool emitting)
 {
 	this->emitting = emitting;
+}
+
+
+
+void Light::sync(GLuint handle)
+{
+	GLint lightPosUniform = glGetUniformLocation(handle, "lightPosition");
+	glUniform3fv(lightPosUniform, 1, glm::value_ptr(getPosition()));
+
+	GLint lightColorUniform = glGetUniformLocation(handle, "lightColor");
+	glUniform3fv(lightColorUniform, 1, glm::value_ptr(getColor()));
+
+	GLint lightPowUniform = glGetUniformLocation(handle, "lightPower");
+	float power = isEmitting() ? getPower() : 0;
+	glUniform1f(lightPowUniform, power);
 }
 
 
