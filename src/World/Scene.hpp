@@ -27,9 +27,7 @@ class Scene
 		virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
 	private:
-		void syncCamera(GLuint handle);
 		void syncLights(GLuint handle);
-		void initialize();
 		void assertRenderableObjectsContainNormalBuffers();
 
 	private:
@@ -37,7 +35,6 @@ class Scene
 		std::vector<std::shared_ptr<Light>> lights;
 		std::shared_ptr<Camera> camera;
 		glm::vec3 ambientLight;
-		bool beenInitialized;
 };
 
 

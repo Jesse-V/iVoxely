@@ -109,6 +109,12 @@ std::shared_ptr<ShaderSnippet> Light::getVertexShaderGLSL()
 
 std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
 {
+	//http://www.opengl.org/discussion_boards/showthread.php/164100-GLSL-multiple-lights
+	//http://en.wikibooks.org/wiki/GLSL_Programming/GLUT/Multiple_Lights
+	//http://www.geeks3d.com/20091013/shader-library-phong-shader-with-multiple-lights-glsl/
+	//http://gamedev.stackexchange.com/questions/53822/variable-number-of-lights-in-a-glsl-shader
+	//http://stackoverflow.com/questions/8202173/setting-the-values-of-a-struct-array-from-js-to-glsl
+
 	return std::make_shared<ShaderSnippet>(
 		R".(
 			//Light fields

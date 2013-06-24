@@ -3,6 +3,7 @@
 
 #include "Camera.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include <memory>
 #include <sstream>
 
@@ -25,6 +26,18 @@ void Camera::reset()
 	nearFieldClip = 0.0001f;   // clip anything closer than this
 	farFieldClip  = 100.0f; // clip anything farther than this
 	projection    = glm::perspective(fieldOfView, aspectRatio, nearFieldClip, farFieldClip);
+}
+
+
+
+void Camera::sync(GLuint handle) const
+{
+	GLint viewMatrixUniform = glGetUniformLocation(handle, "viewMatrix");
+	glm::mat4 viewMatrix = glm::lookAt(getPosition(), getLookDirection(), getUpVector());
+	glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+
+	GLint projMatrixUniform = glGetUniformLocation(handle, "projMatrix");
+	glUniformMatrix4fv(projMatrixUniform, 1, GL_FALSE, glm::value_ptr(getProjectionMatrix()));
 }
 
 
@@ -164,63 +177,63 @@ void Camera::setFarFieldClipDistance(float distance)
 
 //accessors:
 
-glm::vec3 Camera::getLookDirection()
+glm::vec3 Camera::getLookDirection() const
 {
 	return lookDirection;
 }
 
 
 
-glm::vec3 Camera::getPosition()
+glm::vec3 Camera::getPosition() const
 {
 	return position;
 }
 
 
 
-glm::vec3 Camera::getUpVector()
+glm::vec3 Camera::getUpVector() const
 {
 	return upVector;
 }
 
 
 
-float Camera::getFOV()
+float Camera::getFOV() const
 {
 	return fieldOfView;
 }
 
 
 
-float Camera::getAspectRatio()
+float Camera::getAspectRatio() const
 {
 	return aspectRatio;
 }
 
 
 
-float Camera::getNearFieldClip()
+float Camera::getNearFieldClip() const
 {
 	return nearFieldClip;
 }
 
 
 
-float Camera::getFarFieldClip()
+float Camera::getFarFieldClip() const
 {
 	return farFieldClip;
 }
 
 
 
-glm::mat4 Camera::getProjectionMatrix()
+glm::mat4 Camera::getProjectionMatrix() const
 {
 	return projection;
 }
 
 
 
-std::string Camera::toString()
+std::string Camera::toString() const
 {
 	std::stringstream ss;
 

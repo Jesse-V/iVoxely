@@ -3,6 +3,7 @@
 #define CAMERA_HPP
 
 #include "glm/glm.hpp"
+#include <GL/glew.h>
 #include <memory>
 #include <string>
 
@@ -11,7 +12,7 @@ class Camera
 	public:
 		Camera();
 		void reset();
-		void render();
+		void sync(GLuint handle) const;
 
 		// Functions to move/direct the camera
 		void setPosition(const glm::vec3& pos);
@@ -34,17 +35,17 @@ class Camera
 		void setNearFieldClipDistance(float distance);
 		void setFarFieldClipDistance(float distance);
 
-		glm::vec3 getLookDirection();
-		glm::vec3 getPosition();
-		glm::vec3 getUpVector();
+		glm::vec3 getLookDirection()  const;
+		glm::vec3 getPosition()  const;
+		glm::vec3 getUpVector()  const;
 
-		float getFOV();
-		float getAspectRatio();
-		float getNearFieldClip();
-		float getFarFieldClip();
+		float getFOV() const;
+		float getAspectRatio() const;
+		float getNearFieldClip() const;
+		float getFarFieldClip() const;
 
-		glm::mat4 getProjectionMatrix();
-		std::string toString();
+		glm::mat4 getProjectionMatrix() const;
+		std::string toString() const;
 
 	private:
 		glm::vec3 lookDirection, position, upVector;

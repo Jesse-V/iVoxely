@@ -2,7 +2,6 @@
 #include "Scene.hpp"
 #include "Resources/OpenGL/ShaderManager.hpp"
 #include "Rendering/DataBuffers/NormalBuffer.hpp"
-#include "glm/gtc/type_ptr.hpp"
 #include <algorithm>
 #include <sstream>
 #include <iostream>
@@ -11,13 +10,6 @@
 Scene::Scene(const std::shared_ptr<Camera>& camera):
 	camera(camera)
 {}
-
-
-
-void Scene::initialize()
-{
-	beenInitialized = true;
-}
 
 
 
@@ -66,24 +58,12 @@ void Scene::render()
 
 			glUseProgram(handle);
 
-			syncCamera(handle);
+			camera->sync(handle);
 			syncLights(handle);
 
 			obj->render(glGetUniformLocation(handle, "modelMatrix"));
 		}
 	);
-}
-
-
-
-void Scene::syncCamera(GLuint handle)
-{
-	GLint viewMatrixUniform = glGetUniformLocation(handle, "viewMatrix");
-	GLint projMatrixUniform = glGetUniformLocation(handle, "projMatrix");
-	glm::mat4 viewMatrix = glm::lookAt(camera->getPosition(), camera->getLookDirection(), camera->getUpVector());
-
-	glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(viewMatrix));
-	glUniformMatrix4fv(projMatrixUniform, 1, GL_FALSE, glm::value_ptr(camera->getProjectionMatrix()));
 }
 
 
@@ -97,26 +77,6 @@ void Scene::syncLights(GLuint handle)
 		[&](const std::shared_ptr<Light>& light)
 		{
 			light->sync(handle);
-
-			/*std::cout << "hi" << std::endl;
-			std::cout.flush();
-			GLint lightPosUniform = glGetUniformLocation(handle, "lights[0].position");
-			std::cout << lightPosUniform << std::endl;
-			std::cout.flush();
-			glUniform3fv(lightPosUniform, 1, glm::value_ptr(light->getPosition()));
-
-			GLint lightColorUniform = glGetUniformLocation(handle, "lights[0].color");
-			glUniform3fv(lightColorUniform, 1, glm::value_ptr(light->getColor()));
-
-			GLint lightPowUniform = glGetUniformLocation(handle, "lights[0].power");
-			float power = light->isEmitting() ? light->getPower() : 0;
-			glUniform1f(lightPowUniform, power);*/
-
-			//http://www.opengl.org/discussion_boards/showthread.php/164100-GLSL-multiple-lights
-			//http://en.wikibooks.org/wiki/GLSL_Programming/GLUT/Multiple_Lights
-			//http://www.geeks3d.com/20091013/shader-library-phong-shader-with-multiple-lights-glsl/
-			//http://gamedev.stackexchange.com/questions/53822/variable-number-of-lights-in-a-glsl-shader
-			//http://stackoverflow.com/questions/8202173/setting-the-values-of-a-struct-array-from-js-to-glsl
 		}
 	);
 }
