@@ -4,15 +4,15 @@
 
 
 VertexBuffer::VertexBuffer(const std::vector<glm::vec3>& vertices):
-	vertices(vertices)
+    vertices(vertices)
 {}
 
 
 
 void VertexBuffer::initialize(GLuint program)
 {
-	glGenBuffers(1, &vertexBuffer);
-	vertexAttrib = glGetAttribLocation(program, "vertex");
+    glGenBuffers(1, &vertexBuffer);
+    vertexAttrib = glGetAttribLocation(program, "vertex");
 }
 
 
@@ -20,41 +20,41 @@ void VertexBuffer::initialize(GLuint program)
 // Store the vertices in a GPU buffer
 void VertexBuffer::store()
 {
-	std::vector<GLfloat> rawPoints;
-	for_each (vertices.begin(), vertices.end(),
-		[&](const glm::vec3& vert)
-		{
-			rawPoints.push_back(vert.x);
-			rawPoints.push_back(vert.y);
-			rawPoints.push_back(vert.z);
-		});
+    std::vector<GLfloat> rawPoints;
+    for_each (vertices.begin(), vertices.end(),
+        [&](const glm::vec3& vert)
+        {
+            rawPoints.push_back(vert.x);
+            rawPoints.push_back(vert.y);
+            rawPoints.push_back(vert.z);
+        });
 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, rawPoints.size() * sizeof(GLfloat), rawPoints.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, rawPoints.size() * sizeof(GLfloat), rawPoints.data(), GL_STATIC_DRAW);
 }
 
 
 
 void VertexBuffer::enable()
 {
-	glEnableVertexAttribArray(vertexAttrib);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); //why is this second bindBuffer call necessary?
-	glVertexAttribPointer(vertexAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(vertexAttrib);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); //why is this second bindBuffer call necessary?
+    glVertexAttribPointer(vertexAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 
 
 void VertexBuffer::disable()
 {
-	glDisableVertexAttribArray(vertexAttrib);
+    glDisableVertexAttribArray(vertexAttrib);
 }
 
 
 
 bool VertexBuffer::draw(GLenum mode)
 {
-	glDrawElements(mode, (int)vertices.size() * 3, GL_UNSIGNED_INT, 0);
-	return true;
+    glDrawElements(mode, (int)vertices.size() * 3, GL_UNSIGNED_INT, 0);
+    return true;
 }
 
 
@@ -62,12 +62,12 @@ bool VertexBuffer::draw(GLenum mode)
 
 std::shared_ptr<ShaderSnippet> VertexBuffer::getVertexShaderGLSL()
 {
-	return std::make_shared<ShaderSnippet>();
+    return std::make_shared<ShaderSnippet>();
 }
 
 
 
 std::shared_ptr<ShaderSnippet> VertexBuffer::getFragmentShaderGLSL()
 {
-	return std::make_shared<ShaderSnippet>();
+    return std::make_shared<ShaderSnippet>();
 }

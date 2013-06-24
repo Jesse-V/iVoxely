@@ -9,12 +9,12 @@
 
 class DataBuffer: public ShaderUtilizer
 {
-	public:
-		virtual void initialize(GLuint program) = 0;
-		virtual void store() = 0;
-		virtual void enable() = 0;
-		virtual void disable() = 0;
-		virtual bool draw(GLenum mode) = 0;
+    public:
+        virtual void initialize(GLuint program) = 0;
+        virtual void store() = 0;
+        virtual void enable() = 0;
+        virtual void disable() = 0;
+        virtual bool draw(GLenum mode) = 0;
 };
 
 #endif

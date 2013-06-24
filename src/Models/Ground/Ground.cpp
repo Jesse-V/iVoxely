@@ -9,70 +9,70 @@
 
 std::shared_ptr<RenderableObject> Ground::makeObject()
 {
-	std::cout << "Assembling Ground Model, loading ";
+    std::cout << "Assembling Ground Model, loading ";
 
-	auto vertices = getVertices();
-	return std::make_shared<RenderableObject>(
-		std::make_shared<VertexBuffer>(vertices),
-		getOptionalDataBuffers(vertices)
-	);
+    auto vertices = getVertices();
+    return std::make_shared<RenderableObject>(
+        std::make_shared<VertexBuffer>(vertices),
+        getOptionalDataBuffers(vertices)
+    );
 }
 
 
 
 std::vector<std::shared_ptr<DataBuffer>> Ground::getOptionalDataBuffers(const std::vector<glm::vec3>& vertices)
 {
-	std::vector<std::shared_ptr<DataBuffer>> optionalBuffers;
+    std::vector<std::shared_ptr<DataBuffer>> optionalBuffers;
 
-	auto triangles = getTriangles();
-	auto iBuffer = std::make_shared<IndexBuffer>(triangles);
-	optionalBuffers.push_back(iBuffer);
+    auto triangles = getTriangles();
+    auto iBuffer = std::make_shared<IndexBuffer>(triangles);
+    optionalBuffers.push_back(iBuffer);
 
-	auto normals = getNormals(vertices, triangles);
-	auto nBuffer = std::make_shared<NormalBuffer>(normals);
-	optionalBuffers.push_back(nBuffer);
+    auto normals = getNormals(vertices, triangles);
+    auto nBuffer = std::make_shared<NormalBuffer>(normals);
+    optionalBuffers.push_back(nBuffer);
 
-	std::cout << "texture... ";
-	auto tBuffer = std::make_shared<TextureBuffer>("Resources/textures/test_texture.bmp");
-	optionalBuffers.push_back(tBuffer);
+    std::cout << "texture... ";
+    auto tBuffer = std::make_shared<TextureBuffer>("Resources/textures/test_texture.bmp");
+    optionalBuffers.push_back(tBuffer);
 
-	std::cout << " done" << std::endl;
+    std::cout << " done" << std::endl;
 
-	return optionalBuffers;
+    return optionalBuffers;
 }
 
 
 
 std::vector<glm::vec3> Ground::getVertices()
 {
-	std::cout << "vertices... ";
+    std::cout << "vertices... ";
 
-	std::vector<glm::vec3> vertices;
-	vertices.push_back(glm::vec3( 1, 0, -1));
-	vertices.push_back(glm::vec3(-1, 0, -1));
-	vertices.push_back(glm::vec3(-1, 0,  1));
-	vertices.push_back(glm::vec3( 1, 0,  1));
+    std::vector<glm::vec3> vertices;
+    vertices.push_back(glm::vec3( 1, 0, -1));
+    vertices.push_back(glm::vec3(-1, 0, -1));
+    vertices.push_back(glm::vec3(-1, 0,  1));
+    vertices.push_back(glm::vec3( 1, 0,  1));
 
-	return vertices;
+    return vertices;
 }
 
 
 
 std::vector<Triangle> Ground::getTriangles()
 {
-	std::cout << "triangles... ";
+    std::cout << "triangles... ";
 
-	std::vector<Triangle> triangles;
-	triangles.push_back(Triangle(0, 1, 2));
-	triangles.push_back(Triangle(0, 2, 3));
-	return triangles;
+    std::vector<Triangle> triangles;
+    triangles.push_back(Triangle(0, 1, 2));
+    triangles.push_back(Triangle(0, 2, 3));
+    return triangles;
 }
 
 
 
 std::vector<glm::vec3> Ground::getNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles)
 {
-	std::cout << "normals... ";
+    std::cout << "normals... ";
 
-	return NormalBuffer::calcNormalsMWASER(vertices, triangles);
+    return NormalBuffer::calcNormalsMWASER(vertices, triangles);
 }

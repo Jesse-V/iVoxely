@@ -11,57 +11,57 @@
 
 namespace cs5400
 {
-	namespace detail
-	{
-		struct VertexShaderTag{};
-		struct FragmentShaderTag{};
+    namespace detail
+    {
+        struct VertexShaderTag{};
+        struct FragmentShaderTag{};
 
-		template<typename T> struct ShaderType;
+        template<typename T> struct ShaderType;
 
-		template<>
-		struct ShaderType<VertexShaderTag>
-		{
-			static const GLenum value = GL_VERTEX_SHADER;
-		};
+        template<>
+        struct ShaderType<VertexShaderTag>
+        {
+            static const GLenum value = GL_VERTEX_SHADER;
+        };
 
-		template<>
-		struct ShaderType<FragmentShaderTag>
-		{
-			static const GLenum value = GL_FRAGMENT_SHADER;
-		};
-	}
+        template<>
+        struct ShaderType<FragmentShaderTag>
+        {
+            static const GLenum value = GL_FRAGMENT_SHADER;
+        };
+    }
 
 
-	template<typename T>
-	class Shader
-	{
-		public:
-			Shader():
-				handle(glCreateShader(detail::ShaderType<T>::value))
-			{}
+    template<typename T>
+    class Shader
+    {
+        public:
+            Shader():
+                handle(glCreateShader(detail::ShaderType<T>::value))
+            {}
 
-			~Shader()
-			{
-				glDeleteShader(handle);
-			}
+            ~Shader()
+            {
+                glDeleteShader(handle);
+            }
 
-			GLuint getHandle()
-			{
-				return handle;
-			}
+            GLuint getHandle()
+            {
+                return handle;
+            }
 
-		private:
-			GLuint handle;
-	};
+        private:
+            GLuint handle;
+    };
 
-	typedef Shader<detail::VertexShaderTag> VertexShader;
-	typedef Shader<detail::FragmentShaderTag> FragmentShader;
+    typedef Shader<detail::VertexShaderTag> VertexShader;
+    typedef Shader<detail::FragmentShaderTag> FragmentShader;
 
-	std::shared_ptr<VertexShader> makeVertexShader(const std::string& path);
-	std::shared_ptr<VertexShader> makeVertexShaderStr(const std::string& shaderCode);
+    std::shared_ptr<VertexShader> makeVertexShader(const std::string& path);
+    std::shared_ptr<VertexShader> makeVertexShaderStr(const std::string& shaderCode);
 
-	std::shared_ptr<FragmentShader> makeFragmentShader(const std::string& path);
-	std::shared_ptr<FragmentShader> makeFragmentShaderStr(const std::string& shaderCode);
+    std::shared_ptr<FragmentShader> makeFragmentShader(const std::string& path);
+    std::shared_ptr<FragmentShader> makeFragmentShaderStr(const std::string& shaderCode);
 }
 
 #endif

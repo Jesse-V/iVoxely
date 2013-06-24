@@ -5,16 +5,16 @@
 
 class ShaderSnippet
 {
-	public:
-		ShaderSnippet();
-		ShaderSnippet(const std::string& fields, const std::string& methods, const std::string& mainBodyCode);
+    public:
+        ShaderSnippet();
+        ShaderSnippet(const std::string& fields, const std::string& methods, const std::string& mainBodyCode);
 
-		std::string getFields();
-		std::string getMethods();
-		std::string getMainBodyCode();
+        std::string getFields();
+        std::string getMethods();
+        std::string getMainBodyCode();
 
-	private:
-		std::string fields, methods, mainBodyCode;
+    private:
+        std::string fields, methods, mainBodyCode;
 };
 
 #endif

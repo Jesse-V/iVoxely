@@ -6,23 +6,23 @@
 
 class BumpMap: public SampledBuffer
 {
-	public:
-		BumpMap(const std::string& mapPath);
+    public:
+        BumpMap(const std::string& mapPath);
 
-		virtual void initialize(GLuint program);
-		virtual void enable();
-		virtual void disable();
+        virtual void initialize(GLuint program);
+        virtual void enable();
+        virtual void disable();
 
-		virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
-		virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
+        virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
+        virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
-	protected:
-		virtual void storeImage();
-		virtual void storeCoordMap();
+    protected:
+        virtual void storeImage();
+        virtual void storeCoordMap();
 
-	private:
-		GLuint textureID, vbo_cube_texcoords;
-		GLint attribute_texcoord;
+    private:
+        GLuint textureID, vbo_cube_texcoords;
+        GLint attribute_texcoord;
 };
 
 #endif

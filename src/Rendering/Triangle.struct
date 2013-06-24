@@ -7,11 +7,11 @@
 
 struct Triangle
 {
-	Triangle(GLuint aa, GLuint bb, GLuint cc)
-		: a(aa), b(bb), c(cc)
-	{}
+    Triangle(GLuint aa, GLuint bb, GLuint cc)
+        : a(aa), b(bb), c(cc)
+    {}
 
-	GLuint a, b, c;
+    GLuint a, b, c;
 };
 
 #endif

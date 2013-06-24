@@ -6,9 +6,9 @@
 
 class ShaderUtilizer
 {
-	public:
-		virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL() = 0;
-		virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL() = 0;
+    public:
+        virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL() = 0;
+        virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL() = 0;
 };
 
 #endif

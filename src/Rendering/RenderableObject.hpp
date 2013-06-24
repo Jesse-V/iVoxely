@@ -11,31 +11,31 @@
 
 class RenderableObject
 {
-	public:
-		RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode);
-		RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs);
-		void initializeAndStore(std::shared_ptr<cs5400::Program> program);
-		void setVisible(bool visible);
-		void setModelMatrix(const glm::mat4& matrix); // model coords -> world coords matrix
-		void setRenderMode(GLenum newMode);
-		void render(GLint modelMatrixID);
+    public:
+        RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs, GLenum renderMode);
+        RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer, const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs);
+        void initializeAndStore(std::shared_ptr<cs5400::Program> program);
+        void setVisible(bool visible);
+        void setModelMatrix(const glm::mat4& matrix); // model coords -> world coords matrix
+        void setRenderMode(GLenum newMode);
+        void render(GLint modelMatrixID);
 
-		std::shared_ptr<cs5400::Program> getProgram();
-		std::vector<std::shared_ptr<DataBuffer>> getAllDataBuffers();
-		bool hasBeenInitialized();
+        std::shared_ptr<cs5400::Program> getProgram();
+        std::vector<std::shared_ptr<DataBuffer>> getAllDataBuffers();
+        bool hasBeenInitialized();
 
-	private:
-		void enableDataBuffers();
-		void drawDataBuffers();
-		void disableDataBuffers();
+    private:
+        void enableDataBuffers();
+        void drawDataBuffers();
+        void disableDataBuffers();
 
-	private:
-		std::shared_ptr<cs5400::Program> renderingProgram;
-		std::shared_ptr<VertexBuffer> vertexBuffer;
-		std::vector<std::shared_ptr<DataBuffer>> dataBuffers;
-		glm::mat4 modelMatrix;
-		bool isVisible, beenInitialized;
-		GLenum renderMode;
+    private:
+        std::shared_ptr<cs5400::Program> renderingProgram;
+        std::shared_ptr<VertexBuffer> vertexBuffer;
+        std::vector<std::shared_ptr<DataBuffer>> dataBuffers;
+        glm::mat4 modelMatrix;
+        bool isVisible, beenInitialized;
+        GLenum renderMode;
 };
 
 #endif

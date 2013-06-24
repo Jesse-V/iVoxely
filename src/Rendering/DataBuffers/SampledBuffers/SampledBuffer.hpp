@@ -8,25 +8,25 @@
 
 class SampledBuffer: public DataBuffer
 {
-	public:
-		SampledBuffer(const std::string& imagePath);
-		~SampledBuffer();
-		//default copy constructor should be fine
+    public:
+        SampledBuffer(const std::string& imagePath);
+        ~SampledBuffer();
+        //default copy constructor should be fine
 
-		std::string loadBMP(const std::string& imagePath);
-		void deleteBufferFromRAM();
+        std::string loadBMP(const std::string& imagePath);
+        void deleteBufferFromRAM();
 
-		virtual void store();
-		virtual bool draw(GLenum mode);
+        virtual void store();
+        virtual bool draw(GLenum mode);
 
-	protected:
-		virtual void storeImage() = 0;
-		virtual void storeCoordMap() = 0;
+    protected:
+        virtual void storeImage() = 0;
+        virtual void storeCoordMap() = 0;
 
-	protected:
-		int imgWidth, imgHeight;
-		unsigned char* data;
-		bool isValid = false;
+    protected:
+        int imgWidth, imgHeight;
+        unsigned char* data;
+        bool isValid = false;
 };
 
 #endif
