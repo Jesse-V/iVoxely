@@ -9,7 +9,7 @@
 class Light: public ShaderUtilizer
 {
 	public:
-		Light(const glm::vec3& position = glm::vec3(0.0, 0.0, 0.0), const glm::vec3& color = glm::vec3(1, 1, 1), float power = 20);
+		Light(const glm::vec3& position = glm::vec3(0.0, 0.0, 0.0), const glm::vec3& color = glm::vec3(1, 1, 1), float power = 0.5f);
 
 		void setPosition(const glm::vec3& newPos);
 		void setColor(const glm::vec3& newColor);

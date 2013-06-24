@@ -2,6 +2,7 @@
 #include "Game.hpp"
 #include "Models/Ground/Ground.hpp"
 #include <thread>
+#include <iostream>
 
 
 Game::Game(int screenWidth, int screenHeight):
@@ -46,9 +47,11 @@ void Game::addLight()
 {
 	scene->setAmbientLight(glm::vec3(0.75, 0.75, 0.75));
 
-	light->setPosition(glm::vec3(0.0f, 0.0f, 2.0f));
-	light->setColor(glm::vec3(1)); //white light
-	light->setPower(0.03f);
+	auto light = std::make_shared<Light>(
+		glm::vec3(0.0f, 0.0f, 2.0f), //position
+		glm::vec3(1),				//white light
+		0.03f						//power
+	);
 
 	scene->addLight(light);
 }
@@ -58,9 +61,11 @@ void Game::addLight()
 std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 {
 	auto camera = std::make_shared<Camera>();
+
 	camera->lookAt(glm::vec3(-0.041535, -0.813947, -0.579453), glm::vec3(-0.0114782, 0.590822, -0.80672));
 	camera->setPosition(glm::vec3(0.0318538, 0.331304, 2.59333));
 	camera->setAspectRatio(screenWidth / (float)screenHeight);
+
 	return camera;
 }
 
@@ -87,7 +92,7 @@ void Game::render()
 
 void Game::moveLight(int deltaTime)
 {
-	glm::vec3 lightPos = light->getPosition();
+	glm::vec3 lightPos = scene->getLights()[0]->getPosition();
 
 	if (lightPos.z < -2)
 		lightVector.z = -lightVector.z;
@@ -95,7 +100,7 @@ void Game::moveLight(int deltaTime)
 		lightVector.z = -lightVector.z;
 
 	lightPos += lightVector * (float)deltaTime;
-	light->setPosition(lightPos);
+	scene->getLights()[0]->setPosition(lightPos);
 }
 
 
@@ -140,4 +145,32 @@ void Game::onMouseMotion(int x, int y)
 void Game::onMouseDrag(int x, int y)
 {
 	player->onMouseDrag(x, y);
+}
+
+
+
+Game* Game::singleton = 0;
+
+Game& Game::getInstance()
+{
+	try
+	{
+		if (singleton)
+			return *singleton;
+
+		singleton = new Game(
+			glutGet(GLUT_SCREEN_WIDTH),
+			glutGet(GLUT_SCREEN_HEIGHT)
+		);
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << std::endl;
+		std::cerr << "Caught " << typeid(e).name() << " during Game initiation: " << e.what();
+		std::cerr << std::endl;
+
+		glutDestroyWindow(glutGetWindow());
+	}
+
+	return *singleton;
 }

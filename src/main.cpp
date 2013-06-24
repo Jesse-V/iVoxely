@@ -1,17 +1,9 @@
-#pragma GCC diagnostic push //save off current pragma state
-#pragma GCC diagnostic ignored "-Wpragmas" //apply custom warning ignore rules
-#pragma GCC diagnostic ignored "-Wglobal-constructors"
-#pragma GCC diagnostic ignored "-Wmissing-prototypes"
-#pragma GCC diagnostic ignored "-Wexit-time-destructors"
-#pragma GCC diagnostic ignored "-Wdisabled-macro-expansion"
 
+#include "main.hpp"
 #include "Game/Game.hpp"
-#include <iostream>
 #include <thread>
 
-static std::shared_ptr<Game> game;
 static bool readyToUpdate = false;
-
 
 void updateCallback()
 {
@@ -25,7 +17,7 @@ void updateCallback()
 			int deltaTime = timeSinceStart - oldTimeSinceStart;
 			oldTimeSinceStart = timeSinceStart;
 
-			game->update(deltaTime);
+			Game::getInstance().update(deltaTime);
 		}
 		else
 			std::this_thread::sleep_for(std::chrono::milliseconds(10)); //sleep for a bit
@@ -43,7 +35,7 @@ void renderCallback()
 {
 	try
 	{
-		game->render();
+		Game::getInstance().render();
 		glutPostRedisplay(); //make a call to render again at screen's FPS
 
 		readyToUpdate = true;
@@ -61,7 +53,7 @@ void keyPressCallback(unsigned char key, int x, int y)
 {
 	try
 	{
-		game->onKeyPress(key, x, y);
+		Game::getInstance().onKeyPress(key, x, y);
 	}
 	catch (std::exception& e)
 	{
@@ -76,7 +68,7 @@ void specialKeyPressCallback(int key, int x, int y)
 {
 	try
 	{
-		game->onSpecialKeyPress(key, x, y);
+		Game::getInstance().onSpecialKeyPress(key, x, y);
 	}
 	catch (std::exception& e)
 	{
@@ -91,7 +83,7 @@ void mouseClickCallback(int button, int state, int x, int y)
 {
 	try
 	{
-		game->onMouseClick(button, state, x, y);
+		Game::getInstance().onMouseClick(button, state, x, y);
 	}
 	catch (std::exception& e)
 	{
@@ -106,7 +98,7 @@ void mouseMotionCallback(int x, int y)
 {
 	try
 	{
-		game->onMouseMotion(x, y);
+		Game::getInstance().onMouseMotion(x, y);
 	}
 	catch (std::exception& e)
 	{
@@ -121,7 +113,7 @@ void mouseDragCallback(int x, int y)
 {
 	try
 	{
-		game->onMouseDrag(x, y);
+		Game::getInstance().onMouseDrag(x, y);
 	}
 	catch (std::exception& e)
 	{
@@ -148,7 +140,7 @@ int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-	initializeGlutWindow(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT), "Final OpenGL Project - Jesse Victors");
+	initializeGlutWindow(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT), "iVoxely");
 
 	GLenum glew_status = glewInit();
 	if (glew_status != GLEW_OK)
@@ -159,8 +151,6 @@ int main(int argc, char **argv)
 
 	try
 	{
-		game = std::make_shared<Game>(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
-
 		glutIdleFunc(updateCallback);
 		glutDisplayFunc(renderCallback);
 
@@ -177,7 +167,7 @@ int main(int argc, char **argv)
 	catch (std::exception& e)
 	{
 		std::cerr << std::endl;
-		std::cerr << "Caught " << typeid(e).name() << " during initiation: " << e.what();
+		std::cerr << "Caught " << typeid(e).name() << " during glut setup: " << e.what();
 		std::cerr << std::endl;
 
 		glutDestroyWindow(glutGetWindow());
@@ -186,5 +176,3 @@ int main(int argc, char **argv)
 
 	return EXIT_SUCCESS;
 }
-
-#pragma GCC diagnostic pop //store previous pragma state

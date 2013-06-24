@@ -19,6 +19,8 @@ class Game
 		void onMouseMotion(int x, int y);
 		void onMouseDrag(int x, int y);
 
+		static Game& getInstance();
+
 	private:
 		void addModels();
 		void addGround();
@@ -28,10 +30,12 @@ class Game
 		static void sleep(int milliseconds);
 
 	private:
+		static Game* singleton;
+
 		std::shared_ptr<Scene> scene;
 		std::shared_ptr<Player> player;
 
-		std::shared_ptr<Light> light = std::make_shared<Light>();
+		//std::shared_ptr<Light> light = std::make_shared<Light>();
 		glm::vec3 lightVector = glm::vec3(0.0f, 0.0f, -0.001f);
 };
 

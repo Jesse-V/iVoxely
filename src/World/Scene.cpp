@@ -15,14 +15,7 @@ Scene::Scene(const std::shared_ptr<Camera>& camera):
 
 void Scene::addModel(const std::shared_ptr<RenderableObject>& obj)
 {
-	sceneObjects.push_back(obj);
-}
-
-
-
-void Scene::setCamera(const std::shared_ptr<Camera>& sceneCamera)
-{
-	camera = sceneCamera;
+	renderableObjects.push_back(obj);
 }
 
 
@@ -38,6 +31,13 @@ void Scene::addLight(const std::shared_ptr<Light>& light)
 
 
 
+void Scene::setCamera(const std::shared_ptr<Camera>& sceneCamera)
+{
+	camera = sceneCamera;
+}
+
+
+
 void Scene::setAmbientLight(const glm::vec3& rgb)
 {
 	ambientLight = rgb;
@@ -48,7 +48,7 @@ void Scene::setAmbientLight(const glm::vec3& rgb)
 //render all objects and lights in the scene, as viewed from the camera
 void Scene::render()
 {
-	for_each (sceneObjects.begin(), sceneObjects.end(),
+	for_each (renderableObjects.begin(), renderableObjects.end(),
 		[&](std::shared_ptr<RenderableObject>& obj)
 		{
 			if (!obj->hasBeenInitialized())
@@ -68,6 +68,34 @@ void Scene::render()
 
 
 
+std::shared_ptr<Camera> Scene::getCamera()
+{
+	return camera;
+}
+
+
+
+std::vector<std::shared_ptr<RenderableObject>> Scene::getRenderableObjects()
+{
+	return renderableObjects;
+}
+
+
+
+std::vector<std::shared_ptr<Light>> Scene::getLights()
+{
+	return lights;
+}
+
+
+
+glm::vec3 Scene::getAmbientLight()
+{
+	return ambientLight;
+}
+
+
+
 void Scene::syncLights(GLuint handle)
 {
 	GLint ambientLightUniform = glGetUniformLocation(handle, "ambientLight");
@@ -79,13 +107,6 @@ void Scene::syncLights(GLuint handle)
 			light->sync(handle);
 		}
 	);
-}
-
-
-
-std::shared_ptr<Camera> Scene::getCamera()
-{
-	return camera;
 }
 
 
@@ -146,7 +167,7 @@ void Scene::assertRenderableObjectsContainNormalBuffers()
 {
 	std::vector<glm::vec3> emptyVec;
 	auto normBuffer = std::make_shared<NormalBuffer>(emptyVec);
-	for_each (sceneObjects.begin(), sceneObjects.end(),
+	for_each (renderableObjects.begin(), renderableObjects.end(),
 		[&](std::shared_ptr<RenderableObject>& obj)
 		{
 			auto optionalBuffers = obj->getAllDataBuffers();
