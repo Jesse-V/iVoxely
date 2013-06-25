@@ -25,7 +25,8 @@ void Camera::reset()
     aspectRatio   = 4.0f/3.0f;
     nearFieldClip = 0.0001f;   // clip anything closer than this
     farFieldClip  = 100.0f; // clip anything farther than this
-    projection    = glm::perspective(fieldOfView, aspectRatio, nearFieldClip, farFieldClip);
+    projection    = glm::perspective(fieldOfView, aspectRatio,
+                                     nearFieldClip, farFieldClip);
 }
 
 
@@ -33,11 +34,14 @@ void Camera::reset()
 void Camera::sync(GLuint handle) const
 {
     GLint viewMatrixUniform = glGetUniformLocation(handle, "viewMatrix");
-    glm::mat4 viewMatrix = glm::lookAt(getPosition(), getLookDirection(), getUpVector());
-    glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+    glm::mat4 viewMatrix = glm::lookAt(
+        getPosition(), getLookDirection(), getUpVector());
+    glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE,
+                       glm::value_ptr(viewMatrix));
 
     GLint projMatrixUniform = glGetUniformLocation(handle, "projMatrix");
-    glUniformMatrix4fv(projMatrixUniform, 1, GL_FALSE, glm::value_ptr(getProjectionMatrix()));
+    glUniformMatrix4fv(projMatrixUniform, 1, GL_FALSE,
+                       glm::value_ptr(getProjectionMatrix()));
 }
 
 
@@ -98,7 +102,8 @@ void Camera::translate(const glm::vec3& xyzTheta)
 // Pitch the camera along the axis orthogonal to the up and look vectors
 void Camera::pitch(float theta)
 {
-    glm::mat4 matrix = glm::rotate(glm::mat4(), theta, glm::cross(lookDirection, upVector));
+    glm::mat4 matrix = glm::rotate(glm::mat4(), theta,
+                                   glm::cross(lookDirection, upVector));
 
     glm::vec4 look(lookDirection, 0.0);
     lookDirection = (matrix * look).xyz();
@@ -132,7 +137,10 @@ void Camera::roll(float theta)
 
 
 // Sets the perspective of the camera
-void Camera::setPerspective(float fieldOfViewDegrees, float aspectRatio, float nearclipdistance, float farclipdistance)
+void Camera::setPerspective(
+    float fieldOfViewDegrees, float aspectRatio,
+    float nearclipdistance, float farclipdistance
+)
 {
     this->fieldOfView   = fieldOfViewDegrees;
     this->aspectRatio   = aspectRatio;
@@ -146,7 +154,8 @@ void Camera::setPerspective(float fieldOfViewDegrees, float aspectRatio, float n
 void Camera::setFieldOfView(float degrees)
 {
     fieldOfView = degrees;
-    projection = glm::perspective(fieldOfView, aspectRatio, nearFieldClip, farFieldClip);
+    projection = glm::perspective(fieldOfView, aspectRatio,
+                                  nearFieldClip, farFieldClip);
 }
 
 
@@ -154,7 +163,8 @@ void Camera::setFieldOfView(float degrees)
 void Camera::setAspectRatio(float ratio)
 {
     aspectRatio = ratio;
-    projection = glm::perspective(fieldOfView, aspectRatio, nearFieldClip, farFieldClip);
+    projection = glm::perspective(fieldOfView, aspectRatio,
+                                  nearFieldClip, farFieldClip);
 }
 
 
@@ -162,7 +172,8 @@ void Camera::setAspectRatio(float ratio)
 void Camera::setNearFieldClipDistance(float distance)
 {
     nearFieldClip = distance;
-    projection = glm::perspective(fieldOfView, aspectRatio, nearFieldClip, farFieldClip);
+    projection = glm::perspective(fieldOfView, aspectRatio,
+                                  nearFieldClip, farFieldClip);
 }
 
 
@@ -170,7 +181,8 @@ void Camera::setNearFieldClipDistance(float distance)
 void Camera::setFarFieldClipDistance(float distance)
 {
     farFieldClip = distance;
-    projection = glm::perspective(fieldOfView, aspectRatio, nearFieldClip, farFieldClip);
+    projection = glm::perspective(fieldOfView, aspectRatio,
+                                  nearFieldClip, farFieldClip);
 }
 
 
@@ -237,9 +249,12 @@ std::string Camera::toString() const
 {
     std::stringstream ss;
 
-    ss << "LookV: <" << lookDirection.x << ", " << lookDirection.y << ", " << lookDirection.z << "> ";
-    ss << "UpV: <"   << upVector.x << ", " << upVector.y << ", " << upVector.z << "> ";
-    ss << "Pos: <"   << position.x << ", " << position.y << ", " << position.z << ">";
+    ss << "LookV: <" << lookDirection.x << ", " << lookDirection.y <<
+                    ", " << lookDirection.z << "> ";
+    ss << "UpV: <"   << upVector.x << ", " << upVector.y <<
+                    ", " << upVector.z << "> ";
+    ss << "Pos: <"   << position.x << ", " << position.y <<
+                    ", " << position.z << ">";
 
     return ss.str();
 }

@@ -32,10 +32,18 @@ class ShaderManager
             const std::vector<std::shared_ptr<Light>>& lights
         );
 
-        static std::string assembleFields(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets);
-        static std::string assembleMethods(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets);
-        static std::string assembleMainBodyCode(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets);
-        static std::string buildShader(const std::string& fields, const std::string& methods, const std::string& mainBodyCode);
+        static std::string assembleFields(
+            const std::vector<std::shared_ptr<ShaderSnippet>>& snippets
+        );
+        static std::string assembleMethods(
+            const std::vector<std::shared_ptr<ShaderSnippet>>& snippets
+        );
+        static std::string assembleMainBodyCode(
+            const std::vector<std::shared_ptr<ShaderSnippet>>& snippets
+        );
+        static std::string buildShader(const std::string& fields,
+            const std::string& methods, const std::string& mainBodyCode
+        );
 };
 
 #endif

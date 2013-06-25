@@ -20,7 +20,7 @@ class IndexBuffer: public DataBuffer
         virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
     private:
-        std::vector<Triangle> triangles; // indexes for triangles, {(0,1,2), (3,4,5)}
+        std::vector<Triangle> triangles; //indexes for triangles
         GLuint meshBuffer;
 };
 

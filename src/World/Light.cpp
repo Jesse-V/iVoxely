@@ -149,7 +149,8 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
 
             float lightDistance = length(lights[0].position - pos_world);
             float theta = specularLighting(normal, light);
-            vec3 lighting = lights[0].color * lights[0].power * theta / pow(lightDistance, 2);
+            vec3 lighting = lights[0].color * lights[0].power *
+                                theta / pow(lightDistance, 2);
 
             //Blending code (from Light class, need to be more dynamic)
             vec3 color =  textureColor * (ambientLight + lighting); //temporary

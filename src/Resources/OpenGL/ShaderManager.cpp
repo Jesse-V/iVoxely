@@ -13,14 +13,20 @@ std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
     const std::vector<std::shared_ptr<Light>> lights
 )
 {
+    std::cout << "Creating shaders for " << typeid(*obj).name() << " with " << lights.size() << " light(s)... ";
+
     auto dataBuffers = obj->getAllDataBuffers();
     auto vertexSnippets = assembleVertexSnippets(sceneVertexShader, dataBuffers, lights);
     auto fragmentSnippets = assembleFragmentSnippets(sceneFragmentShader, dataBuffers, lights);
 
-    std::string vertexShader = buildShader(assembleFields(vertexSnippets), assembleMethods(vertexSnippets), assembleMainBodyCode(vertexSnippets));
-    std::string fragmentShader = buildShader(assembleFields(fragmentSnippets), assembleMethods(fragmentSnippets), assembleMainBodyCode(fragmentSnippets));
+    std::string vertexShaderStr = buildShader(assembleFields(vertexSnippets), assembleMethods(vertexSnippets), assembleMainBodyCode(vertexSnippets));
+    std::string fragmentShaderStr = buildShader(assembleFields(fragmentSnippets), assembleMethods(fragmentSnippets), assembleMainBodyCode(fragmentSnippets));
 
-    return cs5400::makeProgram(cs5400::makeVertexShaderStr(vertexShader), cs5400::makeFragmentShaderStr(fragmentShader));
+    auto vertexShader = cs5400::makeVertexShaderStr(vertexShaderStr);
+    auto fragmentShader = cs5400::makeFragmentShaderStr(fragmentShaderStr);
+
+    std::cout << "done" << std::endl;
+    return cs5400::makeProgram(vertexShader, fragmentShader);
 }
 
 
@@ -82,7 +88,8 @@ std::vector<std::shared_ptr<ShaderSnippet>> ShaderManager::assembleFragmentSnipp
 
 
 
-std::string ShaderManager::assembleFields(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets)
+std::string ShaderManager::assembleFields(
+    const std::vector<std::shared_ptr<ShaderSnippet>>& snippets)
 {
     std::stringstream stream("");
 
@@ -98,7 +105,8 @@ std::string ShaderManager::assembleFields(const std::vector<std::shared_ptr<Shad
 
 
 
-std::string ShaderManager::assembleMethods(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets)
+std::string ShaderManager::assembleMethods(
+    const std::vector<std::shared_ptr<ShaderSnippet>>& snippets)
 {
     std::stringstream stream("");
 
@@ -114,7 +122,8 @@ std::string ShaderManager::assembleMethods(const std::vector<std::shared_ptr<Sha
 
 
 
-std::string ShaderManager::assembleMainBodyCode(const std::vector<std::shared_ptr<ShaderSnippet>>& snippets)
+std::string ShaderManager::assembleMainBodyCode(
+    const std::vector<std::shared_ptr<ShaderSnippet>>& snippets)
 {
     std::stringstream stream("");
 
@@ -130,7 +139,9 @@ std::string ShaderManager::assembleMainBodyCode(const std::vector<std::shared_pt
 
 
 
-std::string ShaderManager::buildShader(const std::string& fields, const std::string& methods, const std::string& mainBodyCode)
+std::string ShaderManager::buildShader(const std::string& fields,
+    const std::string& methods, const std::string& mainBodyCode
+)
 {
     //return fields + methods + mainBodyCode;
     return R".(

@@ -20,12 +20,25 @@ class NormalBuffer: public DataBuffer
         virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
         virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
-        static std::vector<glm::vec3> calcNormalsMWA(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
-        static std::vector<glm::vec3> calcNormalsMWASER(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
-        static std::vector<glm::vec3> calcNormalsMWE(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles);
+        static std::vector<glm::vec3> calcNormalsMWA(
+            const std::vector<glm::vec3>& vertices,
+            const std::vector<Triangle>& triangles
+        );
+        static std::vector<glm::vec3> calcNormalsMWASER(
+            const std::vector<glm::vec3>& vertices,
+            const std::vector<Triangle>& triangles
+        );
+        static std::vector<glm::vec3> calcNormalsMWE(
+            const std::vector<glm::vec3>& vertices,
+            const std::vector<Triangle>& triangles
+        );
 
     private:
-        static std::vector<glm::vec3> calculateTriangleNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles, std::vector<std::vector<size_t>>& vtmap);
+        static std::vector<glm::vec3> calculateTriangleNormals(
+            const std::vector<glm::vec3>& vertices,
+            const std::vector<Triangle>& triangles,
+            std::vector<std::vector<size_t>>& vtmap
+        );
 
     private:
         std::vector<glm::vec3> normals;

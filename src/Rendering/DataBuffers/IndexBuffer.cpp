@@ -19,7 +19,8 @@ void IndexBuffer::initialize(GLuint)
 void IndexBuffer::store()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangles.size() * 3 * sizeof(GLuint), triangles.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangles.size() * 3 * sizeof(GLuint),
+        triangles.data(), GL_STATIC_DRAW);
 }
 
 

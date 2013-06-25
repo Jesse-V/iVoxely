@@ -20,7 +20,8 @@ std::shared_ptr<RenderableObject> Ground::makeObject()
 
 
 
-std::vector<std::shared_ptr<DataBuffer>> Ground::getOptionalDataBuffers(const std::vector<glm::vec3>& vertices)
+std::vector<std::shared_ptr<DataBuffer>>
+    Ground::getOptionalDataBuffers(const std::vector<glm::vec3>& vertices)
 {
     std::vector<std::shared_ptr<DataBuffer>> optionalBuffers;
 
@@ -70,7 +71,10 @@ std::vector<Triangle> Ground::getTriangles()
 
 
 
-std::vector<glm::vec3> Ground::getNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles)
+std::vector<glm::vec3> Ground::getNormals(
+    const std::vector<glm::vec3>& vertices,
+    const std::vector<Triangle>& triangles
+)
 {
     std::cout << "normals... ";
 

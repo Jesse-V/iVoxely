@@ -31,7 +31,8 @@ void NormalBuffer::store()
         });
 
     glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
-    glBufferData(GL_ARRAY_BUFFER, rawNormals.size() * sizeof(GLfloat), rawNormals.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, rawNormals.size() * sizeof(GLfloat),
+        rawNormals.data(), GL_STATIC_DRAW);
 }
 
 
@@ -39,7 +40,7 @@ void NormalBuffer::store()
 void NormalBuffer::enable()
 {
     glEnableVertexAttribArray(normalAttrib);
-    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer); //why is this second bindBuffer call necessary?
+    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
     glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
@@ -72,7 +73,8 @@ std::shared_ptr<ShaderSnippet> NormalBuffer::getVertexShaderGLSL()
         ).",
         R".(
             //NormalBuffer main method code
-            normal_camera = normalize((viewMatrix * modelMatrix * vec4(vertexNormal, 0)).xyz);
+            normal_camera = normalize((viewMatrix * modelMatrix *
+                vec4(vertexNormal, 0)).xyz);
         )."
     );
 }
@@ -103,7 +105,10 @@ std::shared_ptr<ShaderSnippet> NormalBuffer::getFragmentShaderGLSL()
 // Calculate the normals for a given mesh using the
 // "Mean Weighted by Angle" (MWA) algorithm as seen in the paper
 // "A Comparison of Algorithms for Vertex Normal Computation"
-std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles)
+std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(
+    const std::vector<glm::vec3>& vertices,
+    const std::vector<Triangle>& triangles
+)
 {
     // keep track of which triangles a given vertex is part of
     std::vector<std::vector<size_t>> vtmap;
@@ -130,7 +135,8 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(const std::vector<glm::vec3>
             glm::vec3 edge2 = p3 - p1;
             glm::vec3 edgecross = glm::cross(edge2, edge1);
 
-            float sinalpha = glm::length(edgecross) / (glm::length(edge1) * glm::length(edge2));
+            float sinalpha = glm::length(edgecross) /
+                (glm::length(edge1) * glm::length(edge2));
             float alpha = (float)asin(sinalpha);
 
             normal += alpha * tN[tlist[k]];
@@ -146,7 +152,10 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(const std::vector<glm::vec3>
 // Calculate the normals of the mesh using the
 // "Mean Weighted Average By Sine And Edge Reciprocal" (MWASER) algorithm as seen in
 // "A Comparison of Algorithms for Vertex Normal Computation"
-std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles)
+std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(
+    const std::vector<glm::vec3>& vertices,
+    const std::vector<Triangle>& triangles
+)
 {
     // keep track of which triangles a given vertex is part of
     std::vector<std::vector<size_t>> vtmap;
@@ -189,7 +198,10 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(const std::vector<glm::ve
 
 // Calculate the normals for a given mesh using the
 // "Mean Weighted Equally" (MWE) algorithm (Naive approach)
-std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles)
+std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(
+    const std::vector<glm::vec3>& vertices,
+    const std::vector<Triangle>& triangles
+)
 {
     // keep track of which triangles a given vertex is part of
     std::vector<std::vector<size_t>> vtmap;
@@ -215,7 +227,11 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(const std::vector<glm::vec3>
 
 
 
-std::vector<glm::vec3> NormalBuffer::calculateTriangleNormals(const std::vector<glm::vec3>& vertices, const std::vector<Triangle>& triangles, std::vector<std::vector<size_t>>& vtmap)
+std::vector<glm::vec3> NormalBuffer::calculateTriangleNormals(
+    const std::vector<glm::vec3>& vertices,
+    const std::vector<Triangle>& triangles,
+    std::vector<std::vector<size_t>>& vtmap
+)
 {
     std::vector<glm::vec3> tN;
 

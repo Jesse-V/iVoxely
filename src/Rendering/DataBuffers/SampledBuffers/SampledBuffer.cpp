@@ -7,7 +7,8 @@ SampledBuffer::SampledBuffer(const std::string& imagePath)
 {
     std::string status = loadBMP(imagePath);
     if (status != "success")
-        std::cout << "Error loading \"" + imagePath + "\" image: " << status << std::endl;
+        std::cout << "Error loading \"" + imagePath + "\" image: "
+            << status << std::endl;
 }
 
 

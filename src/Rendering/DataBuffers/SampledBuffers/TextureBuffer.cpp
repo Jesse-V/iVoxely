@@ -25,10 +25,12 @@ void TextureBuffer::storeImage()
     // Give the image to OpenGL
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
-    // When MAGnifying the image (no bigger mipmap available), use LINEAR filtering
+    // When MAGnifying the image (no bigger mipmap available),
+    // use LINEAR filtering
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    // When MINifying the image, use a LINEAR blend of two mipmaps, each filtered LINEARLY too
+    // When MINifying the image, use a LINEAR blend of two mipmaps,
+    // each filtered LINEARLY too
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
     // Generate mipmaps, by the way.

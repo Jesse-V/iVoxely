@@ -2,7 +2,9 @@
 #include "Program.hpp"
 
 
-cs5400::Program::Program(const std::shared_ptr<VertexShader>& vertex_, const std::shared_ptr<FragmentShader>& fragment_):
+cs5400::Program::Program(
+    const std::shared_ptr<VertexShader>& vertex_,
+    const std::shared_ptr<FragmentShader>& fragment_):
     handle(glCreateProgram()), vertex(vertex_), fragment(fragment_)
 {}
 
@@ -22,7 +24,10 @@ GLuint cs5400::Program::getHandle()
 
 
 
-std::shared_ptr<cs5400::Program> cs5400::makeProgram(const std::shared_ptr<VertexShader>& vertex, const std::shared_ptr<FragmentShader>& fragment)
+std::shared_ptr<cs5400::Program> cs5400::makeProgram(
+    const std::shared_ptr<VertexShader>& vertex,
+    const std::shared_ptr<FragmentShader>& fragment
+)
 {
     GLint link_ok = GL_FALSE;
     auto program = std::make_shared<Program>(vertex, fragment);

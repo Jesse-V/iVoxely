@@ -37,6 +37,7 @@ namespace
 
         GLint compile_ok = GL_FALSE;
         glGetShaderiv(handle, GL_COMPILE_STATUS, &compile_ok);
+
         if (compile_ok == GL_FALSE)
         {
             GLchar buf[8192];

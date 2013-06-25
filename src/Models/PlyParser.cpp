@@ -18,7 +18,7 @@
 void PlyParser::loadPlyModel(const std::string& fileName)
 {
     auto fileContents = readFile(fileName); //read entire file
-    auto pieces = seperatePly(fileContents); //separate file into header, vertices, indices
+    auto pieces = seperatePly(fileContents); //header, vertices, indices
 
     /*
     //use threading to parallelize the parsing
@@ -72,9 +72,9 @@ std::string PlyParser::readFile(const std::string& fileName)
         throw std::runtime_error("Error opening ply file: " + fileName);
 
     fin.seekg(0, std::ios::end);
-    fileContents.resize((unsigned long)fin.tellg()); //allocate enough space to avoid multiple expansions
+    fileContents.resize((unsigned long)fin.tellg()); //allocate enough space
     fin.seekg(0, std::ios::beg);
-    fin.read(&fileContents[0], (long)fileContents.size()); //read entire file at once
+    fin.read(&fileContents[0], (long)fileContents.size()); //read entire file
     fin.close();
 
     return fileContents;
@@ -101,7 +101,8 @@ std::vector<std::string> PlyParser::seperatePly(const std::string& fileContents)
     for (int lineCount = 0; lineCount < sizes.first; lineCount++)
         location = fileContents.find('\n', location + 1);
 
-    pieces.push_back(fileContents.substr(dataBegin, location - dataBegin)); //add vertex data
+    //add vertex data
+    pieces.push_back(fileContents.substr(dataBegin, location - dataBegin));
     pieces.push_back(fileContents.substr(location + 1)); //add index data
 
     return pieces;
@@ -154,10 +155,11 @@ std::vector<GLuint> PlyParser::parseIndices(std::string indicesData)
 }
 
 
-
-/*  Accepts the characters that make up the header,
-    returns the count of how many vertices and how many indices make up the rest of the file.
-*/
+/**
+ * Accepts the characters that make up the header,
+ * returns the count of how many vertices and
+ * how many indices make up the rest of the file.
+ */
 std::pair<int, int> PlyParser::getSizes(const std::string& header)
 {
     std::stringstream stream(header);

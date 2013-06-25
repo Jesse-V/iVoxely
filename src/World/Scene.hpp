@@ -16,7 +16,7 @@ class Scene
         void addModel(const std::shared_ptr<RenderableObject>& obj);
         void addLight(const std::shared_ptr<Light>& light);
         void setCamera(const std::shared_ptr<Camera>& camera);
-        void setAmbientLight(const glm::vec3& rgb); // (0,0,0) is total darkness, (1.0,1,0,1,0) is total light
+        void setAmbientLight(const glm::vec3& rgb);
         void render();
 
         std::shared_ptr<Camera> getCamera();

@@ -30,7 +30,8 @@ void VertexBuffer::store()
         });
 
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, rawPoints.size() * sizeof(GLfloat), rawPoints.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, rawPoints.size() * sizeof(GLfloat),
+        rawPoints.data(), GL_STATIC_DRAW);
 }
 
 
@@ -38,7 +39,7 @@ void VertexBuffer::store()
 void VertexBuffer::enable()
 {
     glEnableVertexAttribArray(vertexAttrib);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); //why is this second bindBuffer call necessary?
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glVertexAttribPointer(vertexAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 

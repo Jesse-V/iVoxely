@@ -7,7 +7,9 @@ class ShaderSnippet
 {
     public:
         ShaderSnippet();
-        ShaderSnippet(const std::string& fields, const std::string& methods, const std::string& mainBodyCode);
+        ShaderSnippet(const std::string& fields,
+            const std::string& methods, const std::string& mainBodyCode
+        );
 
         std::string getFields();
         std::string getMethods();

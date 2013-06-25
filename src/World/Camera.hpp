@@ -16,7 +16,9 @@ class Camera
 
         // Functions to move/direct the camera
         void setPosition(const glm::vec3& pos);
-        void lookAt(const glm::vec3& look, const glm::vec3& up = glm::vec3(0.0, 1.0, 0.0));
+        void lookAt(const glm::vec3& look,
+                    const glm::vec3& up = glm::vec3(0.0, 1.0, 0.0)
+        );
 
         void translateX(float theta);
         void translateY(float theta);
@@ -28,7 +30,8 @@ class Camera
         void yaw(float theta);
 
         // Set the perspective of the camera and its clipping distances
-        void setPerspective(float fieldOfViewDegrees, float aspectRatio, float nearclip, float farclip);
+        void setPerspective(float fieldOfViewDegrees, float aspectRatio,
+                            float nearclip, float farclip);
 
         void setFieldOfView(float degrees);
         void setAspectRatio(float ratio);
