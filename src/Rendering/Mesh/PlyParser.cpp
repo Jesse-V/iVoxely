@@ -11,51 +11,32 @@
 // **************  Public functions:  **************
 
 /*  Given the address to the PLY file,
-    this function loads, parses, and assembles the vertices and indices data.
-    Nothing is returned, as the vertices and indices are remembered internally.
-    Use getVertices() and getIndices(), respectively, to return that data.
+    this function loads, parses, and assembles the vertices and triangle data.
+    Nothing is returned, as the vertices and triangle are remembered internally.
+    Use getVertices() and getTriangles(), respectively, to return that data.
 */
-void PlyParser::loadPlyModel(const std::string& fileName)
+std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
 {
     auto fileContents = readFile(fileName); //read entire file
-    auto pieces = seperatePly(fileContents); //header, vertices, indices
+    auto pieces = seperatePly(fileContents); //header, vertices, triangle
 
-    /*
+    std::vector<glm::vec3> vertices;
+    std::vector<GLuint> triangle;
+
     //use threading to parallelize the parsing
-    std::thread t1( [&]() {
+    std::thread t1([&]() {
         vertices = parseVertices(pieces[1]);
     });
 
     std::thread t2( [&]() {
-        indices = parseIndices(pieces[2]);
+        triangle = parsetriangle(pieces[2]);
     });
 
     t1.join(); //wait for both threads to complete
     t2.join();
-    */
 
-    vertices_ = parseVertices(pieces[1]);
-    indices_ = parseIndices(pieces[2]);
-}
-
-
-
-/*  Returns the vertices from the PLY file.
-    Call loadPlyModel before calling this function.
-*/
-std::vector<glm::vec3> PlyParser::getVertices()
-{
-    return vertices_;
-}
-
-
-
-/*  Returns the indices from the PLY file.
-    Call loadPlyModel before calling this function.
-*/
-std::vector<GLuint> PlyParser::getIndices()
-{
-    return indices_;
+    return std::make_shared<Mesh>(std::make_shared<VertexBuffer>(vertices),
+        std::make_shared<IndexBuffer>)
 }
 
 
@@ -83,7 +64,7 @@ std::string PlyParser::readFile(const std::string& fileName)
 
 
 /*  Accepts the contents of the PLY file,
-    returns three strings: the header, the vertices, and the indices.
+    returns three strings: the header, the vertices, and the triangle.
     Note that no parsing is done, this function just separates the raw data.
 */
 std::vector<std::string> PlyParser::seperatePly(const std::string& fileContents)
@@ -94,7 +75,7 @@ std::vector<std::string> PlyParser::seperatePly(const std::string& fileContents)
 
     std::string header = fileContents.substr(0, headerEnd - 1);
     pieces.push_back(header); //add header
-    auto sizes = getSizes(header); //fetches count of vertices and indices
+    auto sizes = getSizes(header); //fetches count of vertices and triangle
 
     //skips from the end of the header to the end of vertices data
     unsigned long location = dataBegin;
@@ -132,33 +113,36 @@ std::vector<glm::vec3> PlyParser::parseVertices(std::string verticesData)
 
 
 
-/*  Accepts the raw characters that represent the indices,
+/*  Accepts the raw characters that represent the triangle,
     parses the characters into a list of ints and returns the result.
 */
-std::vector<GLuint> PlyParser::parseIndices(std::string indicesData)
+std::vector<Triangle> PlyParser::parseTriangles(const std::string& triangleData)
 {
-    GLuint verticeCount, a, b, c;
-    std::vector<GLuint> indices;
-    std::stringstream sstream(indicesData);
+    int dimensionality = 3;
+    std::vector<Triangle> triangles;
+    std::stringstream sstream(triangleData);
 
     //loop through each line, pull out and store the relevant data
     std::string line;
     while (std::getline(sstream, line))
     {
-        sstream >> verticeCount >> a >> b >> c;
-        indices.push_back(a);
-        indices.push_back(b);
-        indices.push_back(c);
+        sstream >> dimensionality;
+        if (dimensionality != 3)
+            throw std::runtime_error(".ply file not a 3D mesh!");
+
+        Triangle triangle();
+        sstream >> triangle.x >> triangle.y >> triangle.z;
+        triangles.push_back(triangle);
     }
 
-    return indices;
+    return triangles;
 }
 
 
 /**
  * Accepts the characters that make up the header,
  * returns the count of how many vertices and
- * how many indices make up the rest of the file.
+ * how many triangle make up the rest of the file.
  */
 std::pair<int, int> PlyParser::getSizes(const std::string& header)
 {

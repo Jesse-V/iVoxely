@@ -6,17 +6,18 @@
 #include <iostream>
 
 
-RenderableObject::RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer,
+RenderableObject::RenderableObject(const std::shared_ptr<Mesh>& mesh,
     const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs):
-    RenderableObject(vertexBuffer, optionalDBs, GL_TRIANGLES)
+    RenderableObject(mesh, optionalDBs, GL_TRIANGLES)
 {}
 
 
 
-RenderableObject::RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer,
+RenderableObject::RenderableObject(const std::shared_ptr<Mesh>& mesh,
     const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs,
     GLenum renderMode):
-    vertexBuffer_(vertexBuffer), dataBuffers_(optionalDBs), modelMatrix_(glm::mat4()), isVisible_(true), beenInitialized_(false), renderMode_(renderMode)
+    mesh_(mesh), dataBuffers_(optionalDBs), modelMatrix_(glm::mat4()),
+    isVisible_(true), beenInitialized_(false), renderMode_(renderMode)
 {} //Scene will call initializeAndStore
 
 
@@ -25,8 +26,8 @@ void RenderableObject::initializeAndStore(std::shared_ptr<cs5400::Program> progr
 {
     renderingProgram_ = program;
 
-    vertexBuffer_->initialize(program->getHandle());
-    vertexBuffer_->store();
+    mesh_->initialize(program->getHandle());
+    mesh_->store();
 
     for_each (dataBuffers_.begin(), dataBuffers_.end(),
         [&](const std::shared_ptr<DataBuffer>& buffer)
@@ -76,7 +77,7 @@ std::shared_ptr<cs5400::Program> RenderableObject::getProgram()
 std::vector<std::shared_ptr<DataBuffer>> RenderableObject::getAllDataBuffers()
 {
     std::vector<std::shared_ptr<DataBuffer>> all(dataBuffers_);
-    all.insert(all.begin(), vertexBuffer_);
+    all.insert(all.begin(), mesh_);
     return all;
 }
 
@@ -112,7 +113,7 @@ void RenderableObject::render(GLint modelMatrixID)
 
 void RenderableObject::enableDataBuffers()
 {
-    vertexBuffer_->enable();
+    mesh_->enable();
 
     for_each (dataBuffers_.begin(), dataBuffers_.end(),
         [&](const std::shared_ptr<DataBuffer>& buffer)
@@ -135,14 +136,14 @@ void RenderableObject::drawDataBuffers()
     });
 
     if (!optionalBufferRendered)
-        vertexBuffer_->draw(GL_TRIANGLES);
+        mesh_->draw(GL_TRIANGLES);
 }
 
 
 
 void RenderableObject::disableDataBuffers()
 {
-    vertexBuffer_->disable();
+    mesh_->disable();
 
     for_each (dataBuffers_.begin(), dataBuffers_.end(),
         [&](const std::shared_ptr<DataBuffer>& buffer)

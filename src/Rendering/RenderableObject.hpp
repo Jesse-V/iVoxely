@@ -12,13 +12,11 @@
 class RenderableObject
 {
     public:
-        RenderableObject(std::shared_ptr<VertexBuffer> vertexBuffer,
+        RenderableObject(const std::shared_ptr<Mesh>& mesh,
             const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs);
-        RenderableObject(
-            std::shared_ptr<VertexBuffer> vertexBuffer,
+        RenderableObject(const std::shared_ptr<Mesh>& mesh,
             const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs,
-            GLenum renderMode
-        );
+            GLenum renderMode);
 
         void initializeAndStore(std::shared_ptr<cs5400::Program> program);
         void setVisible(bool visible);
@@ -36,9 +34,9 @@ class RenderableObject
         void disableDataBuffers();
 
     private:
-        std::shared_ptr<cs5400::Program> renderingProgram_;
-        std::shared_ptr<VertexBuffer> vertexBuffer_;
+        std::shared_ptr<VertexBuffer> mesh_;
         std::vector<std::shared_ptr<DataBuffer>> dataBuffers_;
+        std::shared_ptr<cs5400::Program> renderingProgram_;
         glm::mat4 modelMatrix_;
         bool isVisible_, beenInitialized_;
         GLenum renderMode_;

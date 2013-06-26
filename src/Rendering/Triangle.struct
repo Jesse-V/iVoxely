@@ -7,7 +7,7 @@
 
 struct Triangle
 {
-    Triangle(GLuint aa, GLuint bb, GLuint cc)
+    Triangle(GLuint aa = 0, GLuint bb = 0, GLuint cc = 0)
         : a(aa), b(bb), c(cc)
     {}
 
