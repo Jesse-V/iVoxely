@@ -2,12 +2,13 @@
 #ifndef PLY_PARSER_HPP
 #define PLY_PARSER_HPP
 
+#include "MeshGenerator.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <GL/glut.h>
 #include <vector>
 #include <string>
 
-class PlyParser
+class PlyParser// : public MeshGenerator
 {
     private:
         const std::string HEADER_DELIMITER = "end_header"; //end of header

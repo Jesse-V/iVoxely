@@ -11,7 +11,6 @@ endif()
 include_directories(. glm)
 #link_directories()
 
-# Let's keep this organized and logically sorted
 add_executable(ivoxely
     main.cpp
     Game/Game.cpp
@@ -20,7 +19,8 @@ add_executable(ivoxely
     World/Camera.cpp
     World/Light.cpp
     Models/Ground/Ground.cpp
-    Models/PlyParser.cpp
+    Rendering/Mesh/Mesh.cpp
+    Rendering/Mesh/PlyParser.cpp
     Rendering/RenderableObject.cpp
     Rendering/DataBuffers/VertexBuffer.cpp
     Rendering/DataBuffers/IndexBuffer.cpp

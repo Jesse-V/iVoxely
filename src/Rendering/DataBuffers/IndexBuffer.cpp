@@ -43,6 +43,13 @@ bool IndexBuffer::draw(GLenum mode)
 
 
 
+std::vector<Triangle> IndexBuffer::getTriangles()
+{
+    return triangles_;
+}
+
+
+
 std::shared_ptr<ShaderSnippet> IndexBuffer::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>();

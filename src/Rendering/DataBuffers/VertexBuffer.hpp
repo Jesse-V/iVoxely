@@ -19,6 +19,8 @@ class VertexBuffer: public DataBuffer
         virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
         virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
+        std::vector<glm::vec3> getVertices();
+
     private:
         void storePoints();
         void enableVertices();

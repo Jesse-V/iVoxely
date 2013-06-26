@@ -60,6 +60,12 @@ bool VertexBuffer::draw(GLenum mode)
 
 
 
+std::vector<glm::vec3> VertexBuffer::getVertices()
+{
+    return vertices_;
+}
+
+
 
 std::shared_ptr<ShaderSnippet> VertexBuffer::getVertexShaderGLSL()
 {
