@@ -7,7 +7,7 @@
 class Ground: public CustomObject
 {
     public:
-        virtual std::shared_ptr<RenderableObject> makeObject();
+        virtual std::shared_ptr<Model> makeObject();
 
     protected:
         virtual std::vector<std::shared_ptr<DataBuffer>>

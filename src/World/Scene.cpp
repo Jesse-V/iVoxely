@@ -13,7 +13,7 @@ Scene::Scene(const std::shared_ptr<Camera>& camera):
 
 
 
-void Scene::addModel(const std::shared_ptr<RenderableObject>& obj)
+void Scene::addModel(const std::shared_ptr<Model>& obj)
 {
     renderableObjects_.push_back(obj);
 }
@@ -49,7 +49,7 @@ void Scene::setAmbientLight(const glm::vec3& rgb)
 void Scene::render()
 {
     for_each (renderableObjects_.begin(), renderableObjects_.end(),
-        [&](std::shared_ptr<RenderableObject>& obj)
+        [&](std::shared_ptr<Model>& obj)
         {
             if (!obj->hasBeenInitialized())
                 obj->initializeAndStore(ShaderManager::createProgram(obj, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_));
@@ -75,7 +75,7 @@ std::shared_ptr<Camera> Scene::getCamera()
 
 
 
-std::vector<std::shared_ptr<RenderableObject>> Scene::getRenderableObjects()
+std::vector<std::shared_ptr<Model>> Scene::getRenderableObjects()
 {
     return renderableObjects_;
 }
@@ -168,7 +168,7 @@ void Scene::assertRenderableObjectsContainNormalBuffers()
     std::vector<glm::vec3> emptyVec;
     auto normBuffer = std::make_shared<NormalBuffer>(emptyVec);
     for_each (renderableObjects_.begin(), renderableObjects_.end(),
-        [&](std::shared_ptr<RenderableObject>& obj)
+        [&](std::shared_ptr<Model>& obj)
         {
             auto optionalBuffers = obj->getAllDataBuffers();
             bool containsNormalBuffer = false;

@@ -2,7 +2,7 @@
 #ifndef SHADER_MANAGER_HPP
 #define SHADER_MANAGER_HPP
 
-#include "Rendering/RenderableObject.hpp"
+#include "Rendering/Model.hpp"
 #include "Rendering/DataBuffers/DataBuffer.hpp"
 #include "World/Light.hpp"
 #include "Program.hpp"
@@ -14,7 +14,7 @@ class ShaderManager
 {
     public:
         static std::shared_ptr<cs5400::Program> createProgram(
-            const std::shared_ptr<RenderableObject>& obj,
+            const std::shared_ptr<Model>& obj,
             const std::shared_ptr<ShaderSnippet>& sceneVertexShader,
             const std::shared_ptr<ShaderSnippet>& sceneFragmentShader,
             const std::vector<std::shared_ptr<Light>> lights

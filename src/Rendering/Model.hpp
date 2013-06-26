@@ -1,6 +1,6 @@
 
-#ifndef RENDERABLE_OBJECT_HPP
-#define RENDERABLE_OBJECT_HPP
+#ifndef MODEL_HPP
+#define MODEL_HPP
 
 #include <memory>
 #include <vector>
@@ -9,12 +9,12 @@
 #include "DataBuffers/VertexBuffer.hpp"
 #include "Resources/OpenGL/Program.hpp"
 
-class RenderableObject
+class Model
 {
     public:
-        RenderableObject(const std::shared_ptr<Mesh>& mesh,
+        Model(const std::shared_ptr<Mesh>& mesh,
             const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs);
-        RenderableObject(const std::shared_ptr<Mesh>& mesh,
+        Model(const std::shared_ptr<Mesh>& mesh,
             const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs,
             GLenum renderMode);
 

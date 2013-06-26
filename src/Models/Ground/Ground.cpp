@@ -7,12 +7,12 @@
 #include <iostream>
 
 
-std::shared_ptr<RenderableObject> Ground::makeObject()
+std::shared_ptr<Model> Ground::makeObject()
 {
     std::cout << "Assembling Ground Model, loading ";
 
     auto vertices = getVertices();
-    return std::make_shared<RenderableObject>(
+    return std::make_shared<Model>(
         std::make_shared<VertexBuffer>(vertices),
         getOptionalDataBuffers(vertices)
     );

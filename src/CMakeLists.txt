@@ -21,7 +21,7 @@ add_executable(ivoxely
     Models/Ground/Ground.cpp
     Rendering/Mesh/Mesh.cpp
     Rendering/Mesh/PlyParser.cpp
-    Rendering/RenderableObject.cpp
+    Rendering/Model.cpp
     Rendering/DataBuffers/VertexBuffer.cpp
     Rendering/DataBuffers/IndexBuffer.cpp
     Rendering/DataBuffers/NormalBuffer.cpp

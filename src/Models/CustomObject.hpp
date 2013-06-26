@@ -2,7 +2,7 @@
 #ifndef CUSTOM_OBJECT
 #define CUSTOM_OBJECT
 
-#include "Rendering/RenderableObject.hpp"
+#include "Rendering/Model.hpp"
 #include "Rendering/Triangle.struct"
 #include <memory>
 #include <vector>
@@ -10,7 +10,7 @@
 class CustomObject
 {
     public:
-        virtual std::shared_ptr<RenderableObject> makeObject() = 0;
+        virtual std::shared_ptr<Model> makeObject() = 0;
         virtual std::vector<std::shared_ptr<DataBuffer>>
             getOptionalDataBuffers(const std::vector<glm::vec3>& vertices) = 0;
 

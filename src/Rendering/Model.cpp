@@ -1,19 +1,19 @@
 
-#include "RenderableObject.hpp"
+#include "Model.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <algorithm>
 #include <iostream>
 
 
-RenderableObject::RenderableObject(const std::shared_ptr<Mesh>& mesh,
+Model::Model(const std::shared_ptr<Mesh>& mesh,
     const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs):
-    RenderableObject(mesh, optionalDBs, GL_TRIANGLES)
+    Model(mesh, optionalDBs, GL_TRIANGLES)
 {}
 
 
 
-RenderableObject::RenderableObject(const std::shared_ptr<Mesh>& mesh,
+Model::Model(const std::shared_ptr<Mesh>& mesh,
     const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs,
     GLenum renderMode):
     mesh_(mesh), dataBuffers_(optionalDBs), modelMatrix_(glm::mat4()),
@@ -22,7 +22,7 @@ RenderableObject::RenderableObject(const std::shared_ptr<Mesh>& mesh,
 
 
 
-void RenderableObject::initializeAndStore(std::shared_ptr<cs5400::Program> program)
+void Model::initializeAndStore(std::shared_ptr<cs5400::Program> program)
 {
     renderingProgram_ = program;
 
@@ -42,7 +42,7 @@ void RenderableObject::initializeAndStore(std::shared_ptr<cs5400::Program> progr
 
 
 // Objects that are not 'visible' will not be rendered
-void RenderableObject::setVisible(bool visible)
+void Model::setVisible(bool visible)
 {
     isVisible_ = visible;
 }
@@ -50,31 +50,31 @@ void RenderableObject::setVisible(bool visible)
 
 
 // Set the matrix to convert from model coords to world coords
-void RenderableObject::setModelMatrix(const glm::mat4& matrix)
+void Model::setModelMatrix(const glm::mat4& matrix)
 {
     modelMatrix_ = matrix;
 }
 
 
 
-void RenderableObject::setRenderMode(GLenum newMode)
+void Model::setRenderMode(GLenum newMode)
 {
     renderMode_ = newMode;
 }
 
 
 
-std::shared_ptr<cs5400::Program> RenderableObject::getProgram()
+std::shared_ptr<cs5400::Program> Model::getProgram()
 {
     if (!beenInitialized_)
-        throw std::runtime_error("RenderableObject has not been initialized!");
+        throw std::runtime_error("Model has not been initialized!");
 
     return renderingProgram_;
 }
 
 
 
-std::vector<std::shared_ptr<DataBuffer>> RenderableObject::getAllDataBuffers()
+std::vector<std::shared_ptr<DataBuffer>> Model::getAllDataBuffers()
 {
     std::vector<std::shared_ptr<DataBuffer>> all(dataBuffers_);
     all.insert(all.begin(), mesh_);
@@ -83,7 +83,7 @@ std::vector<std::shared_ptr<DataBuffer>> RenderableObject::getAllDataBuffers()
 
 
 
-bool RenderableObject::hasBeenInitialized()
+bool Model::hasBeenInitialized()
 {
     return beenInitialized_;
 }
@@ -91,13 +91,13 @@ bool RenderableObject::hasBeenInitialized()
 
 
 // Render the object
-void RenderableObject::render(GLint modelMatrixID)
+void Model::render(GLint modelMatrixID)
 {
     if (modelMatrixID < 0)
-        throw std::runtime_error("Invalid handle passed to RenderableObject!");
+        throw std::runtime_error("Invalid handle passed to Model!");
 
     if (!beenInitialized_)
-        throw std::runtime_error("RenderableObject has not been initialized!");
+        throw std::runtime_error("Model has not been initialized!");
 
     if (isVisible_)
     {
@@ -111,7 +111,7 @@ void RenderableObject::render(GLint modelMatrixID)
 
 
 
-void RenderableObject::enableDataBuffers()
+void Model::enableDataBuffers()
 {
     mesh_->enable();
 
@@ -124,7 +124,7 @@ void RenderableObject::enableDataBuffers()
 
 
 
-void RenderableObject::drawDataBuffers()
+void Model::drawDataBuffers()
 {
     bool optionalBufferRendered = false;
 
@@ -141,7 +141,7 @@ void RenderableObject::drawDataBuffers()
 
 
 
-void RenderableObject::disableDataBuffers()
+void Model::disableDataBuffers()
 {
     mesh_->disable();
 

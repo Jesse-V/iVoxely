@@ -7,7 +7,7 @@
 
 
 std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
-    const std::shared_ptr<RenderableObject>& obj,
+    const std::shared_ptr<Model>& obj,
     const std::shared_ptr<ShaderSnippet>& sceneVertexShader,
     const std::shared_ptr<ShaderSnippet>& sceneFragmentShader,
     const std::vector<std::shared_ptr<Light>> lights
