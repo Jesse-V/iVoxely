@@ -21,8 +21,8 @@ class TextureBuffer: public SampledBuffer
         virtual void storeCoordMap();
 
     private:
-        GLuint textureID, vbo_cube_texcoords;
-        GLint attribute_texcoord;
+        GLuint textureID_, vbo_cube_texcoords_;
+        GLint attribute_texcoord_;
 };
 
 #endif

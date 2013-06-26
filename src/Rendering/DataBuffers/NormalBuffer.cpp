@@ -5,15 +5,15 @@
 
 
 NormalBuffer::NormalBuffer(const std::vector<glm::vec3>& normals):
-    normals(normals)
+    normals_(normals)
 {}
 
 
 
 void NormalBuffer::initialize(GLuint program)
 {
-    glGenBuffers(1, &normalBuffer);
-    normalAttrib = glGetAttribLocation(program, "vertexNormal");
+    glGenBuffers(1, &normalBuffer_);
+    normalAttrib_ = glGetAttribLocation(program, "vertexNormal");
 }
 
 
@@ -22,7 +22,7 @@ void NormalBuffer::initialize(GLuint program)
 void NormalBuffer::store()
 {
     std::vector<GLfloat> rawNormals;
-    for_each (normals.begin(), normals.end(),
+    for_each (normals_.begin(), normals_.end(),
         [&](const glm::vec3& norm)
         {
             rawNormals.push_back(norm.x);
@@ -30,7 +30,7 @@ void NormalBuffer::store()
             rawNormals.push_back(norm.z);
         });
 
-    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer_);
     glBufferData(GL_ARRAY_BUFFER, rawNormals.size() * sizeof(GLfloat),
         rawNormals.data(), GL_STATIC_DRAW);
 }
@@ -39,16 +39,16 @@ void NormalBuffer::store()
 
 void NormalBuffer::enable()
 {
-    glEnableVertexAttribArray(normalAttrib);
-    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer);
-    glVertexAttribPointer(normalAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(normalAttrib_);
+    glBindBuffer(GL_ARRAY_BUFFER, normalBuffer_);
+    glVertexAttribPointer(normalAttrib_, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 
 
 void NormalBuffer::disable()
 {
-    glDisableVertexAttribArray(normalAttrib);
+    glDisableVertexAttribArray(normalAttrib_);
 }
 
 

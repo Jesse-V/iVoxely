@@ -6,6 +6,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include <memory>
 #include <sstream>
+#include <stdexcept>
 
 
 Camera::Camera()
@@ -21,12 +22,12 @@ void Camera::reset()
     setPosition(glm::vec3(0.0, 0.0, 0.5));
     lookAt(glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 1.0, 0.0));
 
-    fieldOfView   = 45.0f; // frustrum viewing apeture
-    aspectRatio   = 4.0f/3.0f;
-    nearFieldClip = 0.0001f;   // clip anything closer than this
-    farFieldClip  = 100.0f; // clip anything farther than this
-    projection    = glm::perspective(fieldOfView, aspectRatio,
-                                     nearFieldClip, farFieldClip);
+    fieldOfView_   = 45.0f; // frustrum viewing apeture
+    aspectRatio_   = 4.0f/3.0f;
+    nearFieldClip_ = 0.0001f;   // clip anything closer than this
+    farFieldClip_  = 100.0f; // clip anything farther than this
+    projection_    = glm::perspective(fieldOfView_, aspectRatio_,
+                                     nearFieldClip_, farFieldClip_);
 }
 
 
@@ -42,6 +43,9 @@ void Camera::sync(GLuint handle) const
     GLint projMatrixUniform = glGetUniformLocation(handle, "projMatrix");
     glUniformMatrix4fv(projMatrixUniform, 1, GL_FALSE,
                        glm::value_ptr(getProjectionMatrix()));
+
+    if (viewMatrixUniform < 0 || projMatrixUniform < 0)
+        throw std::runtime_error("Unable to find Camera uniform variables!");
 }
 
 
@@ -49,16 +53,16 @@ void Camera::sync(GLuint handle) const
 // Set the camera to an arbitrary location without changing orientation
 void Camera::setPosition(const glm::vec3& pos)
 {
-    position = pos;
+    position_ = pos;
 }
 
 
 
-// Set the orientation of the camera without changing its position
-void Camera::lookAt(const glm::vec3& newLookVector, const glm::vec3& newUpVector)
+// Set the orientation of the camera without changing its position_
+void Camera::lookAt(const glm::vec3& newLookVector, const glm::vec3& newUpVector_)
 {
-    lookDirection = newLookVector;
-    upVector = newUpVector;
+    lookDirection_ = newLookVector;
+    upVector_ = newUpVector_;
 }
 
 
@@ -87,14 +91,14 @@ void Camera::translateZ(float theta)
 // Translate the camera along X/Y/Z
 void Camera::translate(const glm::vec3& xyzTheta)
 {
-    glm::vec4 pos(position, 1.0);
-    glm::vec4 look(lookDirection, 1.0);
+    glm::vec4 pos(position_, 1.0);
+    glm::vec4 look(lookDirection_, 1.0);
     glm::mat4 matrix = glm::translate(glm::mat4(), xyzTheta);
     pos = matrix * pos;
     look = matrix * look;
 
-    position = pos.xyz();
-    lookDirection = look.xyz();
+    position_ = pos.xyz();
+    lookDirection_ = look.xyz();
 }
 
 
@@ -103,13 +107,13 @@ void Camera::translate(const glm::vec3& xyzTheta)
 void Camera::pitch(float theta)
 {
     glm::mat4 matrix = glm::rotate(glm::mat4(), theta,
-                                   glm::cross(lookDirection, upVector));
+                                   glm::cross(lookDirection_, upVector_));
 
-    glm::vec4 look(lookDirection, 0.0);
-    lookDirection = (matrix * look).xyz();
+    glm::vec4 look(lookDirection_, 0.0);
+    lookDirection_ = (matrix * look).xyz();
 
-    glm::vec4 up(upVector, 0.0);
-    upVector = (matrix * up).xyz();
+    glm::vec4 up(upVector_, 0.0);
+    upVector_ = (matrix * up).xyz();
 }
 
 
@@ -117,10 +121,10 @@ void Camera::pitch(float theta)
 // Yaw the camera along the up vector
 void Camera::yaw(float theta)
 {
-    glm::mat4 matrix = glm::rotate(glm::mat4(), theta, upVector);
+    glm::mat4 matrix = glm::rotate(glm::mat4(), theta, upVector_);
 
-    glm::vec4 look(lookDirection, 0.0);
-    lookDirection = (matrix * look).xyz();
+    glm::vec4 look(lookDirection_, 0.0);
+    lookDirection_ = (matrix * look).xyz();
 }
 
 
@@ -128,61 +132,61 @@ void Camera::yaw(float theta)
 // Roll the camera along the look axis
 void Camera::roll(float theta)
 {
-    glm::mat4 matrix = glm::rotate(glm::mat4(), theta, lookDirection);
+    glm::mat4 matrix = glm::rotate(glm::mat4(), theta, lookDirection_);
 
-    glm::vec4 up(upVector, 0.0);
-    upVector = (matrix * up).xyz();
+    glm::vec4 up(upVector_, 0.0);
+    upVector_ = (matrix * up).xyz();
 }
 
 
 
 // Sets the perspective of the camera
 void Camera::setPerspective(
-    float fieldOfViewDegrees, float aspectRatio,
+    float fieldOfView_Degrees, float aspectRatio_,
     float nearclipdistance, float farclipdistance
 )
 {
-    this->fieldOfView   = fieldOfViewDegrees;
-    this->aspectRatio   = aspectRatio;
-    this->nearFieldClip = nearclipdistance;
-    this->farFieldClip  = farclipdistance;
-    this->projection = glm::perspective(fieldOfView, aspectRatio, nearFieldClip, farFieldClip);
+    this->fieldOfView_   = fieldOfView_Degrees;
+    this->aspectRatio_   = aspectRatio_;
+    this->nearFieldClip_ = nearclipdistance;
+    this->farFieldClip_  = farclipdistance;
+    this->projection_ = glm::perspective(fieldOfView_, aspectRatio_, nearFieldClip_, farFieldClip_);
 }
 
 
 
 void Camera::setFieldOfView(float degrees)
 {
-    fieldOfView = degrees;
-    projection = glm::perspective(fieldOfView, aspectRatio,
-                                  nearFieldClip, farFieldClip);
+    fieldOfView_ = degrees;
+    projection_ = glm::perspective(fieldOfView_, aspectRatio_,
+                                  nearFieldClip_, farFieldClip_);
 }
 
 
 
 void Camera::setAspectRatio(float ratio)
 {
-    aspectRatio = ratio;
-    projection = glm::perspective(fieldOfView, aspectRatio,
-                                  nearFieldClip, farFieldClip);
+    aspectRatio_ = ratio;
+    projection_ = glm::perspective(fieldOfView_, aspectRatio_,
+                                  nearFieldClip_, farFieldClip_);
 }
 
 
 
 void Camera::setNearFieldClipDistance(float distance)
 {
-    nearFieldClip = distance;
-    projection = glm::perspective(fieldOfView, aspectRatio,
-                                  nearFieldClip, farFieldClip);
+    nearFieldClip_ = distance;
+    projection_ = glm::perspective(fieldOfView_, aspectRatio_,
+                                  nearFieldClip_, farFieldClip_);
 }
 
 
 
 void Camera::setFarFieldClipDistance(float distance)
 {
-    farFieldClip = distance;
-    projection = glm::perspective(fieldOfView, aspectRatio,
-                                  nearFieldClip, farFieldClip);
+    farFieldClip_ = distance;
+    projection_ = glm::perspective(fieldOfView_, aspectRatio_,
+                                  nearFieldClip_, farFieldClip_);
 }
 
 
@@ -191,56 +195,56 @@ void Camera::setFarFieldClipDistance(float distance)
 
 glm::vec3 Camera::getLookDirection() const
 {
-    return lookDirection;
+    return lookDirection_;
 }
 
 
 
 glm::vec3 Camera::getPosition() const
 {
-    return position;
+    return position_;
 }
 
 
 
 glm::vec3 Camera::getUpVector() const
 {
-    return upVector;
+    return upVector_;
 }
 
 
 
 float Camera::getFOV() const
 {
-    return fieldOfView;
+    return fieldOfView_;
 }
 
 
 
 float Camera::getAspectRatio() const
 {
-    return aspectRatio;
+    return aspectRatio_;
 }
 
 
 
 float Camera::getNearFieldClip() const
 {
-    return nearFieldClip;
+    return nearFieldClip_;
 }
 
 
 
 float Camera::getFarFieldClip() const
 {
-    return farFieldClip;
+    return farFieldClip_;
 }
 
 
 
 glm::mat4 Camera::getProjectionMatrix() const
 {
-    return projection;
+    return projection_;
 }
 
 
@@ -249,12 +253,12 @@ std::string Camera::toString() const
 {
     std::stringstream ss;
 
-    ss << "LookV: <" << lookDirection.x << ", " << lookDirection.y <<
-                    ", " << lookDirection.z << "> ";
-    ss << "UpV: <"   << upVector.x << ", " << upVector.y <<
-                    ", " << upVector.z << "> ";
-    ss << "Pos: <"   << position.x << ", " << position.y <<
-                    ", " << position.z << ">";
+    ss << "LookV: <" << lookDirection_.x << ", " << lookDirection_.y <<
+                    ", " << lookDirection_.z << "> ";
+    ss << "UpV: <"   << upVector_.x << ", " << upVector_.y <<
+                    ", " << upVector_.z << "> ";
+    ss << "Pos: <"   << position_.x << ", " << position_.y <<
+                    ", " << position_.z << ">";
 
     return ss.str();
 }

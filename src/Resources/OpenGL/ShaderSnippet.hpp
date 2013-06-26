@@ -16,7 +16,7 @@ class ShaderSnippet
         std::string getMainBodyCode();
 
     private:
-        std::string fields, methods, mainBodyCode;
+        std::string fields_, methods_, mainBodyCode_;
 };
 
 #endif

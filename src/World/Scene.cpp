@@ -8,57 +8,57 @@
 
 
 Scene::Scene(const std::shared_ptr<Camera>& camera):
-    camera(camera)
+    camera_(camera)
 {}
 
 
 
 void Scene::addModel(const std::shared_ptr<RenderableObject>& obj)
 {
-    renderableObjects.push_back(obj);
+    renderableObjects_.push_back(obj);
 }
 
 
 
 void Scene::addLight(const std::shared_ptr<Light>& light)
 {
-    if (lights.size() > 0)
+    if (lights_.size() > 0)
         throw std::runtime_error("Multiple lights not supported at this time. See issue #9");
 
     assertRenderableObjectsContainNormalBuffers();
-    lights.push_back(light);
+    lights_.push_back(light);
 }
 
 
 
 void Scene::setCamera(const std::shared_ptr<Camera>& sceneCamera)
 {
-    camera = sceneCamera;
+    camera_ = sceneCamera;
 }
 
 
 
 void Scene::setAmbientLight(const glm::vec3& rgb)
 {
-    ambientLight = rgb;
+    ambientLight_ = rgb;
 }
 
 
 
-//render all objects and lights in the scene, as viewed from the camera
+//render all objects and lights in the scene, as viewed from the camera_
 void Scene::render()
 {
-    for_each (renderableObjects.begin(), renderableObjects.end(),
+    for_each (renderableObjects_.begin(), renderableObjects_.end(),
         [&](std::shared_ptr<RenderableObject>& obj)
         {
             if (!obj->hasBeenInitialized())
-                obj->initializeAndStore(ShaderManager::createProgram(obj, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights));
+                obj->initializeAndStore(ShaderManager::createProgram(obj, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_));
 
             GLuint handle = obj->getProgram()->getHandle();
 
             glUseProgram(handle);
 
-            camera->sync(handle);
+            camera_->sync(handle);
             syncLights(handle);
 
             obj->render(glGetUniformLocation(handle, "modelMatrix"));
@@ -70,28 +70,28 @@ void Scene::render()
 
 std::shared_ptr<Camera> Scene::getCamera()
 {
-    return camera;
+    return camera_;
 }
 
 
 
 std::vector<std::shared_ptr<RenderableObject>> Scene::getRenderableObjects()
 {
-    return renderableObjects;
+    return renderableObjects_;
 }
 
 
 
 std::vector<std::shared_ptr<Light>> Scene::getLights()
 {
-    return lights;
+    return lights_;
 }
 
 
 
 glm::vec3 Scene::getAmbientLight()
 {
-    return ambientLight;
+    return ambientLight_;
 }
 
 
@@ -99,9 +99,9 @@ glm::vec3 Scene::getAmbientLight()
 void Scene::syncLights(GLuint handle)
 {
     GLint ambientLightUniform = glGetUniformLocation(handle, "ambientLight");
-    glUniform3f(ambientLightUniform, ambientLight.x, ambientLight.y, ambientLight.z);
+    glUniform3f(ambientLightUniform, ambientLight_.x, ambientLight_.y, ambientLight_.z);
 
-    for_each (lights.begin(), lights.end(),
+    for_each (lights_.begin(), lights_.end(),
         [&](const std::shared_ptr<Light>& light)
         {
             light->sync(handle);
@@ -167,7 +167,7 @@ void Scene::assertRenderableObjectsContainNormalBuffers()
 {
     std::vector<glm::vec3> emptyVec;
     auto normBuffer = std::make_shared<NormalBuffer>(emptyVec);
-    for_each (renderableObjects.begin(), renderableObjects.end(),
+    for_each (renderableObjects_.begin(), renderableObjects_.end(),
         [&](std::shared_ptr<RenderableObject>& obj)
         {
             auto optionalBuffers = obj->getAllDataBuffers();

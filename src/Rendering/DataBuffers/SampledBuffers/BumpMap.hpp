@@ -21,8 +21,7 @@ class BumpMap: public SampledBuffer
         virtual void storeCoordMap();
 
     private:
-        GLuint textureID, vbo_cube_texcoords;
-        GLint attribute_texcoord;
+
 };
 
 #endif

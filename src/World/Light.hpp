@@ -31,9 +31,9 @@ class Light: public ShaderUtilizer
         virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
     private:
-        glm::vec3 position, color;
-        float power;
-        bool emitting;
+        glm::vec3 position_, color_;
+        float power_;
+        bool emitting_;
 };
 
 #endif

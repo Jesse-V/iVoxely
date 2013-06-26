@@ -34,8 +34,8 @@ void PlyParser::loadPlyModel(const std::string& fileName)
     t2.join();
     */
 
-    vertices = parseVertices(pieces[1]);
-    indices = parseIndices(pieces[2]);
+    vertices_ = parseVertices(pieces[1]);
+    indices_ = parseIndices(pieces[2]);
 }
 
 
@@ -45,7 +45,7 @@ void PlyParser::loadPlyModel(const std::string& fileName)
 */
 std::vector<glm::vec3> PlyParser::getVertices()
 {
-    return vertices;
+    return vertices_;
 }
 
 
@@ -55,7 +55,7 @@ std::vector<glm::vec3> PlyParser::getVertices()
 */
 std::vector<GLuint> PlyParser::getIndices()
 {
-    return indices;
+    return indices_;
 }
 
 

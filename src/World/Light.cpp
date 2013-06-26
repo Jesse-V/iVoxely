@@ -1,58 +1,59 @@
 
 #include "Light.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include <stdexcept>
 
 
 Light::Light(const glm::vec3& position, const glm::vec3& color, float power):
-    position(position), color(color), power(power), emitting(true)
+    position_(position), color_(color), power_(power), emitting_(true)
 {}
 
 
 
 glm::vec3 Light::getPosition() const
 {
-    return position;
+    return position_;
 }
 
 
 void Light::setPosition(const glm::vec3& newPos)
 {
-    position = newPos;
+    position_ = newPos;
 }
 
 
 
 glm::vec3 Light::getColor() const
 {
-    return color;
+    return color_;
 }
 
 
 
 void Light::setColor(const glm::vec3& newColor)
 {
-    color = newColor;
+    color_ = newColor;
 }
 
 
 
 float Light::getPower() const
 {
-    return power;
+    return power_;
 }
 
 
 
-void Light::setPower(float power)
+void Light::setPower(float power_)
 {
-    this->power = power;
+    this->power_ = power_;
 }
 
 
 
 bool Light::isEmitting() const
 {
-    return emitting;
+    return emitting_;
 }
 
 
@@ -60,7 +61,7 @@ bool Light::isEmitting() const
 // Turn the light on or off
 void Light::setEmitting(bool emitting)
 {
-    this->emitting = emitting;
+    emitting_ = emitting;
 }
 
 
@@ -74,8 +75,11 @@ void Light::sync(GLuint handle)
     glUniform3fv(lightColorUniform, 1, glm::value_ptr(getColor()));
 
     GLint lightPowUniform = glGetUniformLocation(handle, "lights[0].power");
-    float power = isEmitting() ? getPower() : 0;
-    glUniform1f(lightPowUniform, power);
+    float power_ = isEmitting() ? getPower() : 0;
+    glUniform1f(lightPowUniform, power_);
+
+    if (lightPosUniform < 0 || lightColorUniform < 0 || lightPowUniform < 0)
+        throw std::runtime_error("Unable to find Light uniform variables!");
 }
 
 

@@ -4,15 +4,15 @@
 
 
 VertexBuffer::VertexBuffer(const std::vector<glm::vec3>& vertices):
-    vertices(vertices)
+    vertices_(vertices)
 {}
 
 
 
 void VertexBuffer::initialize(GLuint program)
 {
-    glGenBuffers(1, &vertexBuffer);
-    vertexAttrib = glGetAttribLocation(program, "vertex");
+    glGenBuffers(1, &vertexBuffer_);
+    vertexAttrib_ = glGetAttribLocation(program, "vertex");
 }
 
 
@@ -21,7 +21,7 @@ void VertexBuffer::initialize(GLuint program)
 void VertexBuffer::store()
 {
     std::vector<GLfloat> rawPoints;
-    for_each (vertices.begin(), vertices.end(),
+    for_each (vertices_.begin(), vertices_.end(),
         [&](const glm::vec3& vert)
         {
             rawPoints.push_back(vert.x);
@@ -29,7 +29,7 @@ void VertexBuffer::store()
             rawPoints.push_back(vert.z);
         });
 
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer_);
     glBufferData(GL_ARRAY_BUFFER, rawPoints.size() * sizeof(GLfloat),
         rawPoints.data(), GL_STATIC_DRAW);
 }
@@ -38,23 +38,23 @@ void VertexBuffer::store()
 
 void VertexBuffer::enable()
 {
-    glEnableVertexAttribArray(vertexAttrib);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glVertexAttribPointer(vertexAttrib, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(vertexAttrib_);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer_);
+    glVertexAttribPointer(vertexAttrib_, 3, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 
 
 void VertexBuffer::disable()
 {
-    glDisableVertexAttribArray(vertexAttrib);
+    glDisableVertexAttribArray(vertexAttrib_);
 }
 
 
 
 bool VertexBuffer::draw(GLenum mode)
 {
-    glDrawElements(mode, (int)vertices.size() * 3, GL_UNSIGNED_INT, 0);
+    glDrawElements(mode, (int)vertices_.size() * 3, GL_UNSIGNED_INT, 0);
     return true;
 }
 

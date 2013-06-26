@@ -30,13 +30,12 @@ class Game
         static void sleep(int milliseconds);
 
     private:
-        static Game* singleton;
+        static Game* singleton_;
 
-        std::shared_ptr<Scene> scene;
-        std::shared_ptr<Player> player;
+        std::shared_ptr<Scene> scene_;
+        std::shared_ptr<Player> player_;
 
-        //std::shared_ptr<Light> light = std::make_shared<Light>();
-        glm::vec3 lightVector = glm::vec3(0.0f, 0.0f, -0.001f);
+        glm::vec3 lightVector_ = glm::vec3(0.0f, 0.0f, -0.001f);
 };
 
 #endif

@@ -10,20 +10,20 @@ TextureBuffer::TextureBuffer(const std::string& imagePath):
 
 void TextureBuffer::initialize(GLuint program)
 {
-    glGenTextures(1, &textureID);
-    glGenBuffers(1, &vbo_cube_texcoords);
+    glGenTextures(1, &textureID_);
+    glGenBuffers(1, &vbo_cube_texcoords_);
 
-    attribute_texcoord = glGetAttribLocation(program, "texcoord");
+    attribute_texcoord_ = glGetAttribLocation(program, "texcoord");
 }
 
 
 
 void TextureBuffer::storeImage()
 {
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID_);
 
     // Give the image to OpenGL
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeight, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth_, imgHeight_, 0, GL_BGR, GL_UNSIGNED_BYTE, data_);
 
     // When MAGnifying the image (no bigger mipmap available),
     // use LINEAR filtering
@@ -41,7 +41,7 @@ void TextureBuffer::storeImage()
 
 void TextureBuffer::storeCoordMap()
 {
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_texcoords);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_cube_texcoords_);
 
     GLfloat map[2 * 4 * 1] = {
         // front
@@ -52,21 +52,21 @@ void TextureBuffer::storeCoordMap()
     };
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(map), map, GL_STATIC_DRAW);
-    glVertexAttribPointer(attribute_texcoord, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(attribute_texcoord_, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 
 
 void TextureBuffer::enable()
 {
-    glEnableVertexAttribArray(attribute_texcoord);
+    glEnableVertexAttribArray(attribute_texcoord_);
 }
 
 
 
 void TextureBuffer::disable()
 {
-    glDisableVertexAttribArray(attribute_texcoord);
+    glDisableVertexAttribArray(attribute_texcoord_);
 }
 
 

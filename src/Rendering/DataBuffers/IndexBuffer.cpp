@@ -4,23 +4,23 @@
 
 
 IndexBuffer::IndexBuffer(const std::vector<Triangle>& triangles):
-    triangles(triangles)
+    triangles_(triangles)
 {}
 
 
 
 void IndexBuffer::initialize(GLuint)
 {
-    glGenBuffers(1, &meshBuffer);
+    glGenBuffers(1, &meshBuffer_);
 }
 
 
 
 void IndexBuffer::store()
 {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangles.size() * 3 * sizeof(GLuint),
-        triangles.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffer_);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangles_.size() * 3 * sizeof(GLuint),
+        triangles_.data(), GL_STATIC_DRAW);
 }
 
 
@@ -37,7 +37,7 @@ void IndexBuffer::disable()
 
 bool IndexBuffer::draw(GLenum mode)
 {
-    glDrawElements(mode, (int)triangles.size() * 3, GL_UNSIGNED_INT, 0);
+    glDrawElements(mode, (int)triangles_.size() * 3, GL_UNSIGNED_INT, 0);
     return true;
 }
 

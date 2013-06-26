@@ -12,8 +12,8 @@ class PlyParser
     private:
         const std::string HEADER_DELIMITER = "end_header"; //end of header
 
-        std::vector<glm::vec3> vertices;
-        std::vector<GLuint> indices;
+        std::vector<glm::vec3> vertices_;
+        std::vector<GLuint> indices_;
 
         std::string readFile(const std::string& fileContents);
         std::vector<std::string> seperatePly(const std::string& fileContents);

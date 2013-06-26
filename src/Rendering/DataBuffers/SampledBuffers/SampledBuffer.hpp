@@ -13,7 +13,7 @@ class SampledBuffer: public DataBuffer
         ~SampledBuffer();
         //default copy constructor should be fine
 
-        std::string loadBMP(const std::string& imagePath);
+        void loadBMP(const std::string& imagePath);
         void deleteBufferFromRAM();
 
         virtual void store();
@@ -24,9 +24,9 @@ class SampledBuffer: public DataBuffer
         virtual void storeCoordMap() = 0;
 
     protected:
-        int imgWidth, imgHeight;
-        unsigned char* data;
-        bool isValid = false;
+        int imgWidth_, imgHeight_;
+        unsigned char* data_;
+        bool isValid_ = false;
 };
 
 #endif

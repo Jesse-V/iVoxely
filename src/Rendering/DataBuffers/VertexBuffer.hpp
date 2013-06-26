@@ -24,10 +24,10 @@ class VertexBuffer: public DataBuffer
         void enableVertices();
 
     private:
-        std::vector<glm::vec3> vertices;
+        std::vector<glm::vec3> vertices_;
 
-        GLuint vertexBuffer;
-        GLint vertexAttrib;
+        GLuint vertexBuffer_;
+        GLint vertexAttrib_;
 };
 
 #endif

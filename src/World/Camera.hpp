@@ -51,9 +51,9 @@ class Camera
         std::string toString() const;
 
     private:
-        glm::vec3 lookDirection, position, upVector;
-        float fieldOfView, aspectRatio, nearFieldClip, farFieldClip;
-        glm::mat4 projection;
+        glm::vec3 lookDirection_, position_, upVector_;
+        float fieldOfView_, aspectRatio_, nearFieldClip_, farFieldClip_;
+        glm::mat4 projection_;
 };
 
 #endif

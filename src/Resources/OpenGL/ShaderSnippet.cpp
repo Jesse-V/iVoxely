@@ -11,26 +11,26 @@ ShaderSnippet::ShaderSnippet():
 
 ShaderSnippet::ShaderSnippet(const std::string& fields,
     const std::string& methods, const std::string& mainBodyCode):
-    fields(fields), methods(methods), mainBodyCode(mainBodyCode)
+    fields_(fields), methods_(methods), mainBodyCode_(mainBodyCode)
 {}
 
 
 
 std::string ShaderSnippet::getFields()
 {
-    return fields;
+    return fields_;
 }
 
 
 
 std::string ShaderSnippet::getMethods()
 {
-    return methods;
+    return methods_;
 }
 
 
 
 std::string ShaderSnippet::getMainBodyCode()
 {
-    return mainBodyCode;
+    return mainBodyCode_;
 }

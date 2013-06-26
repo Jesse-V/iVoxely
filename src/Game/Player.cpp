@@ -5,14 +5,14 @@
 
 
 Player::Player(std::shared_ptr<Scene> scene):
-    scene(scene)
+    scene_(scene)
 {}
 
 
 
 void Player::onKeyPress(unsigned char key)
 {
-    std::shared_ptr<Camera> camera = scene->getCamera();
+    std::shared_ptr<Camera> camera = scene_->getCamera();
 
     switch(key)
     {
@@ -48,7 +48,7 @@ void Player::onKeyPress(unsigned char key)
 
 void Player::onSpecialKeyPress(int key)
 {
-    std::shared_ptr<Camera> camera = scene->getCamera();
+    std::shared_ptr<Camera> camera = scene_->getCamera();
 
     switch(key)
     {

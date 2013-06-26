@@ -18,9 +18,9 @@ namespace cs5400
             GLuint getHandle();
 
         private:
-            GLuint handle;
-            std::shared_ptr<VertexShader> vertex;
-            std::shared_ptr<FragmentShader> fragment;
+            GLuint handle_;
+            std::shared_ptr<VertexShader> vertex_;
+            std::shared_ptr<FragmentShader> fragment_;
     };
 
     std::shared_ptr<Program> makeProgram(

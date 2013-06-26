@@ -5,21 +5,21 @@
 cs5400::Program::Program(
     const std::shared_ptr<VertexShader>& vertex_,
     const std::shared_ptr<FragmentShader>& fragment_):
-    handle(glCreateProgram()), vertex(vertex_), fragment(fragment_)
+    handle_(glCreateProgram()), vertex_(vertex_), fragment_(fragment_)
 {}
 
 
 
 cs5400::Program::~Program()
 {
-    glDeleteProgram(handle);
+    glDeleteProgram(handle_);
 }
 
 
 
 GLuint cs5400::Program::getHandle()
 {
-    return handle;
+    return handle_;
 }
 
 

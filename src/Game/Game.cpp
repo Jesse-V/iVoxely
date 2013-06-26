@@ -6,8 +6,8 @@
 
 
 Game::Game(int screenWidth, int screenHeight):
-    scene(std::make_shared<Scene>(getCamera(screenWidth, screenHeight))),
-    player(std::make_shared<Player>(scene))
+    scene_(std::make_shared<Scene>(getCamera(screenWidth, screenHeight))),
+    player_(std::make_shared<Player>(scene_))
 {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -38,14 +38,14 @@ void Game::addGround()
     objMatrix = glm::translate(objMatrix, glm::vec3(0, -0.15, 0));
     rObj->setModelMatrix(objMatrix);
 
-    scene->addModel(rObj);
+    scene_->addModel(rObj);
 }
 
 
 
 void Game::addLight()
 {
-    scene->setAmbientLight(glm::vec3(0.75, 0.75, 0.75));
+    scene_->setAmbientLight(glm::vec3(0.75, 0.75, 0.75));
 
     auto light = std::make_shared<Light>(
         glm::vec3(0.0f, 0.0f, 2.0f), //position
@@ -53,7 +53,7 @@ void Game::addLight()
         0.03f                       //power
     );
 
-    scene->addLight(light);
+    scene_->addLight(light);
 }
 
 
@@ -86,7 +86,7 @@ void Game::render()
     glClearColor(.39f, 0.58f, 0.93f, 0.0f); //nice blue background
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    scene->render();
+    scene_->render();
 
     glutSwapBuffers();
 }
@@ -95,15 +95,15 @@ void Game::render()
 
 void Game::moveLight(int deltaTime)
 {
-    glm::vec3 lightPos = scene->getLights()[0]->getPosition();
+    glm::vec3 lightPos = scene_->getLights()[0]->getPosition();
 
     if (lightPos.z < -2)
-        lightVector.z = -lightVector.z;
+        lightVector_.z = -lightVector_.z;
     else if (lightPos.z > 2)
-        lightVector.z = -lightVector.z;
+        lightVector_.z = -lightVector_.z;
 
-    lightPos += lightVector * (float)deltaTime;
-    scene->getLights()[0]->setPosition(lightPos);
+    lightPos += lightVector_ * (float)deltaTime;
+    scene_->getLights()[0]->setPosition(lightPos);
 }
 
 
@@ -122,49 +122,49 @@ void Game::sleep(int milliseconds)
 
 void Game::onKeyPress(unsigned char key, int, int)
 {
-    player->onKeyPress(key);
+    player_->onKeyPress(key);
 }
 
 
 
 void Game::onSpecialKeyPress(int key, int, int)
 {
-    player->onSpecialKeyPress(key);
+    player_->onSpecialKeyPress(key);
 }
 
 
 
 void Game::onMouseClick(int button, int state, int x, int y)
 {
-    player->onMouseClick(button, state, x, y);
+    player_->onMouseClick(button, state, x, y);
 }
 
 
 
 void Game::onMouseMotion(int x, int y)
 {
-    player->onMouseMotion(x, y);
+    player_->onMouseMotion(x, y);
 }
 
 
 
 void Game::onMouseDrag(int x, int y)
 {
-    player->onMouseDrag(x, y);
+    player_->onMouseDrag(x, y);
 }
 
 
 
-Game* Game::singleton = 0;
+Game* Game::singleton_ = 0;
 
 Game& Game::getInstance()
 {
     try
     {
-        if (singleton)
-            return *singleton;
+        if (singleton_)
+            return *singleton_;
 
-        singleton = new Game(
+        singleton_ = new Game(
             glutGet(GLUT_SCREEN_WIDTH),
             glutGet(GLUT_SCREEN_HEIGHT)
         );
@@ -180,5 +180,5 @@ Game& Game::getInstance()
         throw std::runtime_error("Game initiation error");
     }
 
-    return *singleton;
+    return *singleton_;
 }

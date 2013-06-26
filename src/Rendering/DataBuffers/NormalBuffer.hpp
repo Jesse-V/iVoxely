@@ -41,10 +41,10 @@ class NormalBuffer: public DataBuffer
         );
 
     private:
-        std::vector<glm::vec3> normals;
+        std::vector<glm::vec3> normals_;
 
-        GLuint normalBuffer;
-        GLint normalAttrib;
+        GLuint normalBuffer_;
+        GLint normalAttrib_;
 };
 
 #endif

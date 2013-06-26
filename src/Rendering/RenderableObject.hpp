@@ -36,12 +36,12 @@ class RenderableObject
         void disableDataBuffers();
 
     private:
-        std::shared_ptr<cs5400::Program> renderingProgram;
-        std::shared_ptr<VertexBuffer> vertexBuffer;
-        std::vector<std::shared_ptr<DataBuffer>> dataBuffers;
-        glm::mat4 modelMatrix;
-        bool isVisible, beenInitialized;
-        GLenum renderMode;
+        std::shared_ptr<cs5400::Program> renderingProgram_;
+        std::shared_ptr<VertexBuffer> vertexBuffer_;
+        std::vector<std::shared_ptr<DataBuffer>> dataBuffers_;
+        glm::mat4 modelMatrix_;
+        bool isVisible_, beenInitialized_;
+        GLenum renderMode_;
 };
 
 #endif

@@ -1,14 +1,12 @@
 
 #include "SampledBuffer.hpp"
+#include <stdexcept>
 #include <iostream>
 
 
 SampledBuffer::SampledBuffer(const std::string& imagePath)
 {
-    std::string status = loadBMP(imagePath);
-    if (status != "success")
-        std::cout << "Error loading \"" + imagePath + "\" image: "
-            << status << std::endl;
+    loadBMP(imagePath);
 }
 
 
@@ -37,46 +35,45 @@ bool SampledBuffer::draw(GLenum mode)
 
 
 
-std::string SampledBuffer::loadBMP(const std::string& imagePath)
+void SampledBuffer::loadBMP(const std::string& imagePath)
 {
     unsigned char header[54];
 
     FILE * file = fopen(imagePath.c_str(), "rb"); //read binary .bmp file
     if (!file)
-        return "File could not be opened";
+        throw std::runtime_error("Unable to open " + imagePath + " file");
 
     if(fread(header, 1, 54, file) != 54)
-        return "Invalid BMP file";
+        throw std::runtime_error(imagePath + " is not a valid .bmp image");
 
     if (header[0] != 'B' || header[1] != 'M')
-        return "Not a correct BMP file";
+        throw std::runtime_error(imagePath + " is not a valid .bmp image");
 
-    imgWidth  = *(int*)&(header[0x12]);
-    imgHeight = *(int*)&(header[0x16]);
+    imgWidth_  = *(int*)&(header[0x12]);
+    imgHeight_ = *(int*)&(header[0x16]);
 
     int imageSize  = *(int*)&(header[0x22]);
     if (imageSize == 0)
-        imageSize = imgWidth * imgHeight * 3;
+        imageSize = imgWidth_ * imgHeight_ * 3;
 
-    data = new unsigned char[imageSize];
+    data_ = new unsigned char[imageSize];
 
     // Read the actual data from the file into the buffer
-    fread(data, 1, (unsigned long)imageSize, file);
+    fread(data_, 1, (unsigned long)imageSize, file);
 
     //Everything is in memory now, the file can be closed
     fclose(file);
 
-    isValid = true;
-    return "success";
+    isValid_ = true;
 }
 
 
 
 void SampledBuffer::deleteBufferFromRAM()
 {
-    if (isValid)
+    if (isValid_)
     {
-        delete [] data;
-        isValid = false;
+        delete [] data_;
+        isValid_ = false;
     }
 }

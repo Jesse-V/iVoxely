@@ -21,7 +21,7 @@ class Player
         void onMouseDrag(int x, int y);
 
     private:
-        std::shared_ptr<Scene> scene;
+        std::shared_ptr<Scene> scene_;
 };
 
 #endif

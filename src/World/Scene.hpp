@@ -32,10 +32,10 @@ class Scene
         void assertRenderableObjectsContainNormalBuffers();
 
     private:
-        std::vector<std::shared_ptr<RenderableObject>> renderableObjects;
-        std::vector<std::shared_ptr<Light>> lights;
-        std::shared_ptr<Camera> camera;
-        glm::vec3 ambientLight;
+        std::vector<std::shared_ptr<RenderableObject>> renderableObjects_;
+        std::vector<std::shared_ptr<Light>> lights_;
+        std::shared_ptr<Camera> camera_;
+        glm::vec3 ambientLight_;
 };
 
 
