@@ -22,7 +22,7 @@ std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
 
     std::vector<glm::vec3> vertices;
     std::vector<Triangle> triangles;
-
+/*
     //use threading to parallelize the parsing
     std::thread t1([&]() {
         vertices = parseVertices(pieces[1]);
@@ -33,10 +33,10 @@ std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
     });
 
     t1.join(); //wait for both threads to complete
-    t2.join();
+    t2.join();*/
 
-    auto vBuffer = std::make_shared<VertexBuffer>(vertices);
-    auto iBuffer = std::make_shared<IndexBuffer>(triangles);
+    auto vBuffer = std::make_shared<VertexBuffer>(parseVertices(pieces[1]));
+    auto iBuffer = std::make_shared<IndexBuffer>(parseTriangles(pieces[2]));
 
     return std::make_shared<Mesh>(vBuffer, iBuffer);
 }
@@ -101,6 +101,8 @@ std::vector<glm::vec3> PlyParser::parseVertices(const std::string& verticesData)
     std::vector<glm::vec3> vertices;
     std::stringstream sstream(verticesData);
 
+    std::cout << verticesData << std::endl << std::endl;
+
     //loop through each line, pull out and store the relevant data
     std::string line;
     while (std::getline(sstream, line))
@@ -120,6 +122,8 @@ std::vector<glm::vec3> PlyParser::parseVertices(const std::string& verticesData)
 */
 std::vector<Triangle> PlyParser::parseTriangles(const std::string& triangleData)
 {
+    std::cout << triangleData << std::endl << std::endl;
+
     int dimensionality = 3;
     std::vector<Triangle> triangles;
     std::stringstream sstream(triangleData);
@@ -128,17 +132,17 @@ std::vector<Triangle> PlyParser::parseTriangles(const std::string& triangleData)
     std::string line;
     while (std::getline(sstream, line))
     {
-        sstream >> dimensionality;
+        std::stringstream lineStream(line);
+
+        lineStream >> dimensionality;
         if (dimensionality != 3)
         {
-
             std::cout << dimensionality << std::endl;
             throw std::runtime_error(".ply file not a 3D mesh!");
         }
 
-
         Triangle triangle;
-        sstream >> triangle.a >> triangle.b >> triangle.c;
+        lineStream >> triangle.a >> triangle.b >> triangle.c;
         triangles.push_back(triangle);
     }
 

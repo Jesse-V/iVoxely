@@ -58,9 +58,12 @@ void VertexBuffer::draw(GLenum mode)
 }
 
 
-
+#include <iostream>
 std::vector<glm::vec3> VertexBuffer::getVertices()
 {
+    std::cout << vertices_[0].x << " " << vertices_[0].y << " " << vertices_[0].z << std::endl;
+    std::cout << vertices_[1].x << " " << vertices_[1].y << " " << vertices_[1].z << std::endl;
+    std::cout << vertices_[2].x << " " << vertices_[2].y << " " << vertices_[2].z << std::endl;
     return vertices_;
 }
 
