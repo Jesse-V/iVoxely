@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include "Shader.hpp"
+#include <sstream>
 #include <iostream>
 
 namespace
@@ -44,7 +45,9 @@ namespace
             glGetShaderInfoLog(handle, sizeof(buf), NULL, buf);
 
             std::cerr << code << std::endl;
-            throw std::runtime_error(buf);
+            std::stringstream stream("");
+            stream << "Compilation error in GLSL shader code \n" << buf;
+            throw std::runtime_error(stream.str());
         }
     }
 }

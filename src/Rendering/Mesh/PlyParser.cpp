@@ -130,7 +130,12 @@ std::vector<Triangle> PlyParser::parseTriangles(const std::string& triangleData)
     {
         sstream >> dimensionality;
         if (dimensionality != 3)
+        {
+
+            std::cout << dimensionality << std::endl;
             throw std::runtime_error(".ply file not a 3D mesh!");
+        }
+
 
         Triangle triangle;
         sstream >> triangle.a >> triangle.b >> triangle.c;

@@ -33,7 +33,7 @@ void Game::addModels()
 
 void Game::addGround()
 {
-    auto mesh = PlyParser::getMesh("Resources/meshes/bun_zipper_res4.ply");
+    auto mesh = PlyParser::getMesh("Resources/meshes/ground.ply");
 
     std::vector<std::shared_ptr<OptionalDataBuffer>> buffers;
     buffers.push_back(

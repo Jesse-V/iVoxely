@@ -157,7 +157,7 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
                                 theta / pow(lightDistance, 2);
 
             //Blending code (from Light class, need to be more dynamic)
-            vec3 color =  textureColor * (ambientLight + lighting); //temporary
+            vec3 color = textureColor * (ambientLight + lighting); //temporary
             gl_FragColor = vec4(color, 1.0); //temporary
         )."
     );
