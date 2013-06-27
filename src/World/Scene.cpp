@@ -1,7 +1,7 @@
 
 #include "Scene.hpp"
 #include "Resources/OpenGL/ShaderManager.hpp"
-#include "Rendering/DataBuffers/NormalBuffer.hpp"
+#include "Modeling/DataBuffers/NormalBuffer.hpp"
 #include <algorithm>
 #include <sstream>
 #include <iostream>

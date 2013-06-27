@@ -2,8 +2,8 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
-#include "Rendering/Mesh/Mesh.hpp"
-#include "Rendering/DataBuffers/OptionalDataBuffer.hpp"
+#include "Modeling/Mesh/Mesh.hpp"
+#include "Modeling/DataBuffers/OptionalDataBuffer.hpp"
 #include "Resources/OpenGL/Program.hpp"
 #include "glm/glm.hpp"
 #include <vector>

@@ -2,9 +2,9 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 
-#include "Rendering/DataBuffers/IndexBuffer.hpp"
-#include "Rendering/DataBuffers/VertexBuffer.hpp"
-#include "Rendering/Triangle.struct"
+#include "Modeling/DataBuffers/IndexBuffer.hpp"
+#include "Modeling/DataBuffers/VertexBuffer.hpp"
+#include "Modeling/Triangle.struct"
 
 class Mesh : public DataBuffer
 {

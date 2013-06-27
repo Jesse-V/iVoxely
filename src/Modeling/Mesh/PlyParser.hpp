@@ -3,7 +3,7 @@
 #define PLY_PARSER_HPP
 
 #include "Mesh.hpp"
-#include "Rendering/Triangle.struct"
+#include "Modeling/Triangle.struct"
 #include "glm/gtc/type_ptr.hpp"
 #include <GL/glut.h>
 #include <vector>

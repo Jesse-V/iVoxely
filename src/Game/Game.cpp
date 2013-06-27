@@ -1,8 +1,8 @@
 
 #include "Game.hpp"
-#include "Rendering/Mesh/PlyParser.hpp"
-#include "Rendering/DataBuffers/NormalBuffer.hpp"
-#include "Rendering/DataBuffers/SampledBuffers/TextureBuffer.hpp"
+#include "Modeling/Mesh/PlyParser.hpp"
+#include "Modeling/DataBuffers/NormalBuffer.hpp"
+#include "Modeling/DataBuffers/SampledBuffers/TextureBuffer.hpp"
 #include <memory>
 #include <thread>
 #include <iostream>

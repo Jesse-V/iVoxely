@@ -2,8 +2,8 @@
 #ifndef SHADER_MANAGER_HPP
 #define SHADER_MANAGER_HPP
 
-#include "Rendering/Model.hpp"
-#include "Rendering/DataBuffers/DataBuffer.hpp"
+#include "Modeling/Model.hpp"
+#include "Modeling/DataBuffers/DataBuffer.hpp"
 #include "World/Light.hpp"
 #include "Program.hpp"
 #include <memory>

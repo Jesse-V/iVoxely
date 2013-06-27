@@ -18,15 +18,15 @@ add_executable(ivoxely
     World/Scene.cpp
     World/Camera.cpp
     World/Light.cpp
-    Rendering/Mesh/Mesh.cpp
-    Rendering/Mesh/PlyParser.cpp
-    Rendering/Model.cpp
-    Rendering/DataBuffers/VertexBuffer.cpp
-    Rendering/DataBuffers/IndexBuffer.cpp
-    Rendering/DataBuffers/NormalBuffer.cpp
-    Rendering/DataBuffers/SampledBuffers/SampledBuffer.cpp
-    Rendering/DataBuffers/SampledBuffers/TextureBuffer.cpp
-    Rendering/DataBuffers/SampledBuffers/BumpMap.cpp
+    Modeling/Mesh/Mesh.cpp
+    Modeling/Mesh/PlyParser.cpp
+    Modeling/Model.cpp
+    Modeling/DataBuffers/VertexBuffer.cpp
+    Modeling/DataBuffers/IndexBuffer.cpp
+    Modeling/DataBuffers/NormalBuffer.cpp
+    Modeling/DataBuffers/SampledBuffers/SampledBuffer.cpp
+    Modeling/DataBuffers/SampledBuffers/TextureBuffer.cpp
+    Modeling/DataBuffers/SampledBuffers/BumpMap.cpp
     Resources/OpenGL/ShaderManager.cpp
     Resources/OpenGL/ShaderSnippet.cpp
     Resources/OpenGL/Program.cpp

@@ -3,7 +3,7 @@
 #define NORMAL_BUFFER
 
 #include "OptionalDataBuffer.hpp"
-#include "Rendering/Mesh/Mesh.hpp"
+#include "Modeling/Mesh/Mesh.hpp"
 #include "../Triangle.struct"
 #include <vector>
 #include <string>
