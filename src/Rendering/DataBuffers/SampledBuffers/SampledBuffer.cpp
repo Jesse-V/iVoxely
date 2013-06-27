@@ -28,13 +28,6 @@ void SampledBuffer::store()
 
 
 
-bool SampledBuffer::draw(GLenum mode)
-{
-    return false;
-}
-
-
-
 void SampledBuffer::loadBMP(const std::string& imagePath)
 {
     unsigned char header[54];

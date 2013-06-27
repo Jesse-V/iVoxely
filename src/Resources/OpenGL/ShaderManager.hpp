@@ -23,12 +23,12 @@ class ShaderManager
     private:
         static std::vector<std::shared_ptr<ShaderSnippet>> assembleVertexSnippets(
             const std::shared_ptr<ShaderSnippet>& sceneVertexShader,
-            const std::vector<std::shared_ptr<DataBuffer>> dataBuffers,
+            const std::vector<std::shared_ptr<OptionalDataBuffer>> buffers,
             const std::vector<std::shared_ptr<Light>>& lights
         );
         static std::vector<std::shared_ptr<ShaderSnippet>> assembleFragmentSnippets(
             const std::shared_ptr<ShaderSnippet>& sceneFragmentShader,
-            const std::vector<std::shared_ptr<DataBuffer>> dataBuffers,
+            const std::vector<std::shared_ptr<OptionalDataBuffer>> buffers,
             const std::vector<std::shared_ptr<Light>>& lights
         );
 

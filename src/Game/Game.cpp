@@ -1,6 +1,9 @@
 
 #include "Game.hpp"
-#include "Models/Ground/Ground.hpp"
+#include "Rendering/Mesh/PlyParser.hpp"
+#include "Rendering/DataBuffers/NormalBuffer.hpp"
+#include "Rendering/DataBuffers/SampledBuffers/TextureBuffer.hpp"
+#include <memory>
 #include <thread>
 #include <iostream>
 
@@ -31,11 +34,16 @@ void Game::addModels()
 void Game::addGround()
 {
     auto mesh = PlyParser::getMesh("Resources/meshes/bun_zipper_res4.ply");
-    auto model = std::make_shared<Model>(mesh, {
-        std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh)),
-        std::make_shared<TextureBuffer>("Resources/textures/test_texture.bmp")
-        }
+
+    std::vector<std::shared_ptr<OptionalDataBuffer>> buffers;
+    buffers.push_back(
+        std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh))
     );
+    buffers.push_back(
+        std::make_shared<TextureBuffer>("Resources/textures/test_texture.bmp")
+    );
+
+    auto model = std::make_shared<Model>(mesh, buffers);
 
     glm::mat4 modelMatrix = glm::mat4();
     modelMatrix = glm::scale(modelMatrix, glm::vec3(2, 1, 2));

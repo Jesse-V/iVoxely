@@ -2,12 +2,12 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
-#include <memory>
-#include <vector>
-#include "glm/glm.hpp"
-#include "DataBuffers/DataBuffer.hpp"
-#include "DataBuffers/VertexBuffer.hpp"
+#include "Rendering/Mesh/Mesh.hpp"
+#include "Rendering/DataBuffers/OptionalDataBuffer.hpp"
 #include "Resources/OpenGL/Program.hpp"
+#include "glm/glm.hpp"
+#include <vector>
+#include <memory>
 
 class Model
 {
@@ -15,7 +15,7 @@ class Model
         Model(const std::shared_ptr<Mesh>& mesh,
             const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs);
         Model(const std::shared_ptr<Mesh>& mesh,
-            const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs);
+            const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs,
             GLenum renderMode);
 
         void initializeAndStore(std::shared_ptr<cs5400::Program> program);
@@ -25,16 +25,15 @@ class Model
         void render(GLint modelMatrixID);
 
         std::shared_ptr<cs5400::Program> getProgram();
-        std::vector<std::shared_ptr<DataBuffer>> getAllDataBuffers();
+        std::vector<std::shared_ptr<OptionalDataBuffer>> getOptionalDataBuffers();
         bool hasBeenInitialized();
 
     private:
         void enableDataBuffers();
-        void drawDataBuffers();
         void disableDataBuffers();
 
     private:
-        std::shared_ptr<VertexBuffer> mesh_;
+        std::shared_ptr<Mesh> mesh_;
         std::vector<std::shared_ptr<OptionalDataBuffer>> optionalDBs_;
         std::shared_ptr<cs5400::Program> renderingProgram_;
         glm::mat4 modelMatrix_;

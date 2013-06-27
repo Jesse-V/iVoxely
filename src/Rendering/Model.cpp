@@ -7,7 +7,7 @@
 
 
 Model::Model(const std::shared_ptr<Mesh>& mesh,
-    const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs);
+    const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs):
     Model(mesh, optionalDBs, GL_TRIANGLES)
 {}
 
@@ -74,11 +74,9 @@ std::shared_ptr<cs5400::Program> Model::getProgram()
 
 
 
-std::vector<std::shared_ptr<OptionalDataBuffer>> Model::getAllDataBuffers()
+std::vector<std::shared_ptr<OptionalDataBuffer>> Model::getOptionalDataBuffers()
 {
-    std::vector<std::shared_ptr<OptionalDataBuffer>> all(optionalDBs_);
-    all.insert(all.begin(), mesh_);
-    return all;
+    return optionalDBs_;
 }
 
 
@@ -104,7 +102,7 @@ void Model::render(GLint modelMatrixID)
         glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, glm::value_ptr(modelMatrix_));
 
         enableDataBuffers();
-        drawDataBuffers();
+        mesh_->draw(renderMode_);
         disableDataBuffers();
     }
 }
@@ -120,23 +118,6 @@ void Model::enableDataBuffers()
         {
             buffer->enable();
         });
-}
-
-
-
-void Model::drawDataBuffers()
-{
-    bool optionalBufferRendered = false;
-
-    for_each (optionalDBs_.begin(), optionalDBs_.end(),
-    [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
-    {
-        if (buffer->draw(GL_TRIANGLES))
-            optionalBufferRendered = true;
-    });
-
-    if (!optionalBufferRendered)
-        mesh_->draw(GL_TRIANGLES);
 }
 
 

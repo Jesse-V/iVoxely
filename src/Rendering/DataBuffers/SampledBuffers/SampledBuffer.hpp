@@ -2,11 +2,11 @@
 #ifndef MAPPED_BUFFER
 #define MAPPED_BUFFER
 
-#include "../DataBuffer.hpp"
+#include "../OptionalDataBuffer.hpp"
 #include "glm/glm.hpp"
 #include <string>
 
-class SampledBuffer : public DataBuffer
+class SampledBuffer : public OptionalDataBuffer
 {
     public:
         SampledBuffer(const std::string& imagePath);
@@ -17,7 +17,6 @@ class SampledBuffer : public DataBuffer
         void deleteBufferFromRAM();
 
         virtual void store();
-        virtual bool draw(GLenum mode);
 
     protected:
         virtual void storeImage() = 0;

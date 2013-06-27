@@ -170,10 +170,10 @@ void Scene::assertRenderableObjectsContainNormalBuffers()
     for_each (renderableObjects_.begin(), renderableObjects_.end(),
         [&](std::shared_ptr<Model>& obj)
         {
-            auto optionalBuffers = obj->getAllDataBuffers();
+            auto optionalBuffers = obj->getOptionalDataBuffers();
             bool containsNormalBuffer = false;
             for_each (optionalBuffers.begin(), optionalBuffers.end(),
-                [&](std::shared_ptr<DataBuffer>& buffer)
+                [&](std::shared_ptr<OptionalDataBuffer>& buffer)
                 {
                     if (typeid(*buffer) == typeid(*normBuffer))
                         containsNormalBuffer = true;

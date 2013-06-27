@@ -21,7 +21,7 @@ std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
     auto pieces = seperatePly(fileContents); //header, vertices, triangle
 
     std::vector<glm::vec3> vertices;
-    std::vector<GLuint> triangle;
+    std::vector<Triangle> triangles;
 
     //use threading to parallelize the parsing
     std::thread t1([&]() {
@@ -29,14 +29,16 @@ std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
     });
 
     std::thread t2( [&]() {
-        triangle = parsetriangle(pieces[2]);
+        triangles = parseTriangles(pieces[2]);
     });
 
     t1.join(); //wait for both threads to complete
     t2.join();
 
-    return std::make_shared<Mesh>(std::make_shared<VertexBuffer>(vertices),
-        std::make_shared<IndexBuffer>)
+    auto vBuffer = std::make_shared<VertexBuffer>(vertices);
+    auto iBuffer = std::make_shared<IndexBuffer>(triangles);
+
+    return std::make_shared<Mesh>(vBuffer, iBuffer);
 }
 
 
@@ -70,8 +72,8 @@ std::string PlyParser::readFile(const std::string& fileName)
 std::vector<std::string> PlyParser::seperatePly(const std::string& fileContents)
 {
     std::vector<std::string> pieces;
-    unsigned long headerEnd = fileContents.find(HEADER_DELIMITER);
-    unsigned long dataBegin = headerEnd + HEADER_DELIMITER.size() + 1;
+    unsigned long headerEnd = fileContents.find("end_header");
+    unsigned long dataBegin = headerEnd + 11;
 
     std::string header = fileContents.substr(0, headerEnd - 1);
     pieces.push_back(header); //add header
@@ -94,7 +96,7 @@ std::vector<std::string> PlyParser::seperatePly(const std::string& fileContents)
 /*  Accepts the raw characters that represent the vertices,
     parses the characters into a list of Points and returns the result.
 */
-std::vector<glm::vec3> PlyParser::parseVertices(std::string verticesData)
+std::vector<glm::vec3> PlyParser::parseVertices(const std::string& verticesData)
 {
     std::vector<glm::vec3> vertices;
     std::stringstream sstream(verticesData);
@@ -130,8 +132,8 @@ std::vector<Triangle> PlyParser::parseTriangles(const std::string& triangleData)
         if (dimensionality != 3)
             throw std::runtime_error(".ply file not a 3D mesh!");
 
-        Triangle triangle();
-        sstream >> triangle.x >> triangle.y >> triangle.z;
+        Triangle triangle;
+        sstream >> triangle.a >> triangle.b >> triangle.c;
         triangles.push_back(triangle);
     }
 

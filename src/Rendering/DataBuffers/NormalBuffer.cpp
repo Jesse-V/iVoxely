@@ -53,13 +53,6 @@ void NormalBuffer::disable()
 
 
 
-bool NormalBuffer::draw(GLenum mode)
-{
-    return false;
-}
-
-
-
 std::shared_ptr<ShaderSnippet> NormalBuffer::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>(
@@ -116,7 +109,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(
     std::vector<std::vector<size_t>> vtmap;
     vtmap.resize(vertices.size());
 
-    std::vector<glm::vec3> tN = calculateTriangleNormals(vertices, triangles, vtmap);
+    std::vector<glm::vec3> tN = calculateTriangleNormals(mesh, vtmap);
     std::vector<glm::vec3> normals;
 
     // Now calculate the vertex normals
@@ -165,7 +158,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(
     std::vector<std::vector<size_t>> vtmap;
     vtmap.resize(vertices.size());
 
-    std::vector<glm::vec3> tN = calculateTriangleNormals(vertices, triangles, vtmap);
+    std::vector<glm::vec3> tN = calculateTriangleNormals(mesh, vtmap);
     std::vector<glm::vec3> normals;
 
     // Now calculate the vertex normals
@@ -213,7 +206,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(
     std::vector<std::vector<size_t>> vtmap;
     vtmap.resize(vertices.size());
 
-    std::vector<glm::vec3> tN = calculateTriangleNormals(vertices, triangles, vtmap);
+    std::vector<glm::vec3> tN = calculateTriangleNormals(mesh, vtmap);
     std::vector<glm::vec3> normals;
 
     // Now calculate the vertex normals

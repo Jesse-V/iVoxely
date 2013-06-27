@@ -55,13 +55,27 @@ void Mesh::disable()
 
 
 
-bool Mesh::draw(GLenum mode)
+void Mesh::draw(GLenum mode)
 {
     //indexBuffer is drawn with priority iff it is available
     if (indexBuffer_)
         indexBuffer_->draw(mode);
     else
         vertexBuffer_->draw(mode);
+}
+
+
+
+std::shared_ptr<ShaderSnippet> Mesh::getVertexShaderGLSL()
+{
+    return std::make_shared<ShaderSnippet>();
+}
+
+
+
+std::shared_ptr<ShaderSnippet> Mesh::getFragmentShaderGLSL()
+{
+    return std::make_shared<ShaderSnippet>();
 }
 
 

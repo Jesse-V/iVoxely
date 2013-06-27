@@ -13,11 +13,14 @@ std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
     const std::vector<std::shared_ptr<Light>> lights
 )
 {
-    std::cout << "Creating shaders for " << typeid(*obj).name() << " with " << lights.size() << " light(s)... ";
+    std::cout << "Creating shaders for " << typeid(*obj).name()
+        << " with " << lights.size() << " light(s)... ";
 
-    auto dataBuffers = obj->getAllDataBuffers();
-    auto vertexSnippets = assembleVertexSnippets(sceneVertexShader, dataBuffers, lights);
-    auto fragmentSnippets = assembleFragmentSnippets(sceneFragmentShader, dataBuffers, lights);
+    auto buffers = obj->getOptionalDataBuffers();
+    auto vertexSnippets = assembleVertexSnippets(
+                                        sceneVertexShader, buffers, lights);
+    auto fragmentSnippets = assembleFragmentSnippets(
+                                        sceneFragmentShader, buffers, lights);
 
     std::string vertexShaderStr = buildShader(assembleFields(vertexSnippets), assembleMethods(vertexSnippets), assembleMainBodyCode(vertexSnippets));
     std::string fragmentShaderStr = buildShader(assembleFields(fragmentSnippets), assembleMethods(fragmentSnippets), assembleMainBodyCode(fragmentSnippets));
@@ -33,15 +36,15 @@ std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
 
 std::vector<std::shared_ptr<ShaderSnippet>> ShaderManager::assembleVertexSnippets(
     const std::shared_ptr<ShaderSnippet>& sceneVertexShader,
-    const std::vector<std::shared_ptr<DataBuffer>> dataBuffers,
+    const std::vector<std::shared_ptr<OptionalDataBuffer>> buffers,
     const std::vector<std::shared_ptr<Light>>& lights
 )
 {
     std::vector<std::shared_ptr<ShaderSnippet>> vertexSnippets;
     vertexSnippets.push_back(sceneVertexShader);
 
-    for_each (dataBuffers.begin(), dataBuffers.end(),
-        [&](const std::shared_ptr<DataBuffer>& buffer)
+    for_each (buffers.begin(), buffers.end(),
+        [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
         {
             vertexSnippets.push_back(buffer->getVertexShaderGLSL());
         }
@@ -62,15 +65,15 @@ std::vector<std::shared_ptr<ShaderSnippet>> ShaderManager::assembleVertexSnippet
 
 std::vector<std::shared_ptr<ShaderSnippet>> ShaderManager::assembleFragmentSnippets(
     const std::shared_ptr<ShaderSnippet>& sceneFragmentShader,
-    const std::vector<std::shared_ptr<DataBuffer>> dataBuffers,
+    const std::vector<std::shared_ptr<OptionalDataBuffer>> buffers,
     const std::vector<std::shared_ptr<Light>>& lights
 )
 {
     std::vector<std::shared_ptr<ShaderSnippet>> fragmentSnippets;
     fragmentSnippets.push_back(sceneFragmentShader);
 
-    for_each (dataBuffers.begin(), dataBuffers.end(),
-        [&](const std::shared_ptr<DataBuffer>& buffer)
+    for_each (buffers.begin(), buffers.end(),
+        [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
         {
             fragmentSnippets.push_back(buffer->getFragmentShaderGLSL());
         }

@@ -6,7 +6,8 @@
 
 class OptionalDataBuffer : public DataBuffer
 {
-    //just a classification, no implementation intended
+    public:
+        virtual void draw(GLenum mode) {} //OptionalDataBuffers cannot be drawn
 };
 
 #endif

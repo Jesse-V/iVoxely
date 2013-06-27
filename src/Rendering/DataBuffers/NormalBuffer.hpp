@@ -2,12 +2,13 @@
 #ifndef NORMAL_BUFFER
 #define NORMAL_BUFFER
 
-#include "DataBuffer.hpp"
+#include "OptionalDataBuffer.hpp"
+#include "Rendering/Mesh/Mesh.hpp"
 #include "../Triangle.struct"
 #include <vector>
 #include <string>
 
-class NormalBuffer : public DataBuffer
+class NormalBuffer : public OptionalDataBuffer
 {
     public:
         NormalBuffer(const std::vector<glm::vec3>& normals);
@@ -15,28 +16,23 @@ class NormalBuffer : public DataBuffer
         virtual void store();
         virtual void enable();
         virtual void disable();
-        virtual bool draw(GLenum mode);
 
         virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
         virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
         static std::vector<glm::vec3> calcNormalsMWA(
-            const std::vector<glm::vec3>& vertices,
-            const std::vector<Triangle>& triangles
+            const std::shared_ptr<Mesh>& mesh
         );
         static std::vector<glm::vec3> calcNormalsMWASER(
-            const std::vector<glm::vec3>& vertices,
-            const std::vector<Triangle>& triangles
+            const std::shared_ptr<Mesh>& mesh
         );
         static std::vector<glm::vec3> calcNormalsMWE(
-            const std::vector<glm::vec3>& vertices,
-            const std::vector<Triangle>& triangles
+            const std::shared_ptr<Mesh>& mesh
         );
 
     private:
         static std::vector<glm::vec3> calculateTriangleNormals(
-            const std::vector<glm::vec3>& vertices,
-            const std::vector<Triangle>& triangles,
+            const std::shared_ptr<Mesh>& mesh,
             std::vector<std::vector<size_t>>& vtmap
         );
 
