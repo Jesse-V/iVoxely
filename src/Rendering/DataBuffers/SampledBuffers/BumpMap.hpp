@@ -4,7 +4,7 @@
 
 #include "SampledBuffer.hpp"
 
-class BumpMap: public SampledBuffer
+class BumpMap : public SampledBuffer
 {
     public:
         BumpMap(const std::string& mapPath);

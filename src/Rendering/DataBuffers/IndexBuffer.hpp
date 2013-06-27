@@ -6,7 +6,7 @@
 #include "../Triangle.struct"
 #include <vector>
 
-class IndexBuffer: public DataBuffer
+class IndexBuffer : public DataBuffer
 {
     public:
         IndexBuffer(const std::vector<Triangle>& triangles);

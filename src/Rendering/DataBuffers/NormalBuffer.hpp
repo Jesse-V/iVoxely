@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 
-class NormalBuffer: public DataBuffer
+class NormalBuffer : public DataBuffer
 {
     public:
         NormalBuffer(const std::vector<glm::vec3>& normals);

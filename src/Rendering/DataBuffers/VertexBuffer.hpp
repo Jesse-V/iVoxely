@@ -6,7 +6,7 @@
 #include "glm/glm.hpp"
 #include <vector>
 
-class VertexBuffer: public DataBuffer
+class VertexBuffer : public DataBuffer
 {
     public:
         VertexBuffer(const std::vector<glm::vec3>& vertices);

@@ -30,15 +30,19 @@ void Game::addModels()
 
 void Game::addGround()
 {
-    Ground ground;
-    auto rObj = ground.makeObject();
+    auto mesh = PlyParser::getMesh("Resources/meshes/bun_zipper_res4.ply");
+    auto model = std::make_shared<Model>(mesh, {
+        std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh)),
+        std::make_shared<TextureBuffer>("Resources/textures/test_texture.bmp")
+        }
+    );
 
-    glm::mat4 objMatrix = glm::mat4();
-    objMatrix = glm::scale(objMatrix, glm::vec3(2, 1, 2));
-    objMatrix = glm::translate(objMatrix, glm::vec3(0, -0.15, 0));
-    rObj->setModelMatrix(objMatrix);
+    glm::mat4 modelMatrix = glm::mat4();
+    modelMatrix = glm::scale(modelMatrix, glm::vec3(2, 1, 2));
+    modelMatrix = glm::translate(modelMatrix, glm::vec3(0, -0.15, 0));
+    model->setModelMatrix(modelMatrix);
 
-    scene_->addModel(rObj);
+    scene_->addModel(model);
 }
 
 

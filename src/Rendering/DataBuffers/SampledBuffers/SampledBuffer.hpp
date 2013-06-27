@@ -6,7 +6,7 @@
 #include "glm/glm.hpp"
 #include <string>
 
-class SampledBuffer: public DataBuffer
+class SampledBuffer : public DataBuffer
 {
     public:
         SampledBuffer(const std::string& imagePath);

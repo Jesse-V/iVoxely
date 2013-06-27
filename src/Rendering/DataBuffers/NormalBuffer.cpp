@@ -106,10 +106,12 @@ std::shared_ptr<ShaderSnippet> NormalBuffer::getFragmentShaderGLSL()
 // "Mean Weighted by Angle" (MWA) algorithm as seen in the paper
 // "A Comparison of Algorithms for Vertex Normal Computation"
 std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(
-    const std::vector<glm::vec3>& vertices,
-    const std::vector<Triangle>& triangles
+    const std::shared_ptr<Mesh>& mesh
 )
 {
+    auto vertices = mesh->getVertices();
+    auto triangles = mesh->getTriangles();
+
     // keep track of which triangles a given vertex is part of
     std::vector<std::vector<size_t>> vtmap;
     vtmap.resize(vertices.size());
@@ -153,10 +155,12 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(
 // "Mean Weighted Average By Sine And Edge Reciprocal" (MWASER) algorithm as seen in
 // "A Comparison of Algorithms for Vertex Normal Computation"
 std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(
-    const std::vector<glm::vec3>& vertices,
-    const std::vector<Triangle>& triangles
+    const std::shared_ptr<Mesh>& mesh
 )
 {
+    auto vertices = mesh->getVertices();
+    auto triangles = mesh->getTriangles();
+
     // keep track of which triangles a given vertex is part of
     std::vector<std::vector<size_t>> vtmap;
     vtmap.resize(vertices.size());
@@ -199,10 +203,12 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(
 // Calculate the normals for a given mesh using the
 // "Mean Weighted Equally" (MWE) algorithm (Naive approach)
 std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(
-    const std::vector<glm::vec3>& vertices,
-    const std::vector<Triangle>& triangles
+     const std::shared_ptr<Mesh>& mesh
 )
 {
+    auto vertices = mesh->getVertices();
+    auto triangles = mesh->getTriangles();
+
     // keep track of which triangles a given vertex is part of
     std::vector<std::vector<size_t>> vtmap;
     vtmap.resize(vertices.size());
@@ -228,11 +234,12 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(
 
 
 std::vector<glm::vec3> NormalBuffer::calculateTriangleNormals(
-    const std::vector<glm::vec3>& vertices,
-    const std::vector<Triangle>& triangles,
-    std::vector<std::vector<size_t>>& vtmap
+     const std::shared_ptr<Mesh>& mesh,
+     std::vector<std::vector<size_t>>& vtmap
 )
 {
+    auto vertices = mesh->getVertices();
+    auto triangles = mesh->getTriangles();
     std::vector<glm::vec3> tN;
 
     for (size_t i = 0; i < triangles.size(); i++)

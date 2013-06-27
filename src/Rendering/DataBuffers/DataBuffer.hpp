@@ -7,7 +7,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
-class DataBuffer: public ShaderUtilizer
+class DataBuffer : public ShaderUtilizer
 {
     public:
         virtual void initialize(GLuint program) = 0;

@@ -18,7 +18,6 @@ add_executable(ivoxely
     World/Scene.cpp
     World/Camera.cpp
     World/Light.cpp
-    Models/Ground/Ground.cpp
     Rendering/Mesh/Mesh.cpp
     Rendering/Mesh/PlyParser.cpp
     Rendering/Model.cpp

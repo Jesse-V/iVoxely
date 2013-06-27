@@ -6,7 +6,7 @@
 #include "glm/glm.hpp"
 #include <GL/glew.h>
 
-class Light: public ShaderUtilizer
+class Light : public ShaderUtilizer
 {
     public:
         Light(

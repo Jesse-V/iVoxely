@@ -4,7 +4,7 @@
 
 #include "Models/CustomObject.hpp"
 
-class Ground: public CustomObject
+class Ground : public CustomObject
 {
     public:
         virtual std::shared_ptr<Model> makeObject();

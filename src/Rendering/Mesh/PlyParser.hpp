@@ -9,7 +9,7 @@
 #include <vector>
 #include <string>
 
-class PlyParser : public MeshGenerator
+class PlyParser
 {
     public:
         std::shared_ptr<Mesh> getMesh(const std::string& fileName);

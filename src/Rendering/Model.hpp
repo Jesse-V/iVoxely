@@ -13,9 +13,9 @@ class Model
 {
     public:
         Model(const std::shared_ptr<Mesh>& mesh,
-            const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs);
+            const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs);
         Model(const std::shared_ptr<Mesh>& mesh,
-            const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs,
+            const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs);
             GLenum renderMode);
 
         void initializeAndStore(std::shared_ptr<cs5400::Program> program);
@@ -35,7 +35,7 @@ class Model
 
     private:
         std::shared_ptr<VertexBuffer> mesh_;
-        std::vector<std::shared_ptr<DataBuffer>> dataBuffers_;
+        std::vector<std::shared_ptr<OptionalDataBuffer>> optionalDBs_;
         std::shared_ptr<cs5400::Program> renderingProgram_;
         glm::mat4 modelMatrix_;
         bool isVisible_, beenInitialized_;

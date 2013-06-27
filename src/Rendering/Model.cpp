@@ -7,16 +7,16 @@
 
 
 Model::Model(const std::shared_ptr<Mesh>& mesh,
-    const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs):
+    const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs);
     Model(mesh, optionalDBs, GL_TRIANGLES)
 {}
 
 
 
 Model::Model(const std::shared_ptr<Mesh>& mesh,
-    const std::vector<std::shared_ptr<DataBuffer>>& optionalDBs,
+    const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs,
     GLenum renderMode):
-    mesh_(mesh), dataBuffers_(optionalDBs), modelMatrix_(glm::mat4()),
+    mesh_(mesh), optionalDBs_(optionalDBs), modelMatrix_(glm::mat4()),
     isVisible_(true), beenInitialized_(false), renderMode_(renderMode)
 {} //Scene will call initializeAndStore
 
@@ -29,8 +29,8 @@ void Model::initializeAndStore(std::shared_ptr<cs5400::Program> program)
     mesh_->initialize(program->getHandle());
     mesh_->store();
 
-    for_each (dataBuffers_.begin(), dataBuffers_.end(),
-        [&](const std::shared_ptr<DataBuffer>& buffer)
+    for_each (optionalDBs_.begin(), optionalDBs_.end(),
+        [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
         {
             buffer->initialize(program->getHandle());
             buffer->store();
@@ -74,9 +74,9 @@ std::shared_ptr<cs5400::Program> Model::getProgram()
 
 
 
-std::vector<std::shared_ptr<DataBuffer>> Model::getAllDataBuffers()
+std::vector<std::shared_ptr<OptionalDataBuffer>> Model::getAllDataBuffers()
 {
-    std::vector<std::shared_ptr<DataBuffer>> all(dataBuffers_);
+    std::vector<std::shared_ptr<OptionalDataBuffer>> all(optionalDBs_);
     all.insert(all.begin(), mesh_);
     return all;
 }
@@ -115,8 +115,8 @@ void Model::enableDataBuffers()
 {
     mesh_->enable();
 
-    for_each (dataBuffers_.begin(), dataBuffers_.end(),
-        [&](const std::shared_ptr<DataBuffer>& buffer)
+    for_each (optionalDBs_.begin(), optionalDBs_.end(),
+        [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
         {
             buffer->enable();
         });
@@ -128,8 +128,8 @@ void Model::drawDataBuffers()
 {
     bool optionalBufferRendered = false;
 
-    for_each (dataBuffers_.begin(), dataBuffers_.end(),
-    [&](const std::shared_ptr<DataBuffer>& buffer)
+    for_each (optionalDBs_.begin(), optionalDBs_.end(),
+    [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
     {
         if (buffer->draw(GL_TRIANGLES))
             optionalBufferRendered = true;
@@ -145,8 +145,8 @@ void Model::disableDataBuffers()
 {
     mesh_->disable();
 
-    for_each (dataBuffers_.begin(), dataBuffers_.end(),
-        [&](const std::shared_ptr<DataBuffer>& buffer)
+    for_each (optionalDBs_.begin(), optionalDBs_.end(),
+        [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
         {
             buffer->disable();
         });

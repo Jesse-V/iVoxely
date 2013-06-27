@@ -4,7 +4,7 @@
 
 #include "SampledBuffer.hpp"
 
-class TextureBuffer: public SampledBuffer
+class TextureBuffer : public SampledBuffer
 {
     public:
         TextureBuffer(const std::string& imagePath);
