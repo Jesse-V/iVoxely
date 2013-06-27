@@ -33,7 +33,23 @@ void Game::addModels()
 
 void Game::addGround()
 {
-    auto mesh = PlyParser::getMesh("Resources/meshes/ground.ply");
+    //auto mesh = PlyParser::getMesh("Resources/meshes/ground.ply");
+    //
+
+    std::vector<glm::vec3> vertices;
+    vertices.push_back(glm::vec3( 1, 0, -1));
+    vertices.push_back(glm::vec3(-1, 0, -1));
+    vertices.push_back(glm::vec3(-1, 0,  1));
+    vertices.push_back(glm::vec3( 1, 0,  1));
+
+    std::vector<Triangle> triangles;
+    vertices.push_back(glm::vec3(0, 1, 2));
+    vertices.push_back(glm::vec3(0, 2, 3));
+
+    auto vBuffer = std::make_shared<VertexBuffer>(vertices);
+    auto iBuffer = std::make_shared<IndexBuffer>(triangles);
+
+    auto mesh = std::make_shared<Mesh>(vBuffer, iBuffer);
 
     std::vector<std::shared_ptr<OptionalDataBuffer>> buffers;
     buffers.push_back(
