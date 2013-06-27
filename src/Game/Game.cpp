@@ -36,7 +36,7 @@ void Game::addGround()
     //auto mesh = PlyParser::getMesh("Resources/meshes/ground.ply");
     //
 
-    std::vector<glm::vec3> vertices;
+    /*std::vector<glm::vec3> vertices;
     vertices.push_back(glm::vec3( 1, 0, -1));
     vertices.push_back(glm::vec3(-1, 0, -1));
     vertices.push_back(glm::vec3(-1, 0,  1));
@@ -49,7 +49,8 @@ void Game::addGround()
     auto vBuffer = std::make_shared<VertexBuffer>(vertices);
     auto iBuffer = std::make_shared<IndexBuffer>(triangles);
 
-    auto mesh = std::make_shared<Mesh>(vBuffer, iBuffer);
+    auto mesh = std::make_shared<Mesh>(vBuffer, iBuffer);*/
+    auto mesh = PlyParser::getMesh("Resources/meshes/ground.ply");
 
     std::vector<std::shared_ptr<OptionalDataBuffer>> buffers;
     buffers.push_back(
@@ -192,10 +193,12 @@ Game& Game::getInstance()
         if (singleton_)
             return *singleton_;
 
+        std::cout << "Creating Game..." << std::endl;
         singleton_ = new Game(
             glutGet(GLUT_SCREEN_WIDTH),
             glutGet(GLUT_SCREEN_HEIGHT)
         );
+        std::cout << "Finished creating Game" << std::endl;
     }
     catch (std::exception& e)
     {

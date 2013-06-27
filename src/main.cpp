@@ -161,7 +161,7 @@ int main(int argc, char **argv)
         glutMotionFunc(mouseDragCallback);
         glutPassiveMotionFunc(mouseMotionCallback);
 
-        std::cout << "Finished assembly. Launching application..." << std::endl;
+        std::cout << "Finished Glut and window initialization" << std::endl;
         glutMainLoop();
     }
     catch (std::exception& e)

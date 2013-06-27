@@ -13,7 +13,7 @@ std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
     const std::vector<std::shared_ptr<Light>> lights
 )
 {
-    std::cout << "Creating shaders for " << typeid(*obj).name()
+    std::cout << "Creating shaders for Model"
         << " with " << lights.size() << " light(s)... ";
 
     auto buffers = obj->getOptionalDataBuffers();

@@ -17,12 +17,15 @@
 */
 std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
 {
+    std::cout << "Loading PLY model from " << fileName << ": ";
     auto fileContents = readFile(fileName); //read entire file
     auto pieces = seperatePly(fileContents); //header, vertices, triangle
 
     std::vector<glm::vec3> vertices;
     std::vector<Triangle> triangles;
-/*
+
+    std::cout << "parsing... ";
+
     //use threading to parallelize the parsing
     std::thread t1([&]() {
         vertices = parseVertices(pieces[1]);
@@ -33,7 +36,9 @@ std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
     });
 
     t1.join(); //wait for both threads to complete
-    t2.join();*/
+    t2.join();
+
+    std::cout << "done" << std::endl;
 
     auto vBuffer = std::make_shared<VertexBuffer>(parseVertices(pieces[1]));
     auto iBuffer = std::make_shared<IndexBuffer>(parseTriangles(pieces[2]));
@@ -71,9 +76,10 @@ std::string PlyParser::readFile(const std::string& fileName)
 */
 std::vector<std::string> PlyParser::seperatePly(const std::string& fileContents)
 {
+    std::string headerDelimiter = "end_header";
     std::vector<std::string> pieces;
-    unsigned long headerEnd = fileContents.find("end_header");
-    unsigned long dataBegin = headerEnd + 11;
+    unsigned long headerEnd = fileContents.find(headerDelimiter);
+    unsigned long dataBegin = headerEnd + headerDelimiter.size() + 1;
 
     std::string header = fileContents.substr(0, headerEnd - 1);
     pieces.push_back(header); //add header
@@ -101,14 +107,16 @@ std::vector<glm::vec3> PlyParser::parseVertices(const std::string& verticesData)
     std::vector<glm::vec3> vertices;
     std::stringstream sstream(verticesData);
 
-    std::cout << verticesData << std::endl << std::endl;
+    //std::cout << verticesData << std::endl << std::endl;
 
     //loop through each line, pull out and store the relevant data
     std::string line;
     while (std::getline(sstream, line))
     {
+        std::stringstream lineStream(line);
+
         glm::vec3 pt;
-        sstream >> pt.x >> pt.y >> pt.z;
+        lineStream >> pt.x >> pt.y >> pt.z;
         vertices.push_back(pt);
     }
 
@@ -122,7 +130,7 @@ std::vector<glm::vec3> PlyParser::parseVertices(const std::string& verticesData)
 */
 std::vector<Triangle> PlyParser::parseTriangles(const std::string& triangleData)
 {
-    std::cout << triangleData << std::endl << std::endl;
+    //std::cout << triangleData << std::endl << std::endl;
 
     int dimensionality = 3;
     std::vector<Triangle> triangles;

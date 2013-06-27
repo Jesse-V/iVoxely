@@ -16,6 +16,7 @@ Scene::Scene(const std::shared_ptr<Camera>& camera):
 void Scene::addModel(const std::shared_ptr<Model>& obj)
 {
     renderableObjects_.push_back(obj);
+    std::cout << "Successfully added a Model to the Scene" << std::endl;
 }
 
 
@@ -27,6 +28,7 @@ void Scene::addLight(const std::shared_ptr<Light>& light)
 
     assertRenderableObjectsContainNormalBuffers();
     lights_.push_back(light);
+    std::cout << "Successfully added a Light to the Scene" << std::endl;
 }
 
 
