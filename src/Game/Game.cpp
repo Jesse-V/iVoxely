@@ -43,8 +43,8 @@ void Game::addGround()
     vertices.push_back(glm::vec3( 1, 0,  1));
 
     std::vector<Triangle> triangles;
-    vertices.push_back(glm::vec3(0, 1, 2));
-    vertices.push_back(glm::vec3(0, 2, 3));
+    triangles.push_back(Triangle(0, 1, 2));
+    triangles.push_back(Triangle(0, 2, 3));
 
     auto vBuffer = std::make_shared<VertexBuffer>(vertices);
     auto iBuffer = std::make_shared<IndexBuffer>(triangles);
