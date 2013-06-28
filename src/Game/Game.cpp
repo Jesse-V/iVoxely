@@ -61,9 +61,9 @@ void Game::addLight()
     scene_->setAmbientLight(glm::vec3(0.75, 0.75, 0.75));
 
     auto light = std::make_shared<Light>(
-        glm::vec3(0.0f, 0.0f, 2.0f), //position
+        scene_->getCamera()->getPosition(), //position
         glm::vec3(1),               //white light
-        0.1f                       //power
+        1.0f                       //power
     );
 
     scene_->addLight(light);
@@ -74,12 +74,11 @@ void Game::addLight()
 std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 {
     auto camera = std::make_shared<Camera>();
-
     camera->lookAt(
-        glm::vec3(-0.041535, -0.813947, -0.579453),
-        glm::vec3(-0.0114782, 0.590822, -0.80672)
+        glm::vec3(1.57206f,   -0.30442f,  -0.678558f),
+        glm::vec3(-0.0587634f, 0.843095f, -0.53454f)
     );
-    camera->setPosition(glm::vec3(0.0318538, 0.331304, 2.59333));
+    camera->setPosition(glm::vec3(2.5631f, 1.99537f, 4.18708f));
     camera->setAspectRatio(screenWidth / (float)screenHeight);
 
     return camera;
@@ -89,7 +88,7 @@ std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 
 void Game::update(int deltaTime)
 {
-    //moveLight(deltaTime);
+
 }
 
 
@@ -102,21 +101,6 @@ void Game::render()
     scene_->render();
 
     glutSwapBuffers();
-}
-
-
-
-void Game::moveLight(int deltaTime)
-{
-    glm::vec3 lightPos = scene_->getLights()[0]->getPosition();
-
-    if (lightPos.z < -2)
-        lightVector_.z = -lightVector_.z;
-    else if (lightPos.z > 2)
-        lightVector_.z = -lightVector_.z;
-
-    lightPos += lightVector_ * (float)deltaTime;
-    scene_->getLights()[0]->setPosition(lightPos);
 }
 
 

@@ -26,7 +26,6 @@ class Game
         void addGround();
         void addLight();
         std::shared_ptr<Camera> getCamera(int screenWidth, int screenHeight);
-        void moveLight(int deltaTime);
         static void sleep(int milliseconds);
 
     private:
@@ -34,8 +33,6 @@ class Game
 
         std::shared_ptr<Scene> scene_;
         std::shared_ptr<Player> player_;
-
-        glm::vec3 lightVector_ = glm::vec3(0.0f, 0.0f, -0.001f);
 };
 
 #endif

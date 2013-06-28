@@ -8,8 +8,8 @@
 class Player
 {
     public:
-        const float TRANSLATION_SPEED = 0.0078125f;
-        const float ROTATION_SPEED = 0.5f;
+        const float TRANSLATION_SPEED = 0.02f;
+        const float ROTATION_SPEED = 1.0f;
 
     public:
         Player(std::shared_ptr<Scene> scene);
