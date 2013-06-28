@@ -1,6 +1,6 @@
 
-#ifndef MODEL_HPP
-#define MODEL_HPP
+#ifndef MODEL
+#define MODEL
 
 #include "Modeling/Mesh/Mesh.hpp"
 #include "Modeling/DataBuffers/OptionalDataBuffer.hpp"

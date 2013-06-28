@@ -13,15 +13,12 @@ class TextureBuffer : public SampledBuffer
         virtual void enable();
         virtual void disable();
 
+        virtual void store();
+
         virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
         virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
 
-    protected:
-        virtual void storeImage();
-        virtual void storeCoordMap();
-
     private:
-        GLuint textureID_, vbo_cube_texcoords_;
         GLint attribute_texcoord_;
 };
 

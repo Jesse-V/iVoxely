@@ -35,13 +35,10 @@ void Game::addGround()
 {
     auto mesh = PlyParser::getMesh("Resources/Meshes/ground.ply");
 
-    std::vector<std::shared_ptr<OptionalDataBuffer>> buffers;
-    buffers.push_back(
-        std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh))
-    );
-    buffers.push_back(
+    std::vector<std::shared_ptr<OptionalDataBuffer>> buffers = {
+        std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh)),
         std::make_shared<TextureBuffer>("Resources/Textures/test_texture.bmp")
-    );
+    };
 
     auto model = std::make_shared<Model>(mesh, buffers);
 
@@ -181,7 +178,7 @@ Game& Game::getInstance()
             glutGet(GLUT_SCREEN_WIDTH),
             glutGet(GLUT_SCREEN_HEIGHT)
         );
-        std::cout << "Finished creating Game" << std::endl;
+        std::cout << "... finished creating Game" << std::endl;
     }
     catch (std::exception& e)
     {

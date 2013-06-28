@@ -1,6 +1,6 @@
 
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#ifndef CAMERA
+#define CAMERA
 
 #include "glm/glm.hpp"
 #include <GL/glew.h>

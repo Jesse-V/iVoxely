@@ -25,7 +25,17 @@ Model::Model(const std::shared_ptr<Mesh>& mesh,
     GLenum renderMode):
     mesh_(mesh), optionalDBs_(optionalDBs), modelMatrix_(glm::mat4()),
     isVisible_(true), beenInitialized_(false), renderMode_(renderMode)
-{} //Scene will call initializeAndStore
+{
+    std::cout << "Created a Model with { ";
+    for_each (optionalDBs_.begin(), optionalDBs_.end(),
+        [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
+        {
+            std::cout << typeid(*buffer).name() << " ";
+        }
+    );
+
+    std::cout << "} OptionalDataBuffers." << std::endl;
+} //Scene will call initializeAndStore
 
 
 

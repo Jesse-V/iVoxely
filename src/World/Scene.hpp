@@ -1,6 +1,6 @@
 
-#ifndef SCENE_HPP
-#define SCENE_HPP
+#ifndef SCENE
+#define SCENE
 
 #include "Camera.hpp"
 #include "Light.hpp"

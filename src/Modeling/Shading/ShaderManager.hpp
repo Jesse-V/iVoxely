@@ -1,6 +1,6 @@
 
-#ifndef SHADER_MANAGER_HPP
-#define SHADER_MANAGER_HPP
+#ifndef SHADER_MANAGER
+#define SHADER_MANAGER
 
 #include "Modeling/Model.hpp"
 #include "Modeling/DataBuffers/DataBuffer.hpp"

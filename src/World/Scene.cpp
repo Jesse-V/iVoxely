@@ -51,19 +51,22 @@ void Scene::setAmbientLight(const glm::vec3& rgb)
 void Scene::render()
 {
     for_each (renderableObjects_.begin(), renderableObjects_.end(),
-        [&](std::shared_ptr<Model>& obj)
+        [&](std::shared_ptr<Model>& model)
         {
-            if (!obj->hasBeenInitialized())
-                obj->initializeAndStore(ShaderManager::createProgram(obj, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_));
+            if (!model->hasBeenInitialized())
+            {
+                std::cout << "Initializing and storing model... " << std::endl;
+                model->initializeAndStore(ShaderManager::createProgram(model, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_));
+                std::cout << "... finished with model" << std::endl;
+            }
 
-            GLuint handle = obj->getProgram()->getHandle();
-
+            GLuint handle = model->getProgram()->getHandle();
             glUseProgram(handle);
 
             camera_->sync(handle);
             syncLights(handle);
 
-            obj->render(glGetUniformLocation(handle, "modelMatrix"));
+            model->render(glGetUniformLocation(handle, "modelMatrix"));
         }
     );
 }

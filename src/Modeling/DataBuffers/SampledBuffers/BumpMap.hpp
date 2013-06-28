@@ -19,9 +19,6 @@ class BumpMap : public SampledBuffer
     protected:
         virtual void storeImage();
         virtual void storeCoordMap();
-
-    private:
-
 };
 
 #endif

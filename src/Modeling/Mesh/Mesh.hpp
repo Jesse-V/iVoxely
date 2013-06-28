@@ -1,6 +1,6 @@
 
-#ifndef MESH_HPP
-#define MESH_HPP
+#ifndef MESH
+#define MESH
 
 #include "Modeling/DataBuffers/IndexBuffer.hpp"
 #include "Modeling/DataBuffers/VertexBuffer.hpp"

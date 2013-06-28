@@ -1,5 +1,5 @@
-#ifndef SHADER_UTILIZER_HPP
-#define SHADER_UTILIZER_HPP
+#ifndef SHADER_UTILIZER
+#define SHADER_UTILIZER
 
 #include "ShaderSnippet.hpp"
 #include <memory>

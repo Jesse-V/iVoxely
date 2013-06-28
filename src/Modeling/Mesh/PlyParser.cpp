@@ -17,12 +17,11 @@
 */
 std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
 {
-    std::cout << "Loading PLY model from " << fileName << ": ";
-    auto fileContents = readFile(fileName); //read entire file
-    auto pieces = seperatePly(fileContents); //header, vertices, triangle
-
     std::vector<glm::vec3> vertices;
     std::vector<Triangle> triangles;
+
+    std::cout << "Loading PLY model from " << fileName << ": ";
+    auto pieces = seperatePly(readFile(fileName));
 
     std::cout << "parsing... ";
 
@@ -40,9 +39,8 @@ std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
 
     std::cout << "done" << std::endl;
 
-    auto vBuffer = std::make_shared<VertexBuffer>(parseVertices(pieces[1]));
-    auto iBuffer = std::make_shared<IndexBuffer>(parseTriangles(pieces[2]));
-
+    auto vBuffer = std::make_shared<VertexBuffer>(vertices);
+    auto iBuffer = std::make_shared<IndexBuffer>(triangles);
     return std::make_shared<Mesh>(vBuffer, iBuffer);
 }
 
@@ -57,7 +55,7 @@ std::string PlyParser::readFile(const std::string& fileName)
     std::ifstream fin(fileName, std::ios::in);
 
     if (!fin.is_open())
-        throw std::runtime_error("Unable to open .ply file at " + fileName);
+        throw std::runtime_error("Unable to open file at " + fileName);
 
     fin.seekg(0, std::ios::end);
     fileContents.resize((unsigned long)fin.tellg()); //allocate enough space

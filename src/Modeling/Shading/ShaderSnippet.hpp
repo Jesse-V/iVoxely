@@ -1,5 +1,5 @@
-#ifndef SHADER_SNIPPET_HPP
-#define SHADER_SNIPPET_HPP
+#ifndef SHADER_SNIPPET
+#define SHADER_SNIPPET
 
 #include <string>
 

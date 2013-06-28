@@ -1,6 +1,6 @@
 
-#ifndef GAME_HPP
-#define GAME_HPP
+#ifndef GAME
+#define GAME
 
 #include "Player.hpp"
 #include "World/Scene.hpp"

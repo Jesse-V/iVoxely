@@ -1,6 +1,6 @@
 
-#ifndef PLAYER_HPP
-#define PLAYER_HPP
+#ifndef PLAYER
+#define PLAYER
 
 #include "World/Scene.hpp"
 #include <memory>

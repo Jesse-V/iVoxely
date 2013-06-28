@@ -1,6 +1,6 @@
 
-#ifndef CS5400_SHADER_HPP
-#define CS5400_SHADER_HPP
+#ifndef CS5400_SHADER
+#define CS5400_SHADER
 
 #include <GL/glew.h>
 #include <GL/glut.h>

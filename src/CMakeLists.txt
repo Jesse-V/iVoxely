@@ -27,6 +27,7 @@ add_executable(ivoxely
     Modeling/DataBuffers/SampledBuffers/SampledBuffer.cpp
     Modeling/DataBuffers/SampledBuffers/TextureBuffer.cpp
     Modeling/DataBuffers/SampledBuffers/BumpMap.cpp
+    Modeling/DataBuffers/SampledBuffers/CoordinateMapReader.cpp
     Modeling/Shading/ShaderManager.cpp
     Modeling/Shading/ShaderSnippet.cpp
     Modeling/Shading/Program.cpp

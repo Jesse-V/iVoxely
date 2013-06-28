@@ -16,16 +16,18 @@ class SampledBuffer : public OptionalDataBuffer
         void loadBMP(const std::string& imagePath);
         void deleteBufferFromRAM();
 
+        virtual void initialize(GLuint program);
         virtual void store();
-
-    protected:
-        virtual void storeImage() = 0;
-        virtual void storeCoordMap() = 0;
 
     protected:
         int imgWidth_, imgHeight_;
         unsigned char* data_;
+        GLuint vbo_coords_;
         bool isValid_ = false;
+
+    private:
+        void storeImage();
+        void storeCoordMap();
 };
 
 #endif

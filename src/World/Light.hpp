@@ -1,6 +1,6 @@
 
-#ifndef LIGHT_HPP
-#define LIGHT_HPP
+#ifndef LIGHT
+#define LIGHT
 
 #include "Modeling/Shading/ShaderUtilizer.hpp"
 #include "glm/glm.hpp"
