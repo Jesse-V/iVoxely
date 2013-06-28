@@ -63,7 +63,7 @@ void Game::addLight()
     auto light = std::make_shared<Light>(
         glm::vec3(0.0f, 0.0f, 2.0f), //position
         glm::vec3(1),               //white light
-        0.03f                       //power
+        0.1f                       //power
     );
 
     scene_->addLight(light);
@@ -89,7 +89,7 @@ std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 
 void Game::update(int deltaTime)
 {
-    moveLight(deltaTime);
+    //moveLight(deltaTime);
 }
 
 

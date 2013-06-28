@@ -41,6 +41,8 @@ void Player::onKeyPress(unsigned char key)
             break;
     }
 
+    scene_->getLights()[0]->setPosition(scene_->getCamera()->getPosition());
+
     //std::cout << camera->toString() << std::endl;
 }
 
