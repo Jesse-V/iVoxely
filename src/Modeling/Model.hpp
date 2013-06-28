@@ -4,7 +4,7 @@
 
 #include "Modeling/Mesh/Mesh.hpp"
 #include "Modeling/DataBuffers/OptionalDataBuffer.hpp"
-#include "Resources/OpenGL/Program.hpp"
+#include "Modeling/Shading/Program.hpp"
 #include "glm/glm.hpp"
 #include <vector>
 #include <memory>

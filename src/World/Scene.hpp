@@ -4,7 +4,7 @@
 
 #include "Camera.hpp"
 #include "Light.hpp"
-#include "Resources/OpenGL/Program.hpp"
+#include "Modeling/Shading/Program.hpp"
 #include "Modeling/Model.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include <vector>

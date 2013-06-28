@@ -2,7 +2,7 @@
 #ifndef LIGHT_HPP
 #define LIGHT_HPP
 
-#include "Resources/OpenGL/ShaderUtilizer.hpp"
+#include "Modeling/Shading/ShaderUtilizer.hpp"
 #include "glm/glm.hpp"
 #include <GL/glew.h>
 

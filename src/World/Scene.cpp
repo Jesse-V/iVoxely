@@ -1,6 +1,6 @@
 
 #include "Scene.hpp"
-#include "Resources/OpenGL/ShaderManager.hpp"
+#include "Modeling/Shading/ShaderManager.hpp"
 #include "Modeling/DataBuffers/NormalBuffer.hpp"
 #include <algorithm>
 #include <sstream>

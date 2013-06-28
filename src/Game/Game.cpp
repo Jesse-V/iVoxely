@@ -33,31 +33,14 @@ void Game::addModels()
 
 void Game::addGround()
 {
-    //auto mesh = PlyParser::getMesh("Resources/meshes/ground.ply");
-    //
-
-    /*std::vector<glm::vec3> vertices;
-    vertices.push_back(glm::vec3( 1, 0, -1));
-    vertices.push_back(glm::vec3(-1, 0, -1));
-    vertices.push_back(glm::vec3(-1, 0,  1));
-    vertices.push_back(glm::vec3( 1, 0,  1));
-
-    std::vector<Triangle> triangles;
-    triangles.push_back(Triangle(0, 1, 2));
-    triangles.push_back(Triangle(0, 2, 3));
-
-    auto vBuffer = std::make_shared<VertexBuffer>(vertices);
-    auto iBuffer = std::make_shared<IndexBuffer>(triangles);
-
-    auto mesh = std::make_shared<Mesh>(vBuffer, iBuffer);*/
-    auto mesh = PlyParser::getMesh("Resources/meshes/ground.ply");
+    auto mesh = PlyParser::getMesh("Resources/Meshes/ground.ply");
 
     std::vector<std::shared_ptr<OptionalDataBuffer>> buffers;
     buffers.push_back(
         std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh))
     );
     buffers.push_back(
-        std::make_shared<TextureBuffer>("Resources/textures/test_texture.bmp")
+        std::make_shared<TextureBuffer>("Resources/Textures/test_texture.bmp")
     );
 
     auto model = std::make_shared<Model>(mesh, buffers);

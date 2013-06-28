@@ -57,7 +57,7 @@ std::string PlyParser::readFile(const std::string& fileName)
     std::ifstream fin(fileName, std::ios::in);
 
     if (!fin.is_open())
-        throw std::runtime_error("Error opening ply file: " + fileName);
+        throw std::runtime_error("Unable to open .ply file at " + fileName);
 
     fin.seekg(0, std::ios::end);
     fileContents.resize((unsigned long)fin.tellg()); //allocate enough space

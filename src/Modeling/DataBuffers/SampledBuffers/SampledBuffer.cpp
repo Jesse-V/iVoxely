@@ -34,7 +34,7 @@ void SampledBuffer::loadBMP(const std::string& imagePath)
 
     FILE * file = fopen(imagePath.c_str(), "rb"); //read binary .bmp file
     if (!file)
-        throw std::runtime_error("Unable to open " + imagePath + " file");
+        throw std::runtime_error("Unable to open image at " + imagePath);
 
     if(fread(header, 1, 54, file) != 54)
         throw std::runtime_error(imagePath + " is not a valid .bmp image");

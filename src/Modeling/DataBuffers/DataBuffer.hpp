@@ -2,8 +2,8 @@
 #ifndef DATA_BUFFER
 #define DATA_BUFFER
 
-#include "Resources/OpenGL/ShaderUtilizer.hpp"
-#include "Resources/OpenGL/ShaderSnippet.hpp"
+#include "Modeling/Shading/ShaderUtilizer.hpp"
+#include "Modeling/Shading/ShaderSnippet.hpp"
 #include <GL/glew.h>
 #include <GL/glut.h>
 

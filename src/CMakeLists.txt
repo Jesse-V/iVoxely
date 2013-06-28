@@ -27,10 +27,10 @@ add_executable(ivoxely
     Modeling/DataBuffers/SampledBuffers/SampledBuffer.cpp
     Modeling/DataBuffers/SampledBuffers/TextureBuffer.cpp
     Modeling/DataBuffers/SampledBuffers/BumpMap.cpp
-    Resources/OpenGL/ShaderManager.cpp
-    Resources/OpenGL/ShaderSnippet.cpp
-    Resources/OpenGL/Program.cpp
-    Resources/OpenGL/Shader.cpp
+    Modeling/Shading/ShaderManager.cpp
+    Modeling/Shading/ShaderSnippet.cpp
+    Modeling/Shading/Program.cpp
+    Modeling/Shading/Shader.cpp
 )
 
 IF(WIN32)
