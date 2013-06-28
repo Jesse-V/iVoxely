@@ -105,8 +105,6 @@ std::vector<glm::vec3> PlyParser::parseVertices(const std::string& verticesData)
     std::vector<glm::vec3> vertices;
     std::stringstream sstream(verticesData);
 
-    //std::cout << verticesData << std::endl << std::endl;
-
     //loop through each line, pull out and store the relevant data
     std::string line;
     while (std::getline(sstream, line))
@@ -128,8 +126,6 @@ std::vector<glm::vec3> PlyParser::parseVertices(const std::string& verticesData)
 */
 std::vector<Triangle> PlyParser::parseTriangles(const std::string& triangleData)
 {
-    //std::cout << triangleData << std::endl << std::endl;
-
     int dimensionality = 3;
     std::vector<Triangle> triangles;
     std::stringstream sstream(triangleData);

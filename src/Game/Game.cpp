@@ -34,13 +34,13 @@ void Game::addModels()
 
 void Game::addGround()
 {
-    auto mesh = PlyParser::getMesh("Resources/Meshes/ground.ply");
+    auto mesh = PlyParser::getMesh("Resources/Meshes/cube.ply");
 
     std::vector<std::shared_ptr<OptionalDataBuffer>> buffers = {
         std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh)),
         std::make_shared<TextureBuffer>(
             "Resources/Textures/test_texture.bmp",
-            CoordinateMapReader::getMap("Resources/Coordinate Maps/square.coord")
+            CoordinateMapReader::getMap("Resources/Coordinate Maps/cube.coord")
         )
     };
 
