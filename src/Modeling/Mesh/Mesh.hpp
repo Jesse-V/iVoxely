@@ -14,7 +14,7 @@ class Mesh : public DataBuffer
              const std::shared_ptr<IndexBuffer>& indexBuffer
         );
 
-        virtual void initialize(GLuint program);
+        virtual void initialize(GLuint programHandle);
         virtual void store();
         virtual void enable();
         virtual void disable();

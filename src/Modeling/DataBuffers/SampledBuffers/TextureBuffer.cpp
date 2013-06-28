@@ -2,16 +2,18 @@
 #include "TextureBuffer.hpp"
 
 
-TextureBuffer::TextureBuffer(const std::string& imagePath):
-    SampledBuffer(imagePath)
+TextureBuffer::TextureBuffer(
+    const std::string& imagePath,
+    const std::vector<GLfloat>& coordinateMap):
+    SampledBuffer(imagePath, coordinateMap)
 {}
 
 
 
-void TextureBuffer::initialize(GLuint program)
+void TextureBuffer::initialize(GLuint programHandle)
 {
-    SampledBuffer::initialize();
-    attribute_texcoord_ = glGetAttribLocation(program, "texcoord");
+    SampledBuffer::initialize(programHandle);
+    attribute_texcoord_ = glGetAttribLocation(programHandle, "texcoord");
 }
 
 

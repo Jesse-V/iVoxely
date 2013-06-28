@@ -3,6 +3,7 @@
 #include "Modeling/Mesh/PlyParser.hpp"
 #include "Modeling/DataBuffers/NormalBuffer.hpp"
 #include "Modeling/DataBuffers/SampledBuffers/TextureBuffer.hpp"
+#include "Modeling/DataBuffers/SampledBuffers/CoordinateMapReader.hpp"
 #include <memory>
 #include <thread>
 #include <iostream>
@@ -37,7 +38,10 @@ void Game::addGround()
 
     std::vector<std::shared_ptr<OptionalDataBuffer>> buffers = {
         std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh)),
-        std::make_shared<TextureBuffer>("Resources/Textures/test_texture.bmp")
+        std::make_shared<TextureBuffer>(
+            "Resources/Textures/test_texture.bmp",
+            CoordinateMapReader::getMap("Resources/Coordinate Maps/square.coord")
+        )
     };
 
     auto model = std::make_shared<Model>(mesh, buffers);

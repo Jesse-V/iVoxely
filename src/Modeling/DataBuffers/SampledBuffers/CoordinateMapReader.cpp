@@ -14,11 +14,11 @@ std::vector<GLfloat> CoordinateMapReader::getMap(const std::string& fileName)
     std::stringstream mapStream(fileContents);
 
     GLfloat temp;
+    mapStream >> temp;
     while (mapStream.good())
     {
-        mapStream >> temp;
         map.push_back(temp);
-        mapStream.peek();
+        mapStream >> temp;
     }
 
     std::cout << "done (read " << map.size() << " floats)" << std::endl;

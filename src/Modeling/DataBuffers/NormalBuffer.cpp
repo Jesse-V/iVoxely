@@ -10,10 +10,10 @@ NormalBuffer::NormalBuffer(const std::vector<glm::vec3>& normals):
 
 
 
-void NormalBuffer::initialize(GLuint program)
+void NormalBuffer::initialize(GLuint programHandle)
 {
     glGenBuffers(1, &normalBuffer_);
-    normalAttrib_ = glGetAttribLocation(program, "vertexNormal");
+    normalAttrib_ = glGetAttribLocation(programHandle, "vertexNormal");
 }
 
 

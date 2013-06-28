@@ -10,7 +10,7 @@ class IndexBuffer : public DataBuffer
 {
     public:
         IndexBuffer(const std::vector<Triangle>& triangles);
-        virtual void initialize(GLuint program);
+        virtual void initialize(GLuint programHandle);
         virtual void store();
         virtual void enable();
         virtual void disable();

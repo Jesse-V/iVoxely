@@ -12,7 +12,7 @@ class NormalBuffer : public OptionalDataBuffer
 {
     public:
         NormalBuffer(const std::vector<glm::vec3>& normals);
-        virtual void initialize(GLuint program);
+        virtual void initialize(GLuint programHandle);
         virtual void store();
         virtual void enable();
         virtual void disable();

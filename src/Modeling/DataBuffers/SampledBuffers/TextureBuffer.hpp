@@ -7,9 +7,10 @@
 class TextureBuffer : public SampledBuffer
 {
     public:
-        TextureBuffer(const std::string& imagePath);
+        TextureBuffer(const std::string& imagePath,
+                      const std::vector<GLfloat>& coordinateMap);
 
-        virtual void initialize(GLuint program);
+        virtual void initialize(GLuint programHandle);
         virtual void enable();
         virtual void disable();
 

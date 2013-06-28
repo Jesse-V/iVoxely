@@ -9,14 +9,14 @@ VertexBuffer::VertexBuffer(const std::vector<glm::vec3>& vertices):
 
 
 
-void VertexBuffer::initialize(GLuint program)
+void VertexBuffer::initialize(GLuint programHandle)
 {
     glGenBuffers(1, &vertexBuffer_);
-    vertexAttrib_ = glGetAttribLocation(program, "vertex");
+    vertexAttrib_ = glGetAttribLocation(programHandle, "vertex");
 }
 
 
-#include <iostream>
+
 // Store the vertices in a GPU buffer
 void VertexBuffer::store()
 {

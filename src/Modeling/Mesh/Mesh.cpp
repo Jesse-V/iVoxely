@@ -19,11 +19,11 @@ Mesh::Mesh(const std::shared_ptr<VertexBuffer>& vertexBuffer,
 
 
 
-void Mesh::initialize(GLuint program)
+void Mesh::initialize(GLuint programHandle)
 {
-    vertexBuffer_->initialize(program);
+    vertexBuffer_->initialize(programHandle);
     if (indexBuffer_)
-        indexBuffer_->initialize(program);
+        indexBuffer_->initialize(programHandle);
 }
 
 

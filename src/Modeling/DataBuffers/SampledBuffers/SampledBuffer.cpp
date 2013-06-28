@@ -4,7 +4,10 @@
 #include <iostream>
 
 
-SampledBuffer::SampledBuffer(const std::string& imagePath)
+SampledBuffer::SampledBuffer(
+    const std::string& imagePath,
+    const std::vector<GLfloat>& coordinateMap):
+    coordinateMap_(coordinateMap)
 {
     loadBMP(imagePath);
 }
@@ -18,7 +21,7 @@ SampledBuffer::~SampledBuffer()
 
 
 
-void SampledBuffer::initialize(GLuint program)
+void SampledBuffer::initialize(GLuint programHandle)
 {
     glGenBuffers(1, &vbo_coords_);
 }
@@ -57,19 +60,8 @@ void SampledBuffer::storeImage()
 void SampledBuffer::storeCoordMap()
 {
     glBindBuffer(GL_ARRAY_BUFFER, vbo_coords_);
-
-    GLfloat map[2 * 4 * 1] = {
-        // front
-        0.0, 0.0,
-        1.0, 0.0,
-        1.0, 1.0,
-        0.0, 1.0,
-    };
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(map), map, GL_STATIC_DRAW);
-    //glBufferData(GL_ARRAY_BUFFER, map.size() * sizeof(GLfloat),
-                 //map.data(), GL_STATIC_DRAW);
-
+    glBufferData(GL_ARRAY_BUFFER, coordinateMap_.size() * sizeof(GLfloat),
+                 coordinateMap_.data(), GL_STATIC_DRAW);
 }
 
 
