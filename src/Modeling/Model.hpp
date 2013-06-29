@@ -12,7 +12,7 @@
 class Model
 {
     public:
-        //Model(const std::shared_ptr<Mesh>& mesh);
+        Model(const std::shared_ptr<Mesh>& mesh);
         Model(const std::shared_ptr<Mesh>& mesh,
             const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs);
         Model(const std::shared_ptr<Mesh>& mesh,

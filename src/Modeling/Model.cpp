@@ -5,12 +5,12 @@
 #include <algorithm>
 #include <iostream>
 
-/*
+
 Model::Model(const std::shared_ptr<Mesh>& mesh):
     mesh_(mesh), modelMatrix_(glm::mat4()),
     isVisible_(true), beenInitialized_(false), renderMode_(GL_TRIANGLES)
 {}
-*/
+
 
 
 Model::Model(const std::shared_ptr<Mesh>& mesh,
