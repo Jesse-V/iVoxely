@@ -17,19 +17,40 @@ std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
     //    << " with " << lights.size() << " light(s)... ";
 
     auto buffers = obj->getOptionalDataBuffers();
-    auto vertexSnippets = assembleVertexSnippets(
-                                        sceneVertexShader, buffers, lights);
-    auto fragmentSnippets = assembleFragmentSnippets(
-                                        sceneFragmentShader, buffers, lights);
+    std::string vertexShaderStr, fragmentShaderStr;
 
-    std::string vertexShaderStr = buildShader(assembleFields(vertexSnippets), assembleMethods(vertexSnippets), assembleMainBodyCode(vertexSnippets));
-    std::string fragmentShaderStr = buildShader(assembleFields(fragmentSnippets), assembleMethods(fragmentSnippets), assembleMainBodyCode(fragmentSnippets));
+    std::thread vertexShaderAssembler( [&]() {
+        auto vertexSnippets = assembleVertexSnippets(
+            sceneVertexShader, buffers, lights
+        );
 
-    auto vertexShader = cs5400::makeVertexShaderStr(vertexShaderStr);
-    auto fragmentShader = cs5400::makeFragmentShaderStr(fragmentShaderStr);
+        vertexShaderStr = buildShader(
+            assembleFields(vertexSnippets),
+            assembleMethods(vertexSnippets),
+            assembleMainBodyCode(vertexSnippets)
+        );
+    });
+
+    std::thread fragmentShaderAssembler( [&]() {
+        auto fragmentSnippets = assembleFragmentSnippets(
+            sceneFragmentShader, buffers, lights
+        );
+
+        fragmentShaderStr = buildShader(
+            assembleFields(fragmentSnippets),
+            assembleMethods(fragmentSnippets),
+            assembleMainBodyCode(fragmentSnippets)
+        );
+    });
+
+    vertexShaderAssembler.join();
+    fragmentShaderAssembler.join();
 
     //std::cout << "done" << std::endl;
-    return cs5400::makeProgram(vertexShader, fragmentShader);
+    return cs5400::makeProgram(
+        cs5400::makeVertexShaderStr(vertexShaderStr),
+        cs5400::makeFragmentShaderStr(fragmentShaderStr)
+    );
 }
 
 
@@ -41,6 +62,7 @@ std::vector<std::shared_ptr<ShaderSnippet>> ShaderManager::assembleVertexSnippet
 )
 {
     std::vector<std::shared_ptr<ShaderSnippet>> vertexSnippets;
+    vertexSnippets.reserve(1 + buffers.size() + lights.size());
     vertexSnippets.push_back(sceneVertexShader);
 
     for_each (buffers.begin(), buffers.end(),
@@ -70,6 +92,7 @@ std::vector<std::shared_ptr<ShaderSnippet>> ShaderManager::assembleFragmentSnipp
 )
 {
     std::vector<std::shared_ptr<ShaderSnippet>> fragmentSnippets;
+    fragmentSnippets.reserve(1 + buffers.size() + lights.size());
     fragmentSnippets.push_back(sceneFragmentShader);
 
     for_each (buffers.begin(), buffers.end(),
@@ -160,5 +183,5 @@ std::string ShaderManager::buildShader(const std::string& fields,
         + mainBodyCode
         + R".(
             }
-        ).";
+        )."
 }
