@@ -27,15 +27,14 @@ Game::Game(int screenWidth, int screenHeight):
 
 void Game::addModels()
 {
-    addGround();
+    addCubes();
 }
 
 
 
-void Game::addGround()
+void Game::addCubes()
 {
     auto mesh = PlyParser::getMesh("Resources/Meshes/cube.ply");
-
     std::vector<std::shared_ptr<OptionalDataBuffer>> buffers = {
         std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh)),
         std::make_shared<TextureBuffer>(
@@ -44,14 +43,22 @@ void Game::addGround()
         )
     };
 
-    auto model = std::make_shared<Model>(mesh, buffers);
+    for (int x = 0; x < 64; x++)
+    {
+        for (int y = 0; y < 64; y++)
+        {
+            for (int z = 0; z < 64; z++)
+            {
+                glm::mat4 modelMatrix = glm::mat4();
+                modelMatrix = glm::scale(modelMatrix, glm::vec3(1/8.0f));
+                modelMatrix = glm::translate(modelMatrix, glm::vec3(x, y, z));
 
-    glm::mat4 modelMatrix = glm::mat4();
-    modelMatrix = glm::scale(modelMatrix, glm::vec3(2, 1, 2));
-    modelMatrix = glm::translate(modelMatrix, glm::vec3(0, -0.15, 0));
-    model->setModelMatrix(modelMatrix);
-
-    scene_->addModel(model);
+                auto model = std::make_shared<Model>(mesh, buffers);
+                model->setModelMatrix(modelMatrix);
+                scene_->addModel(model);
+            }
+        }
+    }
 }
 
 

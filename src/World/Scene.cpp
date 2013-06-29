@@ -16,7 +16,7 @@ Scene::Scene(const std::shared_ptr<Camera>& camera):
 void Scene::addModel(const std::shared_ptr<Model>& obj)
 {
     renderableObjects_.push_back(obj);
-    std::cout << "Successfully added a Model to the Scene" << std::endl;
+   // std::cout << "Successfully added a Model to the Scene" << std::endl;
 }
 
 
@@ -50,14 +50,20 @@ void Scene::setAmbientLight(const glm::vec3& rgb)
 //render all objects and lights in the scene, as viewed from the camera_
 void Scene::render()
 {
+    int total = 64*64*64;
+    int count = 0;
     for_each (renderableObjects_.begin(), renderableObjects_.end(),
         [&](std::shared_ptr<Model>& model)
         {
             if (!model->hasBeenInitialized())
             {
-                std::cout << "Initializing and storing model... " << std::endl;
+                //std::cout << "Initializing and storing model... " << std::endl;
                 model->initializeAndStore(ShaderManager::createProgram(model, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_));
-                std::cout << "... finished with model" << std::endl;
+
+                if (count % 100 == 0)
+                    std::cout << (count * 100.0f / total) << std::endl;
+                count++;
+               // std::cout << "... finished with model" << std::endl;
             }
 
             GLuint handle = model->getProgram()->getHandle();

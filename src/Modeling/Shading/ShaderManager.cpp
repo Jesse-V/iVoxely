@@ -13,8 +13,8 @@ std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
     const std::vector<std::shared_ptr<Light>> lights
 )
 {
-    std::cout << "Creating shaders for Model"
-        << " with " << lights.size() << " light(s)... ";
+    //std::cout << "Creating shaders for Model"
+    //    << " with " << lights.size() << " light(s)... ";
 
     auto buffers = obj->getOptionalDataBuffers();
     auto vertexSnippets = assembleVertexSnippets(
@@ -28,7 +28,7 @@ std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
     auto vertexShader = cs5400::makeVertexShaderStr(vertexShaderStr);
     auto fragmentShader = cs5400::makeFragmentShaderStr(fragmentShaderStr);
 
-    std::cout << "done" << std::endl;
+    //std::cout << "done" << std::endl;
     return cs5400::makeProgram(vertexShader, fragmentShader);
 }
 

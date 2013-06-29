@@ -32,8 +32,6 @@ void SampledBuffer::store()
 {
     storeImage();
     storeCoordMap();
-
-    deleteBufferFromRAM();
 }
 
 

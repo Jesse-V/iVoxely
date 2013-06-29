@@ -26,6 +26,7 @@ Model::Model(const std::shared_ptr<Mesh>& mesh,
     mesh_(mesh), optionalDBs_(optionalDBs), modelMatrix_(glm::mat4()),
     isVisible_(true), beenInitialized_(false), renderMode_(renderMode)
 {
+    /*
     std::cout << "Created a Model with { ";
     for_each (optionalDBs_.begin(), optionalDBs_.end(),
         [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
@@ -35,6 +36,7 @@ Model::Model(const std::shared_ptr<Mesh>& mesh,
     );
 
     std::cout << "} OptionalDataBuffers." << std::endl;
+    */
 } //Scene will call initializeAndStore
 
 
@@ -42,8 +44,8 @@ Model::Model(const std::shared_ptr<Mesh>& mesh,
 void Model::initializeAndStore(std::shared_ptr<cs5400::Program> program)
 {
     renderingProgram_ = program;
-    std::cout << "Storing mesh and model data as program #" <<
-        program->getHandle() << "... ";
+    //std::cout << "Storing mesh and model data as program #" <<
+    //    program->getHandle() << "... ";
 
     mesh_->initialize(program->getHandle());
     mesh_->store();
@@ -55,7 +57,7 @@ void Model::initializeAndStore(std::shared_ptr<cs5400::Program> program)
             buffer->store();
         });
 
-    std::cout << "done" << std::endl;
+   // std::cout << "done" << std::endl;
     beenInitialized_ = true;
 }
 
