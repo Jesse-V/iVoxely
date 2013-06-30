@@ -4,7 +4,8 @@
 
 class Chunk
 {
-    //this class may not be necessary. I'm putting it here in case we need it
+    //this class can be used to organize voxels. If a chunk is too far away,
+    //all of its cubes don't need to be rendered (set their isVisible to false)
 };
 
 #endif

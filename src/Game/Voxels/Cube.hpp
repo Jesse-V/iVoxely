@@ -2,6 +2,9 @@
 #ifndef CUBE
 #define CUBE
 
+#include <unordered_map>
+#include <string>
+
 class Cube
 {
     //has list of 6 neighbors. If all neighbors are there, then not visible
@@ -9,7 +12,15 @@ class Cube
     //all Cubes have access to all the lights
     //Cube, like all Voxels (should that be a class?) should have a bool update()
 
-    //should a Cube be a Model, or should it have a Model?
+    //I think a Cube should be a Model instead of it having a Model
+
+    enum struct Type
+    {
+        DIRT
+    };
+
+    private:
+        static std::unordered_map<Type, std::string> shaderCache;
 };
 
 #endif

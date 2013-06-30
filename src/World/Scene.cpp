@@ -50,7 +50,7 @@ void Scene::setAmbientLight(const glm::vec3& rgb)
 //render all objects and lights in the scene, as viewed from the camera_
 void Scene::render()
 {
-    int total = 64*64*64;
+    int total = 16*16*16;
     int count = 0;
     for_each (renderableObjects_.begin(), renderableObjects_.end(),
         [&](std::shared_ptr<Model>& model)
@@ -61,7 +61,7 @@ void Scene::render()
                 model->initializeAndStore(ShaderManager::createProgram(model, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_));
 
                 if (count % 100 == 0)
-                    std::cout << (count * 100.0f / total) << std::endl;
+                    std::cout << (count * 100.0f / total) << "%" <<std::endl;
                 count++;
                // std::cout << "... finished with model" << std::endl;
             }
@@ -163,12 +163,20 @@ std::shared_ptr<ShaderSnippet> Scene::getFragmentShaderGLSL()
             uniform vec3 ambientLight;
             varying vec3 pos_world;
             varying vec3 eyedirection_camera;
+
+            struct ColorInfluences
+            {
+                vec3 textureColor, lightBlend;
+            };
         ).",
         R".(
             //Scene methods
         ).",
         R".(
             //Scene main method code
+            ColorInfluences colors;
+            colors.textureColor = vec3(-1); //init to invalid if not needed
+            colors.lightBlend = vec3(-1);
         )."
     );
 }
