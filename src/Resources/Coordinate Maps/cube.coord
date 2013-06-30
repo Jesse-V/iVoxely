@@ -1,8 +1,156 @@
 1 0
+0 0
+0 1
+1 1
+
+0 0
 1 0
 1 1
 0 1
 
+Notes and stuff after 16 numbers doesn't matter: CoordinateMapReader stops parsing
+
+DABC two halves, nope
+0 1
+1 0
+0 0
+1 1
+
+DACB one half, nope, almost like backside though
+0 1
+1 0
+1 1
+0 0
+
+DBAC two halves, closest, but with odd deformities
+0 1
+0 0
+1 0
+1 1
+
+DBCA one half, one half
+0 1
+0 0
+1 1
+1 0
+
+DCAB nope, one side
+0 1
+1 1
+1 0
+0 0
+
+DCBA nope, nope
+0 1
+1 1
+0 0
+1 0
+
+
+
+ABCD one corner, one half
+1 0
+0 0
+1 1
+0 1
+
+ABDC two halves, three sides
+1 0
+0 0
+0 1
+1 1
+
+ACBD nope, nope
+1 0
+1 1
+0 0
+0 1
+
+ACDB nope, nope
+1 0
+1 1
+0 1
+0 0
+
+ADBC one half, one side
+1 0
+0 1
+0 0
+1 1
+
+ADCB nope, nope
+1 0
+0 1
+1 1
+0 0
+
+BACD two halves, backside
+0 0
+1 0
+1 1
+0 1
+
+BADC one half, one half
+0 0
+1 0
+0 1
+1 1
+
+BCAD nope, one half
+0 0
+1 1
+1 0
+0 1
+
+BCDA nope, nope
+0 0
+1 1
+0 1
+1 0
+
+BDAC nope, 1.5 sides
+0 0
+0 1
+1 0
+1 1
+
+BDCA nope, nope
+0 0
+0 1
+1 1
+1 0
+
+CABD one half, nope
+1 1
+1 0
+0 0
+0 1
+
+CADB one half, nope
+1 1
+1 0
+0 1
+0 0
+
+CBAD one half, one half
+1 1
+0 0
+1 0
+0 1
+
+CBDA one half, one side
+1 1
+0 0
+0 1
+1 0
+
+CDAB nope, one side
+1 1
+0 1
+1 0
+0 0
+
+CDBA nope, nope
 1 1
 0 1
 0 0

@@ -28,6 +28,8 @@ void NormalBuffer::store()
             rawNormals.push_back(norm.x);
             rawNormals.push_back(norm.y);
             rawNormals.push_back(norm.z);
+
+            //std::cout << norm.x << ", " << norm.y << ", " << norm.z << std::endl;
         });
 
     glBindBuffer(GL_ARRAY_BUFFER, normalBuffer_);

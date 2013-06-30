@@ -36,6 +36,7 @@ void SampledBuffer::store()
 
 
 
+//ideas: http://stackoverflow.com/questions/4983532/what-are-the-texture-coordinates-for-a-cube-in-opengl
 void SampledBuffer::storeImage()
 {
     // Give the image to OpenGL

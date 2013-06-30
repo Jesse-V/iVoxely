@@ -3,6 +3,7 @@
 #include "Program.hpp"
 #include <sstream>
 #include <algorithm>
+#include <thread>
 #include <iostream>
 
 
@@ -183,5 +184,5 @@ std::string ShaderManager::buildShader(const std::string& fields,
         + mainBodyCode
         + R".(
             }
-        )."
+        ).";
 }

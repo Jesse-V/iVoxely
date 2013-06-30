@@ -38,16 +38,25 @@ void Game::addCubes()
     std::vector<std::shared_ptr<OptionalDataBuffer>> buffers = {
         std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh)),
         std::make_shared<TextureBuffer>(
-            "Resources/Textures/starfield.bmp",
+            "Resources/Textures/test_texture.bmp",
             CoordinateMapReader::getMap("Resources/Coordinate Maps/cube.coord")
         )
     };
 
-    for (int x = 0; x < 16; x++)
+   // glm::mat4 modelMatrix = glm::mat4();
+   // modelMatrix = glm::rotate(modelMatrix, 90.0f, glm::vec3(0, 0, 1));
+    //modelMatrix = glm::scale(modelMatrix, glm::vec3(1));
+    //modelMatrix = glm::translate(modelMatrix, glm::vec3(0));
+
+   // auto model = std::make_shared<Model>(mesh, buffers);
+   // model->setModelMatrix(modelMatrix);
+   // scene_->addModel(model);
+
+    for (int x = 0; x < 8; x++)
     {
-        for (int y = 0; y < 16; y++)
+        for (int y = 0; y < 8; y++)
         {
-            for (int z = 0; z < 16; z++)
+            for (int z = 0; z < 8; z++)
             {
                 glm::mat4 modelMatrix = glm::mat4();
                 modelMatrix = glm::scale(modelMatrix, glm::vec3(1/8.0f));

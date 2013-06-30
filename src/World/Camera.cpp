@@ -8,6 +8,7 @@
 #include <sstream>
 #include <stdexcept>
 
+//http://stackoverflow.com/questions/12138721/rotating-a-open-gl-camera-correctly-using-glm
 
 Camera::Camera()
 {

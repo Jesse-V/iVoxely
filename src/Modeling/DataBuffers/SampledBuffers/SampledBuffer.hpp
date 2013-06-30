@@ -22,16 +22,16 @@ class SampledBuffer : public OptionalDataBuffer
         virtual void store();
 
     protected:
+        void storeImage();
+        void storeCoordMap();
+
+    protected:
         int imgWidth_, imgHeight_;
         unsigned char* data_;
         bool isValid_ = false;
 
         std::vector<GLfloat> coordinateMap_;
         GLuint vbo_coords_;
-
-    private:
-        void storeImage();
-        void storeCoordMap();
 };
 
 #endif
