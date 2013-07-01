@@ -29,6 +29,7 @@ void NormalBuffer::initialize(GLuint programHandle)
 void NormalBuffer::store()
 {
     std::vector<GLfloat> rawNormals;
+    rawNormals.reserve(normals_.size() * 3);
     for_each (normals_.begin(), normals_.end(),
         [&](const glm::vec3& norm)
         {

@@ -68,8 +68,8 @@ void Light::setEmitting(bool emitting)
 
 void Light::sync(GLuint handle)
 {
-    //GLint lightPosUniform = glGetUniformLocation(handle, "lightPos");
-    //glUniform3fv(lightPosUniform, 1, glm::value_ptr(getPosition()));
+    GLint lightPosUniform = glGetUniformLocation(handle, "lightPos");
+    glUniform3fv(lightPosUniform, 1, glm::value_ptr(getPosition()));
 
    /* GLint lightColorUniform = glGetUniformLocation(handle, "lights[0].color");
     glUniform3fv(lightColorUniform, 1, glm::value_ptr(getColor()));
@@ -143,36 +143,8 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
             if (diff > 0.0)
                 spec = max(dot(reflectVec, viewVec), 0.0);
 
-            diff =  diff * 0.6 + spec * 0.4;
-            gl_FragColor = vec4( color * ( diff + spec ), 1.0 );
-
-
-            /*vec4 ambientProduct = vec4(vec3(0.2), 1) + vec4(1, 0, 1, 1);
-            vec4 diffuseProduct = vec4(1) + vec4(1, 0.8, 0, 1);
-            vec4 specularProduct = vec4(1) + vec4(1, 0, 1, 1);
-            float shininess = 5;
-
-            vec3 N = normalize(fN);
-            vec3 E = normalize(fE);
-            vec3 L = normalize(fL);
-            vec3 H = normalize(L + E);
-
-            vec4 ambient = ambientProduct;
-
-            float kD = max(dot(L, N), 0.0);
-            vec4 diffuse = kD * diffuseProduct;
-
-            float kS = pow(max(dot(N, H), 0.0), shininess);
-            vec4 specular = kS * specularProduct;
-
-            if (dot(L, N) < 0)
-                specular = vec4(vec3(0), 1);
-
-            vec4 lighting = ambient + diffuse + specular;
-            //lighting *= lights[0].color;*/
-
-
-             //vec4(textureColor, 1) * lighting;
+            //diff =  diff * 0.6 + spec * 0.4;
+            gl_FragColor = vec4( color * ( diff ), 1.0 );
         )."
     );
 }

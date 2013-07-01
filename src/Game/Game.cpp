@@ -43,18 +43,12 @@ void Game::addCubes()
         )
     };
 
-    glm::mat4 modelMatrix = glm::mat4();
 
-    auto model = std::make_shared<Model>(mesh, buffers);
-    model->setModelMatrix(modelMatrix);
-    scene_->addModel(model);
-
-    /*
-    for (int x = 0; x < 8; x++)
+    for (int x = 0; x < 4; x++)
     {
-        for (int y = 0; y < 8; y++)
+        for (int y = 0; y < 4; y++)
         {
-            for (int z = 0; z < 8; z++)
+            for (int z = 0; z < 4; z++)
             {
                 glm::mat4 modelMatrix = glm::mat4();
                 modelMatrix = glm::scale(modelMatrix, glm::vec3(1/8.0f));
@@ -65,7 +59,7 @@ void Game::addCubes()
                 scene_->addModel(model);
             }
         }
-    }*/
+    }
 }
 
 

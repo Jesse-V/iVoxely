@@ -50,7 +50,7 @@ void Scene::setAmbientLight(const glm::vec3& rgb)
 //render all objects and lights in the scene, as viewed from the camera_
 void Scene::render()
 {
-    int total = 8*8*8;
+    int total = 4*4*4;
     int count = 0;
     for_each (renderableObjects_.begin(), renderableObjects_.end(),
         [&](std::shared_ptr<Model>& model)
