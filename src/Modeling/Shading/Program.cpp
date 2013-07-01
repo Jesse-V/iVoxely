@@ -34,7 +34,7 @@ std::shared_ptr<cs5400::Program> cs5400::makeProgram(
 
     glAttachShader(program->getHandle(), vertex->getHandle());
     glAttachShader(program->getHandle(), fragment->getHandle());
-    glLinkProgram(program->getHandle());
+    glLinkProgram (program->getHandle());
     glGetProgramiv(program->getHandle(), GL_LINK_STATUS, &link_ok);
 
     if (!link_ok)

@@ -129,6 +129,7 @@ std::shared_ptr<ShaderSnippet> Scene::getVertexShaderGLSL()
             //Scene fields
             attribute vec3 vertex; //position of the vertex
             uniform mat4 viewMatrix, projMatrix; //Camera view and projection matrices
+            uniform mat3 NormalMatrix;
             uniform mat4 modelMatrix; //matrix transforming model mesh into world space
 
             varying vec3 pos_world;

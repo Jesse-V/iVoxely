@@ -6,7 +6,14 @@
 
 NormalBuffer::NormalBuffer(const std::vector<glm::vec3>& normals):
     normals_(normals)
-{}
+{
+    for_each (normals_.begin(), normals_.end(),
+        [&](const glm::vec3& norm)
+        {
+            std::cout << norm.x << ", " << norm.y << ", " << norm.z << std::endl;
+        }
+    );
+}
 
 
 
@@ -28,8 +35,6 @@ void NormalBuffer::store()
             rawNormals.push_back(norm.x);
             rawNormals.push_back(norm.y);
             rawNormals.push_back(norm.z);
-
-            //std::cout << norm.x << ", " << norm.y << ", " << norm.z << std::endl;
         });
 
     glBindBuffer(GL_ARRAY_BUFFER, normalBuffer_);

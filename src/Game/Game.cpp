@@ -36,22 +36,20 @@ void Game::addCubes()
 {
     auto mesh = PlyParser::getMesh("Resources/Meshes/cube.ply");
     std::vector<std::shared_ptr<OptionalDataBuffer>> buffers = {
-        std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh)),
+        std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWE(mesh)),
         std::make_shared<TextureBuffer>(
             "Resources/Textures/test_texture.bmp",
             CoordinateMapReader::getMap("Resources/Coordinate Maps/cube.coord")
         )
     };
 
-   // glm::mat4 modelMatrix = glm::mat4();
-   // modelMatrix = glm::rotate(modelMatrix, 90.0f, glm::vec3(0, 0, 1));
-    //modelMatrix = glm::scale(modelMatrix, glm::vec3(1));
-    //modelMatrix = glm::translate(modelMatrix, glm::vec3(0));
+    glm::mat4 modelMatrix = glm::mat4();
 
-   // auto model = std::make_shared<Model>(mesh, buffers);
-   // model->setModelMatrix(modelMatrix);
-   // scene_->addModel(model);
+    auto model = std::make_shared<Model>(mesh, buffers);
+    model->setModelMatrix(modelMatrix);
+    scene_->addModel(model);
 
+    /*
     for (int x = 0; x < 8; x++)
     {
         for (int y = 0; y < 8; y++)
@@ -67,7 +65,7 @@ void Game::addCubes()
                 scene_->addModel(model);
             }
         }
-    }
+    }*/
 }
 
 
@@ -91,10 +89,10 @@ std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 {
     auto camera = std::make_shared<Camera>();
     camera->lookAt(
-        glm::vec3(1.57206f,   -0.30442f,  -0.678558f),
-        glm::vec3(-0.0587634f, 0.843095f, -0.53454f)
+        glm::vec3(-1.21466f, -1.3662f, -2.50809f),
+        glm::vec3(-0.21319f, 0.739119f, -0.638934f)
     );
-    camera->setPosition(glm::vec3(2.5631f, 1.99537f, 4.18708f));
+    camera->setPosition(glm::vec3(1.6831f, 1.75537f, 2.50708f));
     camera->setAspectRatio(screenWidth / (float)screenHeight);
 
     return camera;

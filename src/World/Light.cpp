@@ -68,18 +68,18 @@ void Light::setEmitting(bool emitting)
 
 void Light::sync(GLuint handle)
 {
-    GLint lightPosUniform = glGetUniformLocation(handle, "lights[0].position");
-    glUniform3fv(lightPosUniform, 1, glm::value_ptr(getPosition()));
+    //GLint lightPosUniform = glGetUniformLocation(handle, "lightPos");
+    //glUniform3fv(lightPosUniform, 1, glm::value_ptr(getPosition()));
 
-    GLint lightColorUniform = glGetUniformLocation(handle, "lights[0].color");
+   /* GLint lightColorUniform = glGetUniformLocation(handle, "lights[0].color");
     glUniform3fv(lightColorUniform, 1, glm::value_ptr(getColor()));
 
     GLint lightPowUniform = glGetUniformLocation(handle, "lights[0].power");
     float power_ = isEmitting() ? getPower() : 0;
-    glUniform1f(lightPowUniform, power_);
+    glUniform1f(lightPowUniform, power_);*/
 
-    if (lightPosUniform < 0 || lightColorUniform < 0 || lightPowUniform < 0)
-        throw std::runtime_error("Unable to find Light uniform variables!");
+    //if (lightPosUniform < 0/* || lightColorUniform < 0 || lightPowUniform < 0*/)
+    //    throw std::runtime_error("Unable to find Light uniform variables!");
 }
 
 
@@ -89,22 +89,17 @@ std::shared_ptr<ShaderSnippet> Light::getVertexShaderGLSL()
     return std::make_shared<ShaderSnippet>(
         R".(
             //Light fields
-            struct Light
-            {
-                vec3 position, color;
-                float power;
-            };
-
-            uniform Light lights[1];
-            varying vec3 lightdirection_camera;
+            uniform vec3 lightPos;
+            out vec3 VNormal;
+            out vec3 VPosition;
         ).",
         R".(
             //Light methods
         ).",
         R".(
             //Light main method code
-            vec3 lightpos_camera = (viewMatrix * vec4(lights[0].position, 1)).xyz;
-            lightdirection_camera = normalize(lightpos_camera + eyedirection_camera);
+            VNormal = normalize( NormalMatrix * vertexNormal );
+            VPosition = vec3( viewMatrix * vec4( vertex, 1.0 ) );
         )."
     );
 }
@@ -124,41 +119,60 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
             //Light fields
             // http://stackoverflow.com/questions/8202173/setting-the-values-of-a-struct-array-from-js-to-glsl
 
-            struct Light
-            {
-                vec3 position, color;
-                float power;
-            };
+            uniform vec3 lightPos;
 
-            uniform Light lights[1];
-            varying vec3 lightdirection_camera;
+            in vec3 VNormal;
+            in vec3 VPosition;
+
         ).",
         R".(
             //Light methods
-            float specularLighting(inout vec3 normal, inout vec3 light)
-            {
-                vec3 eye = normalize(eyedirection_camera);
-                vec3 reflect = reflect(-light, normal);
-                return clamp(dot(eye, reflect), 0, 1);
-            }
-
-            float diffusedLighting(inout vec3 normal, inout vec3 light)
-            {
-                return max(0.0, clamp(dot(normal, -light), 0, 1));
-            }
         ).",
         R".(
             //Light main method code
-            vec3 light = normalize(lightdirection_camera);
 
-            float lightDistance = length(lights[0].position - pos_world);
-            float theta = specularLighting(normal, light);
-            vec3 lighting = lights[0].color * lights[0].power *
-                                theta / pow(lightDistance, 2);
+            vec3 color = vec3(0.81, 0.71, 0.23);
 
-            //Blending code (from Light class, need to be more dynamic)
-            vec3 color = textureColor * (ambientLight + lighting); //temporary
-            gl_FragColor = vec4(color, 1.0); //temporary
+            vec3 light = vec3(lightPos);
+            vec3 lightdir = light - VPosition;
+            vec3 reflectVec = normalize(reflect( -lightdir, VNormal ));
+            vec3 viewVec = normalize( -VPosition );
+            float diff = max( dot(normalize( lightdir ), VNormal ), 0.0);
+            float spec = 0.0;
+
+            if (diff > 0.0)
+                spec = max(dot(reflectVec, viewVec), 0.0);
+
+            diff =  diff * 0.6 + spec * 0.4;
+            gl_FragColor = vec4( color * ( diff + spec ), 1.0 );
+
+
+            /*vec4 ambientProduct = vec4(vec3(0.2), 1) + vec4(1, 0, 1, 1);
+            vec4 diffuseProduct = vec4(1) + vec4(1, 0.8, 0, 1);
+            vec4 specularProduct = vec4(1) + vec4(1, 0, 1, 1);
+            float shininess = 5;
+
+            vec3 N = normalize(fN);
+            vec3 E = normalize(fE);
+            vec3 L = normalize(fL);
+            vec3 H = normalize(L + E);
+
+            vec4 ambient = ambientProduct;
+
+            float kD = max(dot(L, N), 0.0);
+            vec4 diffuse = kD * diffuseProduct;
+
+            float kS = pow(max(dot(N, H), 0.0), shininess);
+            vec4 specular = kS * specularProduct;
+
+            if (dot(L, N) < 0)
+                specular = vec4(vec3(0), 1);
+
+            vec4 lighting = ambient + diffuse + specular;
+            //lighting *= lights[0].color;*/
+
+
+             //vec4(textureColor, 1) * lighting;
         )."
     );
 }
