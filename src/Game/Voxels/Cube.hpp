@@ -17,40 +17,47 @@ class Cube : public Model
 
     //I think a Cube should be a Model instead of it having a Model
 
-    public:
-        enum class Type : unsigned int
+    public: //structs
+        enum class CubeType : unsigned int
         {
             DIRT
         };
 
-        Cube(Type cubeType, int x, int y, int z);
-        std::string getTexturePath(Type cubeType);
+    public: //methods
+        Cube(CubeType cubeType, int x, int y, int z);
+        std::string getTexturePath(CubeType CubeType);
+        std::shared_ptr<cs5400::Program> getProgram();
+        std::shared_ptr<TextureBuffer> getTextureBuffer();
+        void initializeAndStore(std::shared_ptr<cs5400::Program> program);
 
         static std::shared_ptr<Mesh> getMesh();
         static std::shared_ptr<NormalBuffer> getNormalBuffer();
         static std::vector<GLfloat> getCoordinateMap();
 
-    private:
+    private: //structs
         struct CubeAttributes
         {
-            std::shared_ptr<TextureBuffer> texture;
+            std::shared_ptr<TextureBuffer> textureBuffer;
             std::shared_ptr<cs5400::Program> program;
         };
 
-        struct TypeHash
+        struct CubeTypeHash
         {
-            std::size_t operator()(const Type& myEnum) const
+            std::size_t operator()(const CubeType& myEnum) const
             {
                 return static_cast<std::size_t>(myEnum);
             }
         };
 
-        std::vector<std::shared_ptr<OptionalDataBuffer>> assembleDataBuffers(Type cubeType);
+    private: //methods
+        std::vector<std::shared_ptr<OptionalDataBuffer>> assembleDataBuffers(CubeType CubeType);
 
-    private:
+    private: //data
+        CubeType cubeType; //identifies the cube
+
         static std::shared_ptr<Mesh> mesh_;
         static std::shared_ptr<NormalBuffer> normalBuffer_;
-        static std::unordered_map<Type, CubeAttributes, TypeHash> cache_;
+        static std::unordered_map<CubeType, CubeAttributes, CubeTypeHash> cache_;
 };
 
 #endif
