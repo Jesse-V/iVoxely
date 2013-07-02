@@ -19,13 +19,13 @@ class Model
             const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs,
             GLenum renderMode);
 
-        void initializeAndStore(std::shared_ptr<cs5400::Program> program);
+        virtual void initializeAndStore(const std::shared_ptr<cs5400::Program>& program);
         void setVisible(bool visible);
         void setModelMatrix(const glm::mat4& matrix); // model -> world coords
         void setRenderMode(GLenum newMode);
         void render(GLint modelMatrixID);
 
-        std::shared_ptr<cs5400::Program> getProgram();
+        virtual std::shared_ptr<cs5400::Program> getProgram();
         std::vector<std::shared_ptr<OptionalDataBuffer>> getOptionalDataBuffers();
         bool hasBeenInitialized();
 

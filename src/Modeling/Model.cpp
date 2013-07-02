@@ -42,11 +42,11 @@ Model::Model(const std::shared_ptr<Mesh>& mesh,
 
 
 
-void Model::initializeAndStore(std::shared_ptr<cs5400::Program> program)
+void Model::initializeAndStore(const std::shared_ptr<cs5400::Program>& program)
 {
     renderingProgram_ = program;
-    //std::cout << "Storing mesh and model data as program #" <<
-    //    program->getHandle() << "... ";
+    std::cout << "Storing mesh and model data as program #" <<
+        program->getHandle() << "... ";
 
     mesh_->initialize(program->getHandle());
     mesh_->store();
@@ -58,7 +58,7 @@ void Model::initializeAndStore(std::shared_ptr<cs5400::Program> program)
             buffer->store();
         });
 
-   // std::cout << "done" << std::endl;
+    std::cout << "done" << std::endl;
     beenInitialized_ = true;
 }
 

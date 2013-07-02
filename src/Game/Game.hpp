@@ -9,7 +9,6 @@
 class Game
 {
     public:
-        Game(int screenWidth, int screenHeight);
         void update(int deltaTime);
         void render();
 
@@ -22,6 +21,7 @@ class Game
         static Game& getInstance();
 
     private:
+        Game(int screenWidth, int screenHeight);
         void addModels();
         void addCubes();
         void addLight();

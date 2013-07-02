@@ -13,9 +13,9 @@ Scene::Scene(const std::shared_ptr<Camera>& camera):
 
 
 
-void Scene::addModel(const std::shared_ptr<Model>& obj)
+void Scene::addModel(const std::shared_ptr<Model>& model)
 {
-    renderableObjects_.push_back(obj);
+    models_.push_back(model);
    // std::cout << "Successfully added a Model to the Scene" << std::endl;
 }
 
@@ -26,7 +26,7 @@ void Scene::addLight(const std::shared_ptr<Light>& light)
     if (lights_.size() > 0)
         throw std::runtime_error("Multiple lights not supported at this time. See issue #9");
 
-    assertRenderableObjectsContainNormalBuffers();
+    assertModelsContainNormalBuffers();
     lights_.push_back(light);
     std::cout << "Successfully added a Light to the Scene" << std::endl;
 }
@@ -47,24 +47,14 @@ void Scene::setAmbientLight(const glm::vec3& rgb)
 
 
 
-//render all objects and lights in the scene, as viewed from the camera_
+//render all models and lights in the scene, as viewed from the camera_
 void Scene::render()
 {
-    int total = 4*4*4;
-    int count = 0;
-    for_each (renderableObjects_.begin(), renderableObjects_.end(),
+    for_each (models_.begin(), models_.end(),
         [&](std::shared_ptr<Model>& model)
         {
             if (!model->hasBeenInitialized())
-            {
-                //std::cout << "Initializing and storing model... " << std::endl;
                 model->initializeAndStore(ShaderManager::createProgram(model, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_));
-
-                if (count % 100 == 0)
-                    std::cout << (count * 100.0f / total) << "%" <<std::endl;
-                count++;
-               // std::cout << "... finished with model" << std::endl;
-            }
 
             GLuint handle = model->getProgram()->getHandle();
             glUseProgram(handle);
@@ -86,9 +76,9 @@ std::shared_ptr<Camera> Scene::getCamera()
 
 
 
-std::vector<std::shared_ptr<Model>> Scene::getRenderableObjects()
+std::vector<std::shared_ptr<Model>> Scene::getModels()
 {
-    return renderableObjects_;
+    return models_;
 }
 
 
@@ -183,14 +173,14 @@ std::shared_ptr<ShaderSnippet> Scene::getFragmentShaderGLSL()
 }
 
 
-void Scene::assertRenderableObjectsContainNormalBuffers()
+void Scene::assertModelsContainNormalBuffers()
 {
     std::vector<glm::vec3> emptyVec;
     auto normBuffer = std::make_shared<NormalBuffer>(emptyVec);
-    for_each (renderableObjects_.begin(), renderableObjects_.end(),
-        [&](std::shared_ptr<Model>& obj)
+    for_each (models_.begin(), models_.end(),
+        [&](std::shared_ptr<Model>& model)
         {
-            auto optionalBuffers = obj->getOptionalDataBuffers();
+            auto optionalBuffers = model->getOptionalDataBuffers();
             bool containsNormalBuffer = false;
             for_each (optionalBuffers.begin(), optionalBuffers.end(),
                 [&](std::shared_ptr<OptionalDataBuffer>& buffer)
@@ -204,7 +194,7 @@ void Scene::assertRenderableObjectsContainNormalBuffers()
             {
                 std::stringstream stream;
                 stream << "Light added to Scene, yet ";
-                stream << typeid(*obj).name();
+                stream << typeid(*model).name();
                 stream << " does not contain a NormalBuffer!";
 
                 throw std::runtime_error(stream.str());

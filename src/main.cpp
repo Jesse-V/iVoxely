@@ -162,6 +162,8 @@ int main(int argc, char **argv)
         glutPassiveMotionFunc(mouseMotionCallback);
 
         std::cout << "Finished Glut and window initialization" << std::endl;
+
+        Game::getInstance(); //calls Game's constructor, sets up everything...
         glutMainLoop();
     }
     catch (std::exception& e)

@@ -67,6 +67,7 @@ void SampledBuffer::storeCoordMap()
 
 void SampledBuffer::loadBMP(const std::string& imagePath)
 {
+    std::cout << "Loading image file from " << imagePath << "... ";
     unsigned char header[54];
 
     FILE * file = fopen(imagePath.c_str(), "rb"); //read binary .bmp file
@@ -95,6 +96,7 @@ void SampledBuffer::loadBMP(const std::string& imagePath)
     fclose(file);
 
     isValid_ = true;
+    std::cout << "done" << std::endl;
 }
 
 

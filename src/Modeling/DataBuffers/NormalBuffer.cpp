@@ -7,12 +7,14 @@
 NormalBuffer::NormalBuffer(const std::vector<glm::vec3>& normals):
     normals_(normals)
 {
+    /*
     for_each (normals_.begin(), normals_.end(),
         [&](const glm::vec3& norm)
         {
             std::cout << norm.x << ", " << norm.y << ", " << norm.z << std::endl;
         }
     );
+    */
 }
 
 
@@ -110,6 +112,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(
     const std::shared_ptr<Mesh>& mesh
 )
 {
+    std::cout << "Calculating normals via MWA algorithm... ";
     auto vertices = mesh->getVertices();
     auto triangles = mesh->getTriangles();
 
@@ -148,6 +151,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(
         normals.push_back(glm::normalize(normal));
     }
 
+    std::cout << "done" << std::endl;
     return normals;
 }
 
@@ -159,6 +163,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(
     const std::shared_ptr<Mesh>& mesh
 )
 {
+    std::cout << "Calculating normals via MWASER algorithm... ";
     auto vertices = mesh->getVertices();
     auto triangles = mesh->getTriangles();
 
@@ -197,6 +202,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(
         normals.push_back(glm::normalize(normal));
     }
 
+    std::cout << "done" << std::endl;
     return normals;
 }
 
@@ -207,6 +213,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(
      const std::shared_ptr<Mesh>& mesh
 )
 {
+    std::cout << "Calculating normals via MWE algorithm... ";
     auto vertices = mesh->getVertices();
     auto triangles = mesh->getTriangles();
 
@@ -229,6 +236,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(
         normals.push_back(glm::normalize(normal));
     }
 
+    std::cout << "done" << std::endl;
     return normals;
 }
 

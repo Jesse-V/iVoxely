@@ -1,9 +1,6 @@
 
 #include "Game.hpp"
-#include "Modeling/Mesh/PlyParser.hpp"
-#include "Modeling/DataBuffers/NormalBuffer.hpp"
-#include "Modeling/DataBuffers/SampledBuffers/TextureBuffer.hpp"
-#include "Modeling/DataBuffers/SampledBuffers/CoordinateMapReader.hpp"
+#include "Voxels/Cube.hpp"
 #include <memory>
 #include <thread>
 #include <iostream>
@@ -34,32 +31,24 @@ void Game::addModels()
 
 void Game::addCubes()
 {
-    auto mesh = PlyParser::getMesh("Resources/Meshes/cube.ply");
-    std::vector<std::shared_ptr<OptionalDataBuffer>> buffers = {
-        std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWE(mesh)),
-        std::make_shared<TextureBuffer>(
-            "Resources/Textures/test_texture.bmp",
-            CoordinateMapReader::getMap("Resources/Coordinate Maps/cube.coord")
-        )
-    };
+    std::cout << "Currently " << scene_->getModels().size() <<
+        " Models in Scene. Adding Cubes... " << std::endl;
 
-
-    for (int x = 0; x < 4; x++)
+    const int N = 64;
+    for (int x = 0; x < N; x++)
     {
-        for (int y = 0; y < 4; y++)
+        for (int y = 0; y < N; y++)
         {
-            for (int z = 0; z < 4; z++)
+            for (int z = 0; z < N; z++)
             {
-                glm::mat4 modelMatrix = glm::mat4();
-                modelMatrix = glm::scale(modelMatrix, glm::vec3(1/8.0f));
-                modelMatrix = glm::translate(modelMatrix, glm::vec3(x, y, z));
-
-                auto model = std::make_shared<Model>(mesh, buffers);
-                model->setModelMatrix(modelMatrix);
-                scene_->addModel(model);
+                auto cube = std::make_shared<Cube>(Cube::CubeType::DIRT, x, y, z);
+                scene_->addModel(cube);
             }
         }
     }
+
+    std::cout << "... done adding cubes. Scene now has " <<
+        scene_->getModels().size() << " Models" << std::endl;
 }
 
 
@@ -70,8 +59,8 @@ void Game::addLight()
 
     auto light = std::make_shared<Light>(
         scene_->getCamera()->getPosition(), //position
-        glm::vec3(1),               //white light
-        1.0f                       //power
+        glm::vec3(1),                       //white light
+        1.0f                                //power
     );
 
     scene_->addLight(light);
@@ -83,10 +72,10 @@ std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 {
     auto camera = std::make_shared<Camera>();
     camera->lookAt(
-        glm::vec3(-1.21466f, -1.3662f, -2.50809f),
-        glm::vec3(-0.21319f, 0.739119f, -0.638934f)
+        glm::vec3(4.01231f, 1.39741f, 3.46247f),
+        glm::vec3(0.655955f, -0.514381f, 0.552359f)
     );
-    camera->setPosition(glm::vec3(1.6831f, 1.75537f, 2.50708f));
+    camera->setPosition(glm::vec3(-0.6769f, -0.604629f, -0.612919f));
     camera->setAspectRatio(screenWidth / (float)screenHeight);
 
     return camera;

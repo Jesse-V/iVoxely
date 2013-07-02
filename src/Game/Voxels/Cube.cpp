@@ -4,11 +4,12 @@
 #include "Modeling/DataBuffers/SampledBuffers/CoordinateMapReader.hpp"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include <iostream>
 
 
 std::shared_ptr<Mesh> Cube::mesh_;
 std::shared_ptr<NormalBuffer> Cube::normalBuffer_;
-std::unordered_map<Cube::CubeType, Cube::CubeAttributes, Cube::CubeTypeHash> Cube::cache_;
+std::unordered_map<Cube::CubeType, std::shared_ptr<cs5400::Program>, Cube::CubeTypeHash> Cube::programCache_;
 
 
 Cube::Cube(CubeType cubeType, int x, int y, int z) :
@@ -80,15 +81,17 @@ std::string Cube::getTexturePath(CubeType cubeType)
 
 std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
 {
-    auto value = cache_.find(cubeType);
-    if (value != cache_.end())
-        return value->second.textureBuffer; //if cached, return it
+    static std::unordered_map<CubeType, std::shared_ptr<TextureBuffer>, CubeTypeHash> textureCache;
+
+    auto value = textureCache.find(cubeType);
+    if (value != textureCache.end())
+        return value->second; //if cached, return it
 
     //if not cached, make it, and then cache it
     auto textureBuffer = std::make_shared<TextureBuffer>(
         getTexturePath(cubeType), getCoordinateMap()
     );
-    cache_[cubeType]->second.textureBuffer = textureBuffer;
+    textureCache[cubeType] = textureBuffer;
     return textureBuffer;
 }
 
@@ -97,27 +100,25 @@ std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
 
 std::shared_ptr<cs5400::Program> Cube::getProgram()
 {
-    auto value = cache_.find(cubeType);
-    if (value != cache_.end())
-        return value->second.program; //if it's cached, return it
+    auto value = programCache_.find(cubeType);
+    if (value != programCache_.end())
+        return value->second; //if it's cached, return it
 
-    return nullptr; //else return nothing
+    return nullptr; //we can't return or create it at this point
 }
 
 
 
-void Cube::initializeAndStore(std::shared_ptr<cs5400::Program> program)
+void Cube::initializeAndStore(const std::shared_ptr<cs5400::Program>& program)
 {
-    auto value = cache_.find(cubeType); //look for it in cache
+    auto value = programCache_.find(cubeType); //look for it in cache
 
-    if (value == cache_.end()) //use and store it if it isn't in the cache
+    //use and store it if it isn't in the cache
+    if (value == programCache_.end())
     {
         Model::initializeAndStore(program);
-
-        CubeAttributes cubeAttributes;
-        cubeAttributes.textureBuffer = getTextureBuffer();
-        cubeAttributes.program = program;
-
-        cache_[cubeType] = cubeAttributes;
+        programCache_[cubeType] = program;
     }
+
+    beenInitialized_ = true;
 }

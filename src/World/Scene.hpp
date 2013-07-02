@@ -20,7 +20,7 @@ class Scene
         void render();
 
         std::shared_ptr<Camera> getCamera();
-        std::vector<std::shared_ptr<Model>> getRenderableObjects();
+        std::vector<std::shared_ptr<Model>> getModels();
         std::vector<std::shared_ptr<Light>> getLights();
         glm::vec3 getAmbientLight();
 
@@ -29,10 +29,10 @@ class Scene
 
     private:
         void syncLights(GLuint handle);
-        void assertRenderableObjectsContainNormalBuffers();
+        void assertModelsContainNormalBuffers();
 
     private:
-        std::vector<std::shared_ptr<Model>> renderableObjects_;
+        std::vector<std::shared_ptr<Model>> models_;
         std::vector<std::shared_ptr<Light>> lights_;
         std::shared_ptr<Camera> camera_;
         glm::vec3 ambientLight_;

@@ -23,24 +23,6 @@ class Cube : public Model
             DIRT
         };
 
-    public: //methods
-        Cube(CubeType cubeType, int x, int y, int z);
-        std::string getTexturePath(CubeType CubeType);
-        std::shared_ptr<cs5400::Program> getProgram();
-        std::shared_ptr<TextureBuffer> getTextureBuffer();
-        void initializeAndStore(std::shared_ptr<cs5400::Program> program);
-
-        static std::shared_ptr<Mesh> getMesh();
-        static std::shared_ptr<NormalBuffer> getNormalBuffer();
-        static std::vector<GLfloat> getCoordinateMap();
-
-    private: //structs
-        struct CubeAttributes
-        {
-            std::shared_ptr<TextureBuffer> textureBuffer;
-            std::shared_ptr<cs5400::Program> program;
-        };
-
         struct CubeTypeHash
         {
             std::size_t operator()(const CubeType& myEnum) const
@@ -48,6 +30,17 @@ class Cube : public Model
                 return static_cast<std::size_t>(myEnum);
             }
         };
+
+    public: //methods
+        Cube(CubeType cubeType, int x, int y, int z);
+        std::string getTexturePath(CubeType CubeType);
+        virtual std::shared_ptr<cs5400::Program> getProgram();
+        std::shared_ptr<TextureBuffer> getTextureBuffer();
+        virtual void initializeAndStore(const std::shared_ptr<cs5400::Program>& program);
+
+        static std::shared_ptr<Mesh> getMesh();
+        static std::shared_ptr<NormalBuffer> getNormalBuffer();
+        static std::vector<GLfloat> getCoordinateMap();
 
     private: //methods
         std::vector<std::shared_ptr<OptionalDataBuffer>> assembleDataBuffers(CubeType CubeType);
@@ -57,7 +50,7 @@ class Cube : public Model
 
         static std::shared_ptr<Mesh> mesh_;
         static std::shared_ptr<NormalBuffer> normalBuffer_;
-        static std::unordered_map<CubeType, CubeAttributes, CubeTypeHash> cache_;
+        static std::unordered_map<CubeType, std::shared_ptr<cs5400::Program>, CubeTypeHash> programCache_;
 };
 
 #endif
