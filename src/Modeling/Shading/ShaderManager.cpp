@@ -8,16 +8,19 @@
 
 
 std::shared_ptr<cs5400::Program> ShaderManager::createProgram(
-    const std::shared_ptr<Model>& obj,
+    const std::shared_ptr<Model>& model,
     const std::shared_ptr<ShaderSnippet>& sceneVertexShader,
     const std::shared_ptr<ShaderSnippet>& sceneFragmentShader,
     const std::vector<std::shared_ptr<Light>> lights
 )
 {
+    if (model->getProgram()) //if the model already has it, then use it!
+        return model->getProgram();
+
     //std::cout << "Creating shaders for Model"
     //    << " with " << lights.size() << " light(s)... ";
 
-    auto buffers = obj->getOptionalDataBuffers();
+    auto buffers = model->getOptionalDataBuffers();
     std::string vertexShaderStr, fragmentShaderStr;
 
     std::thread vertexShaderAssembler( [&]() {

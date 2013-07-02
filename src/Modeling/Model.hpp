@@ -33,7 +33,7 @@ class Model
         void enableDataBuffers();
         void disableDataBuffers();
 
-    private:
+    protected:
         std::shared_ptr<Mesh> mesh_;
         std::vector<std::shared_ptr<OptionalDataBuffer>> optionalDBs_;
         std::shared_ptr<cs5400::Program> renderingProgram_;

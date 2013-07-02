@@ -7,7 +7,7 @@
 
 
 Model::Model(const std::shared_ptr<Mesh>& mesh):
-    mesh_(mesh), modelMatrix_(glm::mat4()),
+    mesh_(mesh), renderingProgram_(nullptr), modelMatrix_(glm::mat4()),
     isVisible_(true), beenInitialized_(false), renderMode_(GL_TRIANGLES)
 {}
 
@@ -23,7 +23,8 @@ Model::Model(const std::shared_ptr<Mesh>& mesh,
 Model::Model(const std::shared_ptr<Mesh>& mesh,
     const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs,
     GLenum renderMode):
-    mesh_(mesh), optionalDBs_(optionalDBs), modelMatrix_(glm::mat4()),
+    mesh_(mesh), optionalDBs_(optionalDBs), renderingProgram_(nullptr),
+    modelMatrix_(glm::mat4()),
     isVisible_(true), beenInitialized_(false), renderMode_(renderMode)
 {
     /*
@@ -88,9 +89,6 @@ void Model::setRenderMode(GLenum newMode)
 
 std::shared_ptr<cs5400::Program> Model::getProgram()
 {
-    if (!beenInitialized_)
-        throw std::runtime_error("Model has not been initialized!");
-
     return renderingProgram_;
 }
 
