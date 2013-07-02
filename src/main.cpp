@@ -24,7 +24,10 @@ void updateCallback()
     }
     catch (std::exception& e)
     {
-        std::cerr << "Caught " << typeid(e).name() << " during update: " << e.what() << std::endl;
+        std::cerr << "Caught " << typeid(e).name() << " during update: " <<
+            e.what() << std::endl;
+        std::cerr << "\"And on that bombshell it is time to end. Good night!\"";
+        std::cerr << std::endl;
         glutDestroyWindow(glutGetWindow());
     }
 }
@@ -42,7 +45,10 @@ void renderCallback()
     }
     catch (std::exception& e)
     {
-        std::cerr << "Caught " << typeid(e).name() << " during render: " << e.what() << std::endl;
+        std::cerr << "Caught " << typeid(e).name() << " during render: " <<
+            e.what() << std::endl;
+        std::cerr << "\"And on that bombshell it is time to end. Good night!\"";
+        std::cerr << std::endl;
         glutDestroyWindow(glutGetWindow());
     }
 }
@@ -57,7 +63,10 @@ void keyPressCallback(unsigned char key, int x, int y)
     }
     catch (std::exception& e)
     {
-        std::cerr << "Caught " << typeid(e).name() << " during key press: " << e.what() << std::endl;
+        std::cerr << "Caught " << typeid(e).name() << " during key press: " <<
+            e.what() << std::endl;
+        std::cerr << "\"And on that bombshell it is time to end. Good night!\"";
+        std::cerr << std::endl;
         glutDestroyWindow(glutGetWindow());
     }
 }
@@ -72,7 +81,10 @@ void specialKeyPressCallback(int key, int x, int y)
     }
     catch (std::exception& e)
     {
-        std::cerr << "Caught " << typeid(e).name() << " during special key press: " << e.what() << std::endl;
+        std::cerr << "Caught " << typeid(e).name()
+            << " during special key press: " << e.what() << std::endl;
+        std::cerr << "\"And on that bombshell it is time to end. Good night!\"";
+        std::cerr << std::endl;
         glutDestroyWindow(glutGetWindow());
     }
 }
@@ -87,7 +99,10 @@ void mouseClickCallback(int button, int state, int x, int y)
     }
     catch (std::exception& e)
     {
-        std::cerr << "Caught " << typeid(e).name() << " during mouse click: " << e.what() << std::endl;
+        std::cerr << "Caught " << typeid(e).name() << " during mouse click: " <<
+            e.what() << std::endl;
+        std::cerr << "\"And on that bombshell it is time to end. Good night!\"";
+        std::cerr << std::endl;
         glutDestroyWindow(glutGetWindow());
     }
 }
@@ -102,7 +117,10 @@ void mouseMotionCallback(int x, int y)
     }
     catch (std::exception& e)
     {
-        std::cerr << "Caught " << typeid(e).name() << " during mouse motion: " << e.what() << std::endl;
+        std::cerr << "Caught " << typeid(e).name() << " during mouse motion: "
+            << e.what() << std::endl;
+        std::cerr << "\"And on that bombshell it is time to end. Good night!\"";
+        std::cerr << std::endl;
         glutDestroyWindow(glutGetWindow());
     }
 }
@@ -117,7 +135,10 @@ void mouseDragCallback(int x, int y)
     }
     catch (std::exception& e)
     {
-        std::cerr << "Caught " << typeid(e).name() << " during mouse drag: " << e.what() << std::endl;
+        std::cerr << "Caught " << typeid(e).name() << " during mouse drag: " <<
+            e.what() << std::endl;
+        std::cerr << "\"And on that bombshell it is time to end. Good night!\"";
+        std::cerr << std::endl;
         glutDestroyWindow(glutGetWindow());
     }
 }
@@ -168,10 +189,11 @@ int main(int argc, char **argv)
     }
     catch (std::exception& e)
     {
-        std::cerr << std::endl;
-        std::cerr << "Caught " << typeid(e).name() << " during glut setup: " << e.what();
-        std::cerr << std::endl;
+        std::cerr << std::endl << "Caught " << typeid(e).name() <<
+            " during glut setup: " << e.what() << std::endl;
 
+        std::cerr << "\"And on that bombshell it is time to end. Good night!\"";
+        std::cerr << std::endl;
         glutDestroyWindow(glutGetWindow());
         return EXIT_FAILURE;
     }

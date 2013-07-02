@@ -47,6 +47,9 @@ void Game::addCubes()
         }
     }
 
+    if (scene_->getModels().size())
+        throw std::runtime_error("DERP");
+
     std::cout << "... done adding cubes. Scene now has " <<
         scene_->getModels().size() << " Models" << std::endl;
 }
@@ -172,8 +175,9 @@ Game& Game::getInstance()
             " during Game initiation: " << e.what();
         std::cerr << std::endl;
 
+        std::cerr << "\"And on that bombshell it is time to end. Good night!\"";
+        std::cerr << std::endl;
         glutDestroyWindow(glutGetWindow());
-        throw std::runtime_error("Game initiation error");
     }
 
     return *singleton_;
