@@ -34,6 +34,8 @@ void Game::addCubes()
     std::cout << "Currently " << scene_->getModels().size() <<
         " Models in Scene. Adding Cubes... " << std::endl;
 
+    //Chunk::generateCubes(scene_, 0, 0);
+
     const int N = 64;
     for (int x = 0; x < N; x++)
     {
@@ -46,9 +48,6 @@ void Game::addCubes()
             }
         }
     }
-
-    if (scene_->getModels().size())
-        throw std::runtime_error("DERP");
 
     std::cout << "... done adding cubes. Scene now has " <<
         scene_->getModels().size() << " Models" << std::endl;

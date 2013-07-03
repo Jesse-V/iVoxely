@@ -18,7 +18,7 @@ class Cube : public Model
     //I think a Cube should be a Model instead of it having a Model
 
     public: //structs
-        enum class CubeType : unsigned int
+        enum class CubeType : unsigned short
         {
             DIRT
         };
