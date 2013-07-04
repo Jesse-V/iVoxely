@@ -9,7 +9,7 @@
 
 std::shared_ptr<Mesh> Cube::mesh_;
 std::shared_ptr<NormalBuffer> Cube::normalBuffer_;
-std::unordered_map<Cube::CubeType, std::shared_ptr<cs5400::Program>, Cube::CubeTypeHash> Cube::programCache_;
+std::unordered_map<Cube::CubeType, ProgramPtr, Cube::CubeTypeHash> Cube::programCache_;
 
 
 Cube::Cube(CubeType cubeType, int x, int y, int z) :
@@ -22,12 +22,9 @@ Cube::Cube(CubeType cubeType, int x, int y, int z) :
 
 
 
-std::vector<std::shared_ptr<OptionalDataBuffer>> Cube::assembleDataBuffers(CubeType cubeType)
+BufferList Cube::assembleDataBuffers(CubeType cubeType)
 {
-    std::vector<std::shared_ptr<OptionalDataBuffer>> buffers = {
-        getNormalBuffer(), getTextureBuffer()
-    };
-
+    BufferList buffers = { getNormalBuffer(), getTextureBuffer() };
     return buffers;
 }
 
@@ -97,8 +94,7 @@ std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
 
 
 
-
-std::shared_ptr<cs5400::Program> Cube::getProgram()
+ProgramPtr Cube::getProgram()
 {
     auto value = programCache_.find(cubeType);
     if (value != programCache_.end())
@@ -109,7 +105,7 @@ std::shared_ptr<cs5400::Program> Cube::getProgram()
 
 
 
-void Cube::initializeAndStore(const std::shared_ptr<cs5400::Program>& program)
+void Cube::initializeAndStore(const ProgramPtr& program)
 {
     auto value = programCache_.find(cubeType); //look for it in cache
 

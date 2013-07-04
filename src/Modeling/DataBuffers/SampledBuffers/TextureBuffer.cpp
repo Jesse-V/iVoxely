@@ -40,7 +40,7 @@ void TextureBuffer::disable()
 
 
 
-std::shared_ptr<ShaderSnippet> TextureBuffer::getVertexShaderGLSL()
+SnippetPtr TextureBuffer::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>(
         R".(
@@ -60,7 +60,7 @@ std::shared_ptr<ShaderSnippet> TextureBuffer::getVertexShaderGLSL()
 
 
 
-std::shared_ptr<ShaderSnippet> TextureBuffer::getFragmentShaderGLSL()
+SnippetPtr TextureBuffer::getFragmentShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>(
         R".(

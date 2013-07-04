@@ -5,10 +5,14 @@
 #include <memory>
 #include "Shader.hpp"
 
+
+
 namespace cs5400
 {
     class Program
     {
+
+
         public:
             Program(
                 const std::shared_ptr<VertexShader>& vertex_,
@@ -28,5 +32,7 @@ namespace cs5400
         const std::shared_ptr<FragmentShader>& fragment
     );
 }
+
+typedef std::shared_ptr<cs5400::Program> ProgramPtr;
 
 #endif

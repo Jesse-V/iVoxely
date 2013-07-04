@@ -83,7 +83,7 @@ std::vector<std::shared_ptr<Model>> Scene::getModels()
 
 
 
-std::vector<std::shared_ptr<Light>> Scene::getLights()
+LightList Scene::getLights()
 {
     return lights_;
 }
@@ -112,10 +112,12 @@ void Scene::syncLights(GLuint handle)
 
 
 
-std::shared_ptr<ShaderSnippet> Scene::getVertexShaderGLSL()
+SnippetPtr Scene::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>(
         R".(
+            // ********* VERTEX SHADER ********* \\
+
             //Scene fields
             attribute vec3 vertex; //position of the vertex
             uniform mat4 viewMatrix, projMatrix; //Camera view and projection matrices
@@ -146,10 +148,12 @@ std::shared_ptr<ShaderSnippet> Scene::getVertexShaderGLSL()
 
 
 
-std::shared_ptr<ShaderSnippet> Scene::getFragmentShaderGLSL()
+SnippetPtr Scene::getFragmentShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>(
         R".(
+            // ********* FRAGMENT SHADER ********* \\
+
             //Scene fields
             uniform vec3 ambientLight;
             varying vec3 pos_world;

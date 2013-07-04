@@ -20,8 +20,8 @@ class Mesh : public DataBuffer
         virtual void disable();
         virtual void draw(GLenum mode);
 
-        virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
-        virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
+        virtual SnippetPtr getVertexShaderGLSL();
+        virtual SnippetPtr getFragmentShaderGLSL();
 
         std::vector<glm::vec3> getVertices();
         std::vector<Triangle> getTriangles();

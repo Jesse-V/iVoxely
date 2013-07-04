@@ -66,14 +66,14 @@ void Mesh::draw(GLenum mode)
 
 
 
-std::shared_ptr<ShaderSnippet> Mesh::getVertexShaderGLSL()
+SnippetPtr Mesh::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>();
 }
 
 
 
-std::shared_ptr<ShaderSnippet> Mesh::getFragmentShaderGLSL()
+SnippetPtr Mesh::getFragmentShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>();
 }

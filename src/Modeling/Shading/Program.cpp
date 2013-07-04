@@ -1,5 +1,6 @@
 
 #include "Program.hpp"
+#include <iostream>
 
 
 cs5400::Program::Program(
@@ -37,7 +38,9 @@ std::shared_ptr<cs5400::Program> cs5400::makeProgram(
     glLinkProgram (program->getHandle());
     glGetProgramiv(program->getHandle(), GL_LINK_STATUS, &link_ok);
 
-    if (!link_ok)
+    if (link_ok)
+        std::cout << "Successfully linked shader program" << std::endl;
+    else
         throw std::runtime_error("Could not link shader program.");
 
     return program;

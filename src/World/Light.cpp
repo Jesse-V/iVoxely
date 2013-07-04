@@ -85,7 +85,7 @@ void Light::sync(GLuint handle)
 
 
 
-std::shared_ptr<ShaderSnippet> Light::getVertexShaderGLSL()
+SnippetPtr Light::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>(
         R".(
@@ -104,7 +104,7 @@ std::shared_ptr<ShaderSnippet> Light::getVertexShaderGLSL()
 
 
 
-std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
+SnippetPtr Light::getFragmentShaderGLSL()
 {
     //http://www.opengl.org/discussion_boards/showthread.php/164100-GLSL-multiple-lights
     //http://en.wikibooks.org/wiki/GLSL_Programming/GLUT/Multiple_Lights

@@ -66,14 +66,14 @@ std::vector<glm::vec3> VertexBuffer::getVertices()
 
 
 
-std::shared_ptr<ShaderSnippet> VertexBuffer::getVertexShaderGLSL()
+SnippetPtr VertexBuffer::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>();
 }
 
 
 
-std::shared_ptr<ShaderSnippet> VertexBuffer::getFragmentShaderGLSL()
+SnippetPtr VertexBuffer::getFragmentShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>();
 }

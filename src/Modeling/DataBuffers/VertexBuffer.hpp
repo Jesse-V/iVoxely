@@ -16,8 +16,8 @@ class VertexBuffer : public DataBuffer
         virtual void disable();
         virtual void draw(GLenum mode);
 
-        virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
-        virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
+        virtual SnippetPtr getVertexShaderGLSL();
+        virtual SnippetPtr getFragmentShaderGLSL();
 
         std::vector<glm::vec3> getVertices();
 
@@ -27,7 +27,6 @@ class VertexBuffer : public DataBuffer
 
     private:
         std::vector<glm::vec3> vertices_;
-
         GLuint vertexBuffer_;
         GLint vertexAttrib_;
 };

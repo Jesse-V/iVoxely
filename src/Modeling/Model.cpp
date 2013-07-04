@@ -13,15 +13,13 @@ Model::Model(const std::shared_ptr<Mesh>& mesh):
 
 
 
-Model::Model(const std::shared_ptr<Mesh>& mesh,
-    const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs):
+Model::Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs):
     Model(mesh, optionalDBs, GL_TRIANGLES)
 {}
 
 
 
-Model::Model(const std::shared_ptr<Mesh>& mesh,
-    const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs,
+Model::Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs,
     GLenum renderMode):
     mesh_(mesh), optionalDBs_(optionalDBs), renderingProgram_(nullptr),
     modelMatrix_(glm::mat4()),
@@ -42,7 +40,7 @@ Model::Model(const std::shared_ptr<Mesh>& mesh,
 
 
 
-void Model::initializeAndStore(const std::shared_ptr<cs5400::Program>& program)
+void Model::initializeAndStore(const ProgramPtr& program)
 {
     renderingProgram_ = program;
     std::cout << "Storing mesh and model data as program #" <<
@@ -87,14 +85,14 @@ void Model::setRenderMode(GLenum newMode)
 
 
 
-std::shared_ptr<cs5400::Program> Model::getProgram()
+ProgramPtr Model::getProgram()
 {
     return renderingProgram_;
 }
 
 
 
-std::vector<std::shared_ptr<OptionalDataBuffer>> Model::getOptionalDataBuffers()
+BufferList Model::getOptionalDataBuffers()
 {
     return optionalDBs_;
 }

@@ -17,8 +17,8 @@ class NormalBuffer : public OptionalDataBuffer
         virtual void enable();
         virtual void disable();
 
-        virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
-        virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
+        virtual SnippetPtr getVertexShaderGLSL();
+        virtual SnippetPtr getFragmentShaderGLSL();
 
         static std::vector<glm::vec3> calcNormalsMWA(
             const std::shared_ptr<Mesh>& mesh

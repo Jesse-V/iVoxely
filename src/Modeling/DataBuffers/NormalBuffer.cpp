@@ -63,7 +63,7 @@ void NormalBuffer::disable()
 
 
 
-std::shared_ptr<ShaderSnippet> NormalBuffer::getVertexShaderGLSL()
+SnippetPtr NormalBuffer::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>(
         R".(
@@ -84,7 +84,7 @@ std::shared_ptr<ShaderSnippet> NormalBuffer::getVertexShaderGLSL()
 
 
 
-std::shared_ptr<ShaderSnippet> NormalBuffer::getFragmentShaderGLSL()
+SnippetPtr NormalBuffer::getFragmentShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>(
         R".(

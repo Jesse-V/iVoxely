@@ -3,12 +3,16 @@
 
 #include "ShaderSnippet.hpp"
 #include <memory>
+#include <vector>
+
+typedef std::shared_ptr<ShaderSnippet> SnippetPtr;
+typedef std::vector<SnippetPtr> SnippetList;
 
 class ShaderUtilizer
 {
     public:
-        virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL() = 0;
-        virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL() = 0;
+        virtual SnippetPtr getVertexShaderGLSL() = 0;
+        virtual SnippetPtr getFragmentShaderGLSL() = 0;
 };
 
 #endif

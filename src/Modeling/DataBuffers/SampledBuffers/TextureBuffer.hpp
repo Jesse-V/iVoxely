@@ -16,8 +16,8 @@ class TextureBuffer : public SampledBuffer
 
         virtual void store();
 
-        virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
-        virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
+        virtual SnippetPtr getVertexShaderGLSL();
+        virtual SnippetPtr getFragmentShaderGLSL();
 
     private:
         GLint attribute_texcoord_;

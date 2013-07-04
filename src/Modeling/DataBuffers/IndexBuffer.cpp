@@ -49,14 +49,14 @@ std::vector<Triangle> IndexBuffer::getTriangles()
 
 
 
-std::shared_ptr<ShaderSnippet> IndexBuffer::getVertexShaderGLSL()
+SnippetPtr IndexBuffer::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>();
 }
 
 
 
-std::shared_ptr<ShaderSnippet> IndexBuffer::getFragmentShaderGLSL()
+SnippetPtr IndexBuffer::getFragmentShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>();
 }

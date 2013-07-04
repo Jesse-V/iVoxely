@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 
+
 namespace
 {
     std::string getCode(const std::string& path)
@@ -32,6 +33,8 @@ namespace
 
     void setCode(GLuint handle, const std::string& code)
     {
+        std::cout << "Compiling GLSL shader... ";
+
         const GLchar *source[1] = { code.c_str() };
         glShaderSource(handle, 1, source, NULL);
         glCompileShader(handle);
@@ -43,12 +46,15 @@ namespace
         {
             GLchar buf[8192];
             glGetShaderInfoLog(handle, sizeof(buf), NULL, buf);
+            std::cout << std::endl;
 
             std::cerr << code << std::endl;
             std::stringstream stream("");
             stream << "Compilation error in GLSL shader code \n" << buf;
             throw std::runtime_error(stream.str());
         }
+        else
+            std::cout << "done" << std::endl;
     }
 }
 

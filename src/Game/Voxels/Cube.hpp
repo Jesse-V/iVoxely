@@ -34,23 +34,24 @@ class Cube : public Model
     public: //methods
         Cube(CubeType cubeType, int x, int y, int z);
         std::string getTexturePath(CubeType CubeType);
-        virtual std::shared_ptr<cs5400::Program> getProgram();
         std::shared_ptr<TextureBuffer> getTextureBuffer();
-        virtual void initializeAndStore(const std::shared_ptr<cs5400::Program>& program);
+
+        virtual ProgramPtr getProgram();
+        virtual void initializeAndStore(const ProgramPtr& program);
 
         static std::shared_ptr<Mesh> getMesh();
         static std::shared_ptr<NormalBuffer> getNormalBuffer();
         static std::vector<GLfloat> getCoordinateMap();
 
     private: //methods
-        std::vector<std::shared_ptr<OptionalDataBuffer>> assembleDataBuffers(CubeType CubeType);
+        BufferList assembleDataBuffers(CubeType CubeType);
 
     private: //data
         CubeType cubeType; //identifies the cube
 
         static std::shared_ptr<Mesh> mesh_;
         static std::shared_ptr<NormalBuffer> normalBuffer_;
-        static std::unordered_map<CubeType, std::shared_ptr<cs5400::Program>, CubeTypeHash> programCache_;
+        static std::unordered_map<CubeType, ProgramPtr, CubeTypeHash> programCache_;
 };
 
 #endif

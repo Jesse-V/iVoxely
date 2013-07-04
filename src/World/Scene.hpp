@@ -24,8 +24,8 @@ class Scene
         std::vector<std::shared_ptr<Light>> getLights();
         glm::vec3 getAmbientLight();
 
-        virtual std::shared_ptr<ShaderSnippet> getVertexShaderGLSL();
-        virtual std::shared_ptr<ShaderSnippet> getFragmentShaderGLSL();
+        virtual SnippetPtr getVertexShaderGLSL();
+        virtual SnippetPtr getFragmentShaderGLSL();
 
     private:
         void syncLights(GLuint handle);
@@ -33,7 +33,7 @@ class Scene
 
     private:
         std::vector<std::shared_ptr<Model>> models_;
-        std::vector<std::shared_ptr<Light>> lights_;
+        LightList lights_;
         std::shared_ptr<Camera> camera_;
         glm::vec3 ambientLight_;
 };

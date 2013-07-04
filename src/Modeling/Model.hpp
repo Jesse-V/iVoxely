@@ -9,24 +9,24 @@
 #include <vector>
 #include <memory>
 
+typedef std::vector<std::shared_ptr<OptionalDataBuffer>> BufferList;
+
 class Model
 {
     public:
         Model(const std::shared_ptr<Mesh>& mesh);
-        Model(const std::shared_ptr<Mesh>& mesh,
-            const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs);
-        Model(const std::shared_ptr<Mesh>& mesh,
-            const std::vector<std::shared_ptr<OptionalDataBuffer>>& optionalDBs,
-            GLenum renderMode);
+        Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs);
+        Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs,
+                GLenum renderMode);
 
-        virtual void initializeAndStore(const std::shared_ptr<cs5400::Program>& program);
+        virtual void initializeAndStore(const ProgramPtr& program);
         void setVisible(bool visible);
         void setModelMatrix(const glm::mat4& matrix); // model -> world coords
         void setRenderMode(GLenum newMode);
         void render(GLint modelMatrixID);
 
-        virtual std::shared_ptr<cs5400::Program> getProgram();
-        std::vector<std::shared_ptr<OptionalDataBuffer>> getOptionalDataBuffers();
+        virtual ProgramPtr getProgram();
+        BufferList getOptionalDataBuffers();
         bool hasBeenInitialized();
 
     private:
@@ -35,8 +35,8 @@ class Model
 
     protected:
         std::shared_ptr<Mesh> mesh_;
-        std::vector<std::shared_ptr<OptionalDataBuffer>> optionalDBs_;
-        std::shared_ptr<cs5400::Program> renderingProgram_;
+        BufferList optionalDBs_;
+        ProgramPtr renderingProgram_;
         glm::mat4 modelMatrix_;
         bool isVisible_, beenInitialized_;
         GLenum renderMode_;
