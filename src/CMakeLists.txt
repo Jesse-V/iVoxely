@@ -8,7 +8,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS  "-g -O3 --std=c++11 -Wall -Wextra -Wdouble-promotion -Wfloat-equal -Wunsafe-loop-optimizations -Wno-unused-parameter")
 endif()
 
-include_directories(. glm)
+include_directories(.)
 #link_directories()
 
 add_executable(ivoxely
