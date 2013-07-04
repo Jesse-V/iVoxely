@@ -165,9 +165,9 @@ std::shared_ptr<ShaderSnippet> Scene::getFragmentShaderGLSL()
         ).",
         R".(
             //Scene main method code
-            ColorInfluences colors;
-            colors.textureColor = vec3(-1); //init to invalid if not needed
-            colors.lightBlend = vec3(-1);
+            ColorInfluences colorInfluences;
+            colorInfluences.textureColor = vec3(-1); //init to invalid if not needed
+            colorInfluences.lightBlend = vec3(-1);
         )."
     );
 }

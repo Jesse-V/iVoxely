@@ -69,17 +69,17 @@ void Light::setEmitting(bool emitting)
 
 void Light::sync(GLuint handle)
 {
-    GLint lightPosUniform = glGetUniformLocation(handle, "lightPos");
+    GLint lightPosUniform = glGetUniformLocation(handle, "lights[0].position");
     glUniform3fv(lightPosUniform, 1, glm::value_ptr(getPosition()));
 
-   /* GLint lightColorUniform = glGetUniformLocation(handle, "lights[0].color");
+    GLint lightColorUniform = glGetUniformLocation(handle, "lights[0].color");
     glUniform3fv(lightColorUniform, 1, glm::value_ptr(getColor()));
 
     GLint lightPowUniform = glGetUniformLocation(handle, "lights[0].power");
     float power_ = isEmitting() ? getPower() : 0;
-    glUniform1f(lightPowUniform, power_);*/
+    glUniform1f(lightPowUniform, power_);
 
-    if (lightPosUniform < 0/* || lightColorUniform < 0 || lightPowUniform < 0*/)
+    if (lightPosUniform < 0 || lightColorUniform < 0 || lightPowUniform < 0)
         throw std::runtime_error("Unable to find Light uniform variables!");
 }
 
@@ -90,7 +90,6 @@ std::shared_ptr<ShaderSnippet> Light::getVertexShaderGLSL()
     return std::make_shared<ShaderSnippet>(
         R".(
             //Light fields
-            uniform vec3 lightPos;
             out vec4 fragmentPosition;
         ).",
         R".(
@@ -118,7 +117,13 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
             //Light fields
             // http://stackoverflow.com/questions/8202173/setting-the-values-of-a-struct-array-from-js-to-glsl
 
-            uniform vec3 lightPos;
+            struct Light
+            {
+                vec3 position, color;
+                float power;
+            };
+
+            uniform Light lights[1];
             in vec4 fragmentPosition;
         ).",
         R".(
@@ -126,15 +131,16 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
         ).",
         R".(
             //Light main method code
+            colorInfluences.lightBlend = vec3(0); //see Scene::getFragmentShaderGLSL()
 
-            float xDist = abs(fragmentPosition.x - lightPos.x);
-            float yDist = abs(fragmentPosition.y - lightPos.y);
-            float zDist = abs(fragmentPosition.z - lightPos.z);
+            for (int j = 0; j < lights.length(); j++)
+            {
+                float distance = length(fragmentPosition.xyz - lights[j].position);
+                float scaledDistance = distance * lights[j].power;
+                colorInfluences.lightBlend += lights[j].color * (1 - scaledDistance);
+            }
 
-            float distance = sqrt(xDist * xDist + yDist * yDist + zDist * zDist);
-
-            float scaledDistance = distance * 0.8;
-            gl_FragColor = vec4(1) * (1 - scaledDistance);
+            gl_FragColor = vec4(colorInfluences.lightBlend, 1);
         )."
     );
 }
