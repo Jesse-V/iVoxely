@@ -8,16 +8,33 @@
 
 Game::Game(int screenWidth, int screenHeight):
     scene_(std::make_shared<Scene>(getCamera(screenWidth, screenHeight))),
-    player_(std::make_shared<Player>(scene_))
+    player_(std::make_shared<Player>(scene_)), frameCount_(0)
 {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
+    reportFPS();
     addModels();
     addLight();
 
     glutSetCursor(GLUT_CURSOR_NONE); //hides the mouse
+}
+
+
+
+void Game::reportFPS()
+{
+    std::thread fpsReporter([&]() {
+        while (true)
+        {
+            sleep(1000);
+            std::cout << "FPS: " << frameCount_ << std::endl;
+            frameCount_ = 0;
+        }
+    });
+
+    fpsReporter.detach();
 }
 
 
@@ -36,7 +53,7 @@ void Game::addCubes()
 
     //Chunk::generateCubes(scene_, 0, 0);
 
-    const int N = 64;
+    const int N = 8;
     for (int x = 0; x < N; x++)
     {
         for (int y = 0; y < N; y++)
@@ -98,6 +115,7 @@ void Game::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     scene_->render();
+    frameCount_++;
 
     glutSwapBuffers();
 }

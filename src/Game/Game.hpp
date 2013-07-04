@@ -22,6 +22,7 @@ class Game
 
     private:
         Game(int screenWidth, int screenHeight);
+        void reportFPS();
         void addModels();
         void addCubes();
         void addLight();
@@ -33,6 +34,7 @@ class Game
 
         std::shared_ptr<Scene> scene_;
         std::shared_ptr<Player> player_;
+        int frameCount_;
 };
 
 #endif

@@ -45,12 +45,12 @@ void Camera::sync(GLuint handle) const
     glUniformMatrix4fv(projMatrixUniform, 1, GL_FALSE,
                        glm::value_ptr(getProjectionMatrix()));
 
-    GLint normMatrixUniform = glGetUniformLocation(handle, "NormalMatrix");
+    /*GLint normMatrixUniform = glGetUniformLocation(handle, "NormalMatrix");
     glm::mat3 normMatrix = glm::mat3(viewMatrix[0].xyz(), viewMatrix[1].xyz(), viewMatrix[2].xyz());
     glUniformMatrix3fv(normMatrixUniform, 1, GL_FALSE,
-                       glm::value_ptr(normMatrix));
+                       glm::value_ptr(normMatrix));*/
 
-    if (viewMatrixUniform < 0 || projMatrixUniform < 0 || normMatrixUniform < 0)
+    if (viewMatrixUniform < 0 || projMatrixUniform < 0)
         throw std::runtime_error("Unable to find Camera uniform variables!");
 }
 

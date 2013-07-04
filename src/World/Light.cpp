@@ -16,6 +16,7 @@ glm::vec3 Light::getPosition() const
 }
 
 
+
 void Light::setPosition(const glm::vec3& newPos)
 {
     position_ = newPos;
@@ -78,8 +79,8 @@ void Light::sync(GLuint handle)
     float power_ = isEmitting() ? getPower() : 0;
     glUniform1f(lightPowUniform, power_);*/
 
-    //if (lightPosUniform < 0/* || lightColorUniform < 0 || lightPowUniform < 0*/)
-    //    throw std::runtime_error("Unable to find Light uniform variables!");
+    if (lightPosUniform < 0/* || lightColorUniform < 0 || lightPowUniform < 0*/)
+        throw std::runtime_error("Unable to find Light uniform variables!");
 }
 
 
@@ -90,16 +91,14 @@ std::shared_ptr<ShaderSnippet> Light::getVertexShaderGLSL()
         R".(
             //Light fields
             uniform vec3 lightPos;
-            out vec3 VNormal;
-            out vec3 VPosition;
+            out vec4 fragmentPosition;
         ).",
         R".(
             //Light methods
         ).",
         R".(
             //Light main method code
-            VNormal = normalize( NormalMatrix * vertexNormal );
-            VPosition = vec3( viewMatrix * vec4( vertex, 1.0 ) );
+            fragmentPosition = projMatrix * modelMatrix * vec4(vertex, 1);
         )."
     );
 }
@@ -120,10 +119,7 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
             // http://stackoverflow.com/questions/8202173/setting-the-values-of-a-struct-array-from-js-to-glsl
 
             uniform vec3 lightPos;
-
-            in vec3 VNormal;
-            in vec3 VPosition;
-
+            in vec4 fragmentPosition;
         ).",
         R".(
             //Light methods
@@ -131,20 +127,14 @@ std::shared_ptr<ShaderSnippet> Light::getFragmentShaderGLSL()
         R".(
             //Light main method code
 
-            vec3 color = vec3(0.81, 0.71, 0.23);
+            float xDist = abs(fragmentPosition.x - lightPos.x);
+            float yDist = abs(fragmentPosition.y - lightPos.y);
+            float zDist = abs(fragmentPosition.z - lightPos.z);
 
-            vec3 light = vec3(lightPos);
-            vec3 lightdir = light - VPosition;
-            vec3 reflectVec = normalize(reflect( -lightdir, VNormal ));
-            vec3 viewVec = normalize( -VPosition );
-            float diff = max( dot(normalize( lightdir ), VNormal ), 0.0);
-            float spec = 0.0;
+            float distance = sqrt(xDist * xDist + yDist * yDist + zDist * zDist);
 
-            if (diff > 0.0)
-                spec = max(dot(reflectVec, viewVec), 0.0);
-
-            //diff =  diff * 0.6 + spec * 0.4;
-            gl_FragColor = vec4( color * ( diff ), 1.0 );
+            float scaledDistance = distance * 0.8;
+            gl_FragColor = vec4(1) * (1 - scaledDistance);
         )."
     );
 }
