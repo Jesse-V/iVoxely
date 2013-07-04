@@ -59,7 +59,17 @@ std::string ShaderManager::assembleFragmentShaderStr(
     return buildShader(
         assembleFields(fragmentSnippets),
         assembleMethods(fragmentSnippets),
-        assembleMainBodyCode(fragmentSnippets)
+        assembleMainBodyCode(fragmentSnippets) + R".(
+            //final main body code for fragment shader from ShaderManager
+            if (colorInfluences.textureColor == vec3(-1))
+                colorInfluences.textureColor = vec3(1);
+
+            if (colorInfluences.lightBlend == vec3(-1))
+                colorInfluences.textureColor = vec3(1);
+
+            gl_FragColor = vec4(
+                colorInfluences.textureColor * colorInfluences.lightBlend, 1);
+        )."
     );
 }
 

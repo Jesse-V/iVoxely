@@ -139,8 +139,6 @@ SnippetPtr Light::getFragmentShaderGLSL()
                 float scaledDistance = distance * lights[j].power;
                 colorInfluences.lightBlend += lights[j].color * (1 - scaledDistance);
             }
-
-            gl_FragColor = vec4(colorInfluences.lightBlend, 1);
         )."
     );
 }
