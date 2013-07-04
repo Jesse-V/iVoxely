@@ -44,7 +44,7 @@ std::shared_ptr<NormalBuffer> Cube::getNormalBuffer()
 {
     //the Mesh is necessary for NormalBuffer's calculations
     if (!mesh_)
-        throw std::runtime_error("Mesh must be initialized before getting NormalBuffer");
+        mesh_ = getMesh();
 
     //all Cubes have the same NormalBuffer, so we can cache it
     if (!normalBuffer_)

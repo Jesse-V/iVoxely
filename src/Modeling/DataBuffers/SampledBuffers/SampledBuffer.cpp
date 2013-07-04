@@ -80,17 +80,21 @@ void SampledBuffer::loadBMP(const std::string& imagePath)
     if (header[0] != 'B' || header[1] != 'M')
         throw std::runtime_error(imagePath + " is not a valid .bmp image");
 
-    imgWidth_  = *(int*)&(header[0x12]);
-    imgHeight_ = *(int*)&(header[0x16]);
+    auto char12Ptr = &header[0x12], char16Ptr = &header[0x16];
+    imgWidth_  = *(int*)char12Ptr;
+    imgHeight_ = *(int*)char16Ptr;
 
-    int imageSize  = *(int*)&(header[0x22]);
+    auto char22Ptr = &header[0x22];
+    int imageSize  = *(int*)char22Ptr;
     if (imageSize == 0)
         imageSize = imgWidth_ * imgHeight_ * 3;
 
     data_ = new unsigned char[imageSize];
 
     // Read the actual data from the file into the buffer
-    fread(data_, 1, (unsigned long)imageSize, file);
+    auto readSize = fread(data_, 1, (unsigned long)imageSize, file);
+    if (readSize != (unsigned long)imageSize)
+        throw std::runtime_error("Invalid fread of " + imagePath);
 
     //Everything is in memory now, the file can be closed
     fclose(file);
