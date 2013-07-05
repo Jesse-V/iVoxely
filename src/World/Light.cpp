@@ -144,7 +144,7 @@ SnippetPtr Light::getFragmentShaderGLSL()
         ).",
         R".(
             //Light main method code
-            colorInfluences.lightBlend = vec3(0); //see Scene::getFragmentShaderGLSL()
+            colors.lightBlend = vec3(0); //see Scene::getFragmentShaderGLSL()
             vec3 temp1 = vec3(1), temp2 = vec3(1);
 
             for (int j = 0; j < lights.length(); j++)
@@ -152,7 +152,7 @@ SnippetPtr Light::getFragmentShaderGLSL()
                 vec4 pos = vec4(lights[j].position, 1);
                 float distance = length(fragmentPosition.xyz - pos.xyz);
                 float scaledDistance = distance * lights[j].power;
-                colorInfluences.lightBlend += lights[j].color * (1 - scaledDistance);
+                colors.lightBlend += lights[j].color * (1 - scaledDistance);
             }
         )."
     );

@@ -2,6 +2,7 @@
 #include "main.hpp"
 #include "Game/Game.hpp"
 #include <thread>
+#include <sstream>
 
 static bool readyToUpdate = false;
 
@@ -157,30 +158,68 @@ void initializeGlutWindow(int width, int height, const std::string& windowTitle)
 
 
 
+void createGlContext()
+{
+    GLenum glew_status = glewInit();
+    if (glew_status == GLEW_OK)
+        std::cout << "Successfully created GL context." << std::endl;
+    else
+    {
+        std::stringstream errorStream("");
+        errorStream << "glewInit() error. Failed to create GL context.";
+        errorStream << std::endl;
+        errorStream << glewGetErrorString(glew_status);
+        throw std::runtime_error(errorStream.str());
+    }
+
+    std::cout << "<GL context>" << std::endl;
+    std::cout << "Vendor:   " << glGetString(GL_VENDOR) << std::endl;
+    std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
+    std::cout << "Version:  " << glGetString(GL_VERSION) << std::endl;
+    std::cout << "GLSL:     " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+    std::cout << "</GL context>" << std::endl;
+}
+
+
+
+void assertSystemRequirements()
+{
+    std::stringstream stream("");
+    stream << glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+    auto versionStr = stream.str();
+    auto delimiter = versionStr.find(" ");
+    std::cout << "*" << versionStr.substr(0, delimiter) << "*" << std::endl;
+}
+
+
+
+void assignCallbacks()
+{
+    glutIdleFunc(updateCallback);
+    glutDisplayFunc(renderCallback);
+
+    glutKeyboardFunc(keyPressCallback);
+    glutSpecialFunc(specialKeyPressCallback);
+
+    glutMouseFunc(mouseClickCallback);
+    glutMotionFunc(mouseDragCallback);
+    glutPassiveMotionFunc(mouseMotionCallback);
+}
+
+
+
 int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     initializeGlutWindow(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT), "iVoxely");
 
-    GLenum glew_status = glewInit();
-    if (glew_status != GLEW_OK)
-    {
-        fprintf(stderr, "Error: %s\n", glewGetErrorString(glew_status));
-        return EXIT_FAILURE;
-    }
-
     try
     {
-        glutIdleFunc(updateCallback);
-        glutDisplayFunc(renderCallback);
-
-        glutKeyboardFunc(keyPressCallback);
-        glutSpecialFunc(specialKeyPressCallback);
-
-        glutMouseFunc(mouseClickCallback);
-        glutMotionFunc(mouseDragCallback);
-        glutPassiveMotionFunc(mouseMotionCallback);
+        createGlContext();
+        assertSystemRequirements();
+        assignCallbacks();
 
         std::cout << "Finished Glut and window initialization" << std::endl;
 

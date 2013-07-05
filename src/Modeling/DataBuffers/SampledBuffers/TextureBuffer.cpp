@@ -45,7 +45,7 @@ SnippetPtr TextureBuffer::getVertexShaderGLSL()
     return std::make_shared<ShaderSnippet>(
         R".(
             //TextureBuffer fields
-            attribute vec2 texcoord;
+            in vec2 texcoord;
             out vec2 UV;
         ).",
         R".(

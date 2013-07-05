@@ -21,5 +21,10 @@ void mouseDragCallback(int x, int y);
 
 void initializeGlutWindow(int width, int height, const std::string& windowTitle);
 
+void createGlContext();
+
+void assertSystemRequirements();
+
+void assignCallbacks();
 
 #endif
