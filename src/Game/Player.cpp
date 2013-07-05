@@ -33,15 +33,15 @@ void Player::onKeyPress(unsigned char key)
             break;
 
         case 'w':
-            camera->translateZ(-TRANSLATION_SPEED);
+            camera->translateZ(TRANSLATION_SPEED);
             break;
 
         case 's':
-            camera->translateZ(TRANSLATION_SPEED);
+            camera->translateZ(-TRANSLATION_SPEED);
             break;
     }
 
-    scene_->getLights()[0]->setPosition(scene_->getCamera()->getPosition());
+    //scene_->getLights()[0]->setPosition(scene_->getCamera()->getPosition());
 
     //std::cout << camera->toString() << std::endl;
 }

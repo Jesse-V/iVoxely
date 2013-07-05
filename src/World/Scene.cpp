@@ -2,6 +2,7 @@
 #include "Scene.hpp"
 #include "Modeling/Shading/ShaderManager.hpp"
 #include "Modeling/DataBuffers/NormalBuffer.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include <algorithm>
 #include <sstream>
 #include <iostream>
@@ -23,9 +24,6 @@ void Scene::addModel(const std::shared_ptr<Model>& model)
 
 void Scene::addLight(const std::shared_ptr<Light>& light)
 {
-    if (lights_.size() > 0)
-        throw std::runtime_error("Multiple lights not supported at this time. See issue #9");
-
     assertModelsContainNormalBuffers();
     lights_.push_back(light);
     std::cout << "Successfully added a Light to the Scene" << std::endl;
@@ -53,8 +51,14 @@ void Scene::render()
     for_each (models_.begin(), models_.end(),
         [&](std::shared_ptr<Model>& model)
         {
-            if (!model->hasBeenInitialized())
-                model->initializeAndStore(ShaderManager::createProgram(model, getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_));
+            if (!model->isStoredOnGPU())
+            {
+                auto program = model->getProgram();
+                if (!program)
+                    program = ShaderManager::createProgram(model,
+                            getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_);
+                model->saveAs(program);
+            }
 
             GLuint handle = model->getProgram()->getHandle();
             glUseProgram(handle);
@@ -100,14 +104,10 @@ glm::vec3 Scene::getAmbientLight()
 void Scene::syncLights(GLuint handle)
 {
     GLint ambientLightUniform = glGetUniformLocation(handle, "ambientLight");
-    glUniform3f(ambientLightUniform, ambientLight_.x, ambientLight_.y, ambientLight_.z);
+    glUniform3fv(ambientLightUniform, 1, glm::value_ptr(ambientLight_));
 
-    for_each (lights_.begin(), lights_.end(),
-        [&](const std::shared_ptr<Light>& light)
-        {
-            light->sync(handle);
-        }
-    );
+    for (std::size_t j = 0; j < lights_.size(); j++)
+        lights_[j]->sync(handle, j);
 }
 
 
@@ -121,7 +121,6 @@ SnippetPtr Scene::getVertexShaderGLSL()
             //Scene fields
             attribute vec3 vertex; //position of the vertex
             uniform mat4 viewMatrix, projMatrix; //Camera view and projection matrices
-            uniform mat3 NormalMatrix;
             uniform mat4 modelMatrix; //matrix transforming model mesh into world space
 
             varying vec3 pos_world;
@@ -157,7 +156,8 @@ SnippetPtr Scene::getFragmentShaderGLSL()
             //Scene fields
             uniform vec3 ambientLight;
             varying vec3 pos_world;
-            varying vec3 eyedirection_camera;
+            uniform mat4 viewMatrix, projMatrix; //Camera view and projection matrices
+            uniform mat4 modelMatrix; //matrix transforming model mesh into world space
 
             struct ColorInfluences
             {

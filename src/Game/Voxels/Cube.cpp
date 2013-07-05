@@ -105,16 +105,16 @@ ProgramPtr Cube::getProgram()
 
 
 
-void Cube::initializeAndStore(const ProgramPtr& program)
+void Cube::saveAs(const ProgramPtr& program)
 {
     auto value = programCache_.find(cubeType); //look for it in cache
 
     //use and store it if it isn't in the cache
     if (value == programCache_.end())
     {
-        Model::initializeAndStore(program);
+        Model::saveAs(program);
         programCache_[cubeType] = program;
     }
 
-    beenInitialized_ = true;
+    isStoredOnGPU_ = true;
 }

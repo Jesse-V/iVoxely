@@ -25,7 +25,7 @@ class Light : public ShaderUtilizer
         float getPower() const;
         bool isEmitting() const;
 
-        void sync(GLuint handle);
+        void sync(GLuint handle, std::size_t lightID);
 
         virtual SnippetPtr getVertexShaderGLSL();
         virtual SnippetPtr getFragmentShaderGLSL();
@@ -34,6 +34,8 @@ class Light : public ShaderUtilizer
         glm::vec3 position_, color_;
         float power_;
         bool emitting_;
+
+        static std::size_t nLights_;
 };
 
 typedef std::vector<std::shared_ptr<Light>> LightList;

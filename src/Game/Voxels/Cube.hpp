@@ -37,7 +37,7 @@ class Cube : public Model
         std::shared_ptr<TextureBuffer> getTextureBuffer();
 
         virtual ProgramPtr getProgram();
-        virtual void initializeAndStore(const ProgramPtr& program);
+        virtual void saveAs(const ProgramPtr& program);
 
         static std::shared_ptr<Mesh> getMesh();
         static std::shared_ptr<NormalBuffer> getNormalBuffer();

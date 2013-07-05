@@ -12,9 +12,6 @@ ProgramPtr ShaderManager::createProgram(
     const SnippetPtr& sceneFragmentShader, const LightList& lights
 )
 {
-    if (model->getProgram()) //if the model already has it, then use it!
-        return model->getProgram();
-
     std::cout << "Creating vertex and fragment shaders for Model"
         << " with " << lights.size() << " light(s)... ";
 
@@ -65,10 +62,11 @@ std::string ShaderManager::assembleFragmentShaderStr(
                 colorInfluences.textureColor = vec3(1);
 
             if (colorInfluences.lightBlend == vec3(-1))
-                colorInfluences.textureColor = vec3(1);
+                colorInfluences.lightBlend = vec3(1);
 
             gl_FragColor = vec4(
-                colorInfluences.textureColor * colorInfluences.lightBlend, 1);
+                colorInfluences.textureColor * colorInfluences.lightBlend, 1
+            );
         )."
     );
 }
@@ -91,13 +89,8 @@ std::vector<SnippetPtr> ShaderManager::assembleVertexSnippets(
         }
     );
 
-
-    for_each (lights.begin(), lights.end(),
-        [&](const std::shared_ptr<Light>& light)
-        {
-            vertexSnippets.push_back(light->getVertexShaderGLSL());
-        }
-    );
+    if (lights.size() > 0) //only need one instance of light code
+        vertexSnippets.push_back(lights[0]->getVertexShaderGLSL());
 
     return vertexSnippets;
 }
@@ -120,12 +113,8 @@ std::vector<SnippetPtr> ShaderManager::assembleFragmentSnippets(
         }
     );
 
-    for_each (lights.begin(), lights.end(),
-        [&](const std::shared_ptr<Light>& light)
-        {
-            fragmentSnippets.push_back(light->getFragmentShaderGLSL());
-        }
-    );
+    if (lights.size() > 0) //only need one instance of light code
+        fragmentSnippets.push_back(lights[0]->getFragmentShaderGLSL());
 
     return fragmentSnippets;
 }

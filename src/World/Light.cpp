@@ -1,12 +1,18 @@
 
 #include "Light.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include <sstream>
 #include <stdexcept>
+
+
+std::size_t Light::nLights_ = 0;
 
 
 Light::Light(const glm::vec3& position, const glm::vec3& color, float power):
     position_(position), color_(color), power_(power), emitting_(true)
-{}
+{
+    nLights_++;
+}
 
 
 
@@ -65,21 +71,25 @@ void Light::setEmitting(bool emitting)
     emitting_ = emitting;
 }
 
+#include <iostream>
 
-
-void Light::sync(GLuint handle)
+void Light::sync(GLuint handle, std::size_t lightID)
 {
-    GLint lightPosUniform = glGetUniformLocation(handle, "lights[0].position");
-    glUniform3fv(lightPosUniform, 1, glm::value_ptr(getPosition()));
+    auto lightRef = "lights[" + std::to_string(lightID) + "]";
 
-    GLint lightColorUniform = glGetUniformLocation(handle, "lights[0].color");
-    glUniform3fv(lightColorUniform, 1, glm::value_ptr(getColor()));
+    GLint posLoc = glGetUniformLocation(handle, (lightRef + ".position").c_str());
+    glUniform3fv(posLoc, 1, glm::value_ptr(getPosition()));
 
-    GLint lightPowUniform = glGetUniformLocation(handle, "lights[0].power");
+    GLint colorLoc = glGetUniformLocation(handle, (lightRef + ".color").c_str());
+    glUniform3fv(colorLoc, 1, glm::value_ptr(getColor()));
+
+    GLint powerLoc = glGetUniformLocation(handle, (lightRef + ".power").c_str());
     float power_ = isEmitting() ? getPower() : 0;
-    glUniform1f(lightPowUniform, power_);
+    glUniform1f(powerLoc, power_);
 
-    if (lightPosUniform < 0 || lightColorUniform < 0 || lightPowUniform < 0)
+    //std::cout << handle << " " << lightID << " " << posLoc << " " << colorLoc << " " << powerLoc << std::endl;
+
+    if (posLoc < 0 || colorLoc < 0 || powerLoc < 0)
         throw std::runtime_error("Unable to find Light uniform variables!");
 }
 
@@ -112,8 +122,8 @@ SnippetPtr Light::getFragmentShaderGLSL()
     //http://gamedev.stackexchange.com/questions/53822/variable-number-of-lights-in-a-glsl-shader
     //http://stackoverflow.com/questions/8202173/setting-the-values-of-a-struct-array-from-js-to-glsl
 
-    return std::make_shared<ShaderSnippet>(
-        R".(
+    std::stringstream fieldStrStream("");
+    fieldStrStream << R".(
             //Light fields
             // http://stackoverflow.com/questions/8202173/setting-the-values-of-a-struct-array-from-js-to-glsl
 
@@ -123,19 +133,24 @@ SnippetPtr Light::getFragmentShaderGLSL()
                 float power;
             };
 
-            uniform Light lights[1];
+            uniform Light lights[)." << nLights_ << R".(];
             in vec4 fragmentPosition;
-        ).",
+        ).";
+
+    return std::make_shared<ShaderSnippet>(
+        fieldStrStream.str(),
         R".(
             //Light methods
         ).",
         R".(
             //Light main method code
             colorInfluences.lightBlend = vec3(0); //see Scene::getFragmentShaderGLSL()
+            vec3 temp1 = vec3(1), temp2 = vec3(1);
 
             for (int j = 0; j < lights.length(); j++)
             {
-                float distance = length(fragmentPosition.xyz - lights[j].position);
+                vec4 pos = vec4(lights[j].position, 1);
+                float distance = length(fragmentPosition.xyz - pos.xyz);
                 float scaledDistance = distance * lights[j].power;
                 colorInfluences.lightBlend += lights[j].color * (1 - scaledDistance);
             }

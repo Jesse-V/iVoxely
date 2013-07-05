@@ -19,7 +19,7 @@ class Model
         Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs,
                 GLenum renderMode);
 
-        virtual void initializeAndStore(const ProgramPtr& program);
+        virtual void saveAs(const ProgramPtr& program);
         void setVisible(bool visible);
         void setModelMatrix(const glm::mat4& matrix); // model -> world coords
         void setRenderMode(GLenum newMode);
@@ -27,7 +27,7 @@ class Model
 
         virtual ProgramPtr getProgram();
         BufferList getOptionalDataBuffers();
-        bool hasBeenInitialized();
+        bool isStoredOnGPU();
 
     private:
         void enableDataBuffers();
@@ -38,7 +38,7 @@ class Model
         BufferList optionalDBs_;
         ProgramPtr renderingProgram_;
         glm::mat4 modelMatrix_;
-        bool isVisible_, beenInitialized_;
+        bool isVisible_, isStoredOnGPU_;
         GLenum renderMode_;
 };
 

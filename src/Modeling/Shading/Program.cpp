@@ -1,5 +1,6 @@
 
 #include "Program.hpp"
+#include <sstream>
 #include <iostream>
 
 
@@ -30,18 +31,30 @@ std::shared_ptr<cs5400::Program> cs5400::makeProgram(
     const std::shared_ptr<FragmentShader>& fragment
 )
 {
-    GLint link_ok = GL_FALSE;
     auto program = std::make_shared<Program>(vertex, fragment);
 
     glAttachShader(program->getHandle(), vertex->getHandle());
     glAttachShader(program->getHandle(), fragment->getHandle());
     glLinkProgram (program->getHandle());
+
+    GLint link_ok = GL_FALSE;
     glGetProgramiv(program->getHandle(), GL_LINK_STATUS, &link_ok);
 
+    GLchar buf[8192];
+    glGetProgramInfoLog(program->getHandle(), sizeof(buf), NULL, buf);
+
     if (link_ok)
-        std::cout << "Successfully linked shader program" << std::endl;
+    {
+        std::cout << "Attached and linked shaders. Program Info Log: " <<
+            std::endl << std::endl << buf << std::endl;
+    }
     else
-        throw std::runtime_error("Could not link shader program.");
+    {
+        std::stringstream stream("");
+        stream << "Could not link shader program \n" << buf;
+        throw std::runtime_error(stream.str());
+    }
+
 
     return program;
 }

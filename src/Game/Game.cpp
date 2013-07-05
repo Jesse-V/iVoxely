@@ -53,7 +53,7 @@ void Game::addCubes()
 
     //Chunk::generateCubes(scene_, 0, 0);
 
-    const int N = 8;
+    const int N = 10;
     for (int x = 0; x < N; x++)
     {
         for (int y = 0; y < N; y++)
@@ -76,13 +76,21 @@ void Game::addLight()
 {
     scene_->setAmbientLight(glm::vec3(0.75, 0.75, 0.75));
 
-    auto light = std::make_shared<Light>(
+    auto light1 = std::make_shared<Light>(
+        glm::vec3(-0.6769f, -0.644629f, 0.147081f), //position
+        glm::vec3(1),                       //white light
+        1.0f                                //power
+    );
+
+    scene_->addLight(light1);
+
+    auto light2 = std::make_shared<Light>(
         scene_->getCamera()->getPosition(), //position
         glm::vec3(1),                       //white light
         1.0f                                //power
     );
 
-    scene_->addLight(light);
+    scene_->addLight(light2);
 }
 
 
