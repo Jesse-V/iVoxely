@@ -54,7 +54,7 @@ namespace
             throw std::runtime_error(stream.str());
         }
         else
-            std::cout << "done" << std::endl;
+            std::cout << "done." << std::endl;
     }
 }
 

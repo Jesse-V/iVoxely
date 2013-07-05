@@ -151,7 +151,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWA(
         normals.push_back(glm::normalize(normal));
     }
 
-    std::cout << "done" << std::endl;
+    std::cout << "done." << std::endl;
     return normals;
 }
 
@@ -202,7 +202,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWASER(
         normals.push_back(glm::normalize(normal));
     }
 
-    std::cout << "done" << std::endl;
+    std::cout << "done." << std::endl;
     return normals;
 }
 
@@ -236,7 +236,7 @@ std::vector<glm::vec3> NormalBuffer::calcNormalsMWE(
         normals.push_back(glm::normalize(normal));
     }
 
-    std::cout << "done" << std::endl;
+    std::cout << "done." << std::endl;
     return normals;
 }
 

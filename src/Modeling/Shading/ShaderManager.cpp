@@ -21,7 +21,7 @@ ProgramPtr ShaderManager::createProgram(
     auto fragmentShaderStr = assembleFragmentShaderStr(buffers,
                                               sceneFragmentShader, lights);
 
-    std::cout << "done" << std::endl;
+    std::cout << "done." << std::endl;
     return cs5400::makeProgram(
         cs5400::makeVertexShaderStr(vertexShaderStr),
         cs5400::makeFragmentShaderStr(fragmentShaderStr)

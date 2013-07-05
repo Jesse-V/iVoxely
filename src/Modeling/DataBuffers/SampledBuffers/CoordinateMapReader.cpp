@@ -21,6 +21,6 @@ std::vector<GLfloat> CoordinateMapReader::getMap(const std::string& fileName)
         mapStream >> temp;
     }
 
-    std::cout << "done (read " << map.size() << " floats)" << std::endl;
+    std::cout << "done (read " << map.size() << " floats)." << std::endl;
     return map;
 }

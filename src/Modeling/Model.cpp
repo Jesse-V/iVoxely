@@ -56,7 +56,7 @@ void Model::saveAs(const ProgramPtr& program)
             buffer->store();
         });
 
-    std::cout << "done" << std::endl;
+    std::cout << "done." << std::endl;
     isStoredOnGPU_ = true;
 }
 

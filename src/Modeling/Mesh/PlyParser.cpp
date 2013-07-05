@@ -37,7 +37,7 @@ std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
     t1.join(); //wait for both threads to complete
     t2.join();
 
-    std::cout << "done" << std::endl;
+    std::cout << "done." << std::endl;
 
     auto vBuffer = std::make_shared<VertexBuffer>(vertices);
     auto iBuffer = std::make_shared<IndexBuffer>(triangles);

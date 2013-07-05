@@ -187,9 +187,16 @@ void assertSystemRequirements()
     std::stringstream stream("");
     stream << glGetString(GL_SHADING_LANGUAGE_VERSION);
 
-    auto versionStr = stream.str();
-    auto delimiter = versionStr.find(" ");
-    std::cout << "*" << versionStr.substr(0, delimiter) << "*" << std::endl;
+    float version;
+    stream >> version;
+
+    const float MIN_GLSL = 1.30f;
+
+    if (version < MIN_GLSL)
+        throw std::runtime_error("Your driver/GPU does not support OpenGL 3.0");
+    else
+        std::cout << "GLSL v" << MIN_GLSL << " required, have " << version <<
+            ", so passed system requirements." << std::endl;
 }
 
 
@@ -221,7 +228,7 @@ int main(int argc, char **argv)
         assertSystemRequirements();
         assignCallbacks();
 
-        std::cout << "Finished Glut and window initialization" << std::endl;
+        std::cout << "Finished Glut and window initialization." << std::endl;
 
         Game::getInstance(); //calls Game's constructor, sets up everything...
         glutMainLoop();

@@ -67,7 +67,7 @@ void Game::addCubes()
     }
 
     std::cout << "... done adding cubes. Scene now has " <<
-        scene_->getModels().size() << " Models" << std::endl;
+        scene_->getModels().size() << " Models." << std::endl;
 }
 
 
@@ -191,7 +191,7 @@ Game& Game::getInstance()
             glutGet(GLUT_SCREEN_WIDTH),
             glutGet(GLUT_SCREEN_HEIGHT)
         );
-        std::cout << "... finished creating Game" << std::endl;
+        std::cout << "... finished creating Game." << std::endl;
     }
     catch (std::exception& e)
     {

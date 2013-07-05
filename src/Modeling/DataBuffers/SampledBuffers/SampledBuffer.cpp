@@ -100,7 +100,7 @@ void SampledBuffer::loadBMP(const std::string& imagePath)
     fclose(file);
 
     isValid_ = true;
-    std::cout << "done" << std::endl;
+    std::cout << "done." << std::endl;
 }
 
 
