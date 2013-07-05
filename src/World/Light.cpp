@@ -51,9 +51,9 @@ float Light::getPower() const
 
 
 
-void Light::setPower(float power_)
+void Light::setPower(float power)
 {
-    this->power_ = power_;
+    power_ = power;
 }
 
 
@@ -84,8 +84,8 @@ void Light::sync(GLuint handle, std::size_t lightID)
     glUniform3fv(colorLoc, 1, glm::value_ptr(getColor()));
 
     GLint powerLoc = glGetUniformLocation(handle, (lightRef + ".power").c_str());
-    float power_ = isEmitting() ? getPower() : 0;
-    glUniform1f(powerLoc, power_);
+    float power = isEmitting() ? getPower() : 0;
+    glUniform1f(powerLoc, power);
 
     //std::cout << handle << " " << lightID << " " << posLoc << " " << colorLoc << " " << powerLoc << std::endl;
 

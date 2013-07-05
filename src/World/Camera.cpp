@@ -148,15 +148,16 @@ void Camera::roll(float theta)
 
 // Sets the perspective of the camera
 void Camera::setPerspective(
-    float fieldOfView_Degrees, float aspectRatio_,
-    float nearclipdistance, float farclipdistance
+    float fieldOfViewDegrees, float aspectRatio,
+    float nearClipDistance, float farClipDistance
 )
 {
-    this->fieldOfView_   = fieldOfView_Degrees;
-    this->aspectRatio_   = aspectRatio_;
-    this->nearFieldClip_ = nearclipdistance;
-    this->farFieldClip_  = farclipdistance;
-    this->projection_ = glm::perspective(fieldOfView_, aspectRatio_, nearFieldClip_, farFieldClip_);
+    fieldOfView_   = fieldOfViewDegrees;
+    aspectRatio_   = aspectRatio;
+    nearFieldClip_ = nearClipDistance;
+    farFieldClip_  = farClipDistance;
+    projection_ = glm::perspective(fieldOfView_, aspectRatio_,
+                                   nearFieldClip_, farFieldClip_);
 }
 
 

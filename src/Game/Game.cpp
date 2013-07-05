@@ -60,7 +60,7 @@ void Game::addCubes()
         {
             for (int z = 0; z < N; z++)
             {
-                auto cube = std::make_shared<Cube>(Cube::CubeType::DIRT, x, y, z);
+                auto cube = std::make_shared<Cube>(Cube::Type::DIRT, x, y, z);
                 scene_->addModel(cube);
             }
         }

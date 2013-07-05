@@ -9,11 +9,11 @@
 
 std::shared_ptr<Mesh> Cube::mesh_;
 std::shared_ptr<NormalBuffer> Cube::normalBuffer_;
-std::unordered_map<Cube::CubeType, ProgramPtr, Cube::CubeTypeHash> Cube::programCache_;
+std::unordered_map<Cube::Type, ProgramPtr, Cube::CubeTypeHash> Cube::programCache_;
 
 
-Cube::Cube(CubeType cubeType, int x, int y, int z) :
-    Model(Cube::getMesh(), Cube::assembleDataBuffers(cubeType))
+Cube::Cube(Type type, int x, int y, int z) :
+    Model(Cube::getMesh(), Cube::assembleDataBuffers(type))
 {
     modelMatrix_ = glm::mat4();
     modelMatrix_ = glm::scale(modelMatrix_, glm::vec3(1 / 8.0f));
@@ -22,7 +22,7 @@ Cube::Cube(CubeType cubeType, int x, int y, int z) :
 
 
 
-BufferList Cube::assembleDataBuffers(CubeType cubeType)
+BufferList Cube::assembleDataBuffers(Type type)
 {
     BufferList buffers = { getNormalBuffer(), getTextureBuffer() };
     return buffers;
@@ -65,30 +65,30 @@ std::vector<GLfloat> Cube::getCoordinateMap()
 
 
 
-std::string Cube::getTexturePath(CubeType cubeType)
+std::string Cube::getTexturePath(Type type)
 {
     //I'd like to use a switch case, but I was unable to find a way that compiles
-    if (cubeType == CubeType::DIRT)
+    if (type == Type::DIRT)
         return "Resources/Textures/test_texture.bmp";
 
-    throw std::runtime_error("Unknown texture path for cube CubeType!");
+    throw std::runtime_error("Unknown texture path for cube type!");
 }
 
 
 
 std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
 {
-    static std::unordered_map<CubeType, std::shared_ptr<TextureBuffer>, CubeTypeHash> textureCache;
+    static std::unordered_map<Type, std::shared_ptr<TextureBuffer>, CubeTypeHash> textureCache;
 
-    auto value = textureCache.find(cubeType);
+    auto value = textureCache.find(type_);
     if (value != textureCache.end())
         return value->second; //if cached, return it
 
     //if not cached, make it, and then cache it
     auto textureBuffer = std::make_shared<TextureBuffer>(
-        getTexturePath(cubeType), getCoordinateMap()
+        getTexturePath(type_), getCoordinateMap()
     );
-    textureCache[cubeType] = textureBuffer;
+    textureCache[type_] = textureBuffer;
     return textureBuffer;
 }
 
@@ -96,7 +96,7 @@ std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
 
 ProgramPtr Cube::getProgram()
 {
-    auto value = programCache_.find(cubeType);
+    auto value = programCache_.find(type_);
     if (value != programCache_.end())
         return value->second; //if it's cached, return it
 
@@ -107,13 +107,13 @@ ProgramPtr Cube::getProgram()
 
 void Cube::saveAs(const ProgramPtr& program)
 {
-    auto value = programCache_.find(cubeType); //look for it in cache
+    auto value = programCache_.find(type_); //look for it in cache
 
     //use and store it if it isn't in the cache
     if (value == programCache_.end())
     {
         Model::saveAs(program);
-        programCache_[cubeType] = program;
+        programCache_[type_] = program;
     }
 
     isStoredOnGPU_ = true;

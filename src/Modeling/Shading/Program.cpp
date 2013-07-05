@@ -5,9 +5,9 @@
 
 
 cs5400::Program::Program(
-    const std::shared_ptr<VertexShader>& vertex_,
-    const std::shared_ptr<FragmentShader>& fragment_):
-    handle_(glCreateProgram()), vertex_(vertex_), fragment_(fragment_)
+    const std::shared_ptr<VertexShader>& vertex,
+    const std::shared_ptr<FragmentShader>& fragment):
+    handle_(glCreateProgram()), vertex_(vertex), fragment_(fragment)
 {}
 
 

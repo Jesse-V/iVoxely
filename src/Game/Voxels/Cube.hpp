@@ -18,22 +18,22 @@ class Cube : public Model
     //I think a Cube should be a Model instead of it having a Model
 
     public: //structs
-        enum class CubeType : unsigned short
+        enum class Type : unsigned short
         {
             DIRT
         };
 
         struct CubeTypeHash
         {
-            std::size_t operator()(const CubeType& myEnum) const
+            std::size_t operator()(const Type& myEnum) const
             {
                 return static_cast<std::size_t>(myEnum);
             }
         };
 
     public: //methods
-        Cube(CubeType cubeType, int x, int y, int z);
-        std::string getTexturePath(CubeType CubeType);
+        Cube(Type cubeType, int x, int y, int z);
+        std::string getTexturePath(Type type);
         std::shared_ptr<TextureBuffer> getTextureBuffer();
 
         virtual ProgramPtr getProgram();
@@ -44,14 +44,14 @@ class Cube : public Model
         static std::vector<GLfloat> getCoordinateMap();
 
     private: //methods
-        BufferList assembleDataBuffers(CubeType CubeType);
+        BufferList assembleDataBuffers(Type type);
 
     private: //data
-        CubeType cubeType; //identifies the cube
+        Type type_; //identifies the cube
 
         static std::shared_ptr<Mesh> mesh_;
         static std::shared_ptr<NormalBuffer> normalBuffer_;
-        static std::unordered_map<CubeType, ProgramPtr, CubeTypeHash> programCache_;
+        static std::unordered_map<Type, ProgramPtr, CubeTypeHash> programCache_;
 };
 
 #endif
