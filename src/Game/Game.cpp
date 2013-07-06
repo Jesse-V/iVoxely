@@ -53,12 +53,14 @@ void Game::addCubes()
 
     //Chunk::generateCubes(scene_, 0, 0);
 
-    const int N = 10;
-    for (int x = 0; x < N; x++)
+    const int MIN = -5;
+    const int MAX = 5;
+
+    for (int x = MIN; x < MAX; x++)
     {
-        for (int y = 0; y < N; y++)
+        for (int y = MIN; y < MAX; y++)
         {
-            for (int z = 0; z < N; z++)
+            for (int z = 0; z < 1; z++)
             {
                 auto cube = std::make_shared<Cube>(Cube::Type::DIRT, x, y, z);
                 scene_->addModel(cube);
@@ -77,8 +79,8 @@ void Game::addLight()
     scene_->setAmbientLight(glm::vec3(0.75, 0.75, 0.75));
 
     auto light1 = std::make_shared<Light>(
-        glm::vec3(-0.6769f, -0.644629f, 0.147081f), //position
-        glm::vec3(1),                       //white light
+        glm::vec3(0), //position
+        glm::vec3(0, 0, 1),                       //green
         1.0f                                //power
     );
 
@@ -86,7 +88,7 @@ void Game::addLight()
 
     auto light2 = std::make_shared<Light>(
         scene_->getCamera()->getPosition(), //position
-        glm::vec3(1),                       //white light
+        glm::vec3(1, 0, 0),                 //red
         1.0f                                //power
     );
 
@@ -98,12 +100,15 @@ void Game::addLight()
 std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 {
     auto camera = std::make_shared<Camera>();
-    camera->lookAt(
-        glm::vec3(4.01231f, 1.39741f, 3.46247f),
-        glm::vec3(0.655955f, -0.514381f, 0.552359f)
-    );
-    camera->setPosition(glm::vec3(-0.6769f, -0.604629f, -0.612919f));
     camera->setAspectRatio(screenWidth / (float)screenHeight);
+    camera->setPosition(glm::vec3(0, 2, 0.5f));
+
+    camera->lookAt(
+        glm::vec3(0, 0, 0.5f),
+        glm::vec3(0, 0, 1)
+    );
+
+
 
     return camera;
 }

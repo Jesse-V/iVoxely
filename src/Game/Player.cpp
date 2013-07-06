@@ -24,20 +24,20 @@ void Player::onKeyPress(unsigned char key)
             camera->translateX(TRANSLATION_SPEED);
             break;
 
-        case 'q':
+        case 's':
             camera->translateY(-TRANSLATION_SPEED);
             break;
 
-        case 'e':
+        case 'w':
             camera->translateY(TRANSLATION_SPEED);
             break;
 
-        case 'w':
-            camera->translateZ(TRANSLATION_SPEED);
+        case 'q':
+            camera->translateZ(-TRANSLATION_SPEED);
             break;
 
-        case 's':
-            camera->translateZ(-TRANSLATION_SPEED);
+        case 'e':
+            camera->translateZ(TRANSLATION_SPEED);
             break;
     }
 
