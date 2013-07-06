@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 2.6)
 project(ivoxely)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS  "-g -O3 --std=c++0x -Weverything -Wno-documentation -Wno-c++98-compat-pedantic -Wno-shadow -Wno-cast-align -Wno-padded -Wno-weak-vtables -Wno-non-virtual-dtor -Wno-unknown-pragmas -Wno-unused-parameter -Wno-deprecated-register -Werror")
+    set(CMAKE_CXX_FLAGS  "-g -O3 --std=c++0x -Weverything -Wno-documentation -Wno-c++98-compat-pedantic -Wno-shadow -Wno-cast-align -Wno-padded -Wno-weak-vtables -Wno-non-virtual-dtor -Wno-unknown-pragmas -Wno-unused-parameter -Wno-deprecated-register -Werror -L/usr/local/lib -lpng")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS  "-g -O3 --std=c++0x -Wall -Wextra -Wdouble-promotion -Wfloat-equal -Wunsafe-loop-optimizations -Wno-unused-parameter")
+	set(CMAKE_CXX_FLAGS  "-g -O3 --std=c++0x -Wall -Wextra -Wdouble-promotion -Wfloat-equal -Wunsafe-loop-optimizations -Wno-unused-parameter -L/usr/local/lib -lpng")
 endif()
 
 include_directories(. glm)
