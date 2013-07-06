@@ -12,7 +12,7 @@ Freeglut are used to create the window. GLEW helps load OpenGL, which powers the
 
 ### Installation
 
-Currently the only way to install iVoxely is to compile it. Luckily, this is pretty easy, especially in Linux. The main trick it to ensure that the necessary components are installed beforehand, otherwise there will be errors during the compilation process. Thankfully, installing these libraries is very straightforward with the following command:
+Currently the only way to install iVoxely is to compile it. Luckily, this is pretty easy, especially in Linux. The main trick is to ensure that the necessary components are installed beforehand, otherwise there will be errors during the compilation process. Thankfully, installing these libraries is very straightforward with the following command:
 
 **sudo apt-get install libglew-dev freeglut3-dev libglm-dev libpng++-dev cmake build-essential**
 
@@ -40,4 +40,4 @@ Wherever reasonably possible, the programming style strives to follow http://geo
 
 ### Origin
 
-This project is based on the framework developed in the [CS5400 Final Project repo](https://github.com/Jesse-V/CS5400_Final_Project repo) from which [https://github.com/Jesse-V/OpenGL_Texture_Mapping](my OpenGL Texture Mapping project) was based.
+This project is based on the framework developed in the [CS5400 Final Project repo](https://github.com/Jesse-V/CS5400_Final_Project) from which [https://github.com/Jesse-V/OpenGL_Texture_Mapping](my OpenGL Texture Mapping project) was based.
