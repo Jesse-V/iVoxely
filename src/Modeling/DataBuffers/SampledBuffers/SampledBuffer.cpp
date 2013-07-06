@@ -1,5 +1,7 @@
 
 #include "SampledBuffer.hpp"
+#include <png++/image.hpp>
+#include <png++/rgb_pixel.hpp>
 #include <stdexcept>
 #include <iostream>
 
@@ -9,7 +11,11 @@ SampledBuffer::SampledBuffer(
     const std::vector<GLfloat>& coordinateMap):
     coordinateMap_(coordinateMap)
 {
-    loadBMP(imagePath);
+  // Attempt to load image as PNG first, failing this, attempt to load BMP.
+    if (! loadPNG(imagePath))
+    {
+      loadBMP(imagePath);
+    }
 }
 
 
@@ -65,7 +71,7 @@ void SampledBuffer::storeCoordMap()
 
 
 
-void SampledBuffer::loadBMP(const std::string& imagePath)
+bool SampledBuffer::loadBMP(const std::string& imagePath)
 {
     std::cout << "Loading image file from " << imagePath << "... ";
     unsigned char header[54];
@@ -100,7 +106,37 @@ void SampledBuffer::loadBMP(const std::string& imagePath)
     fclose(file);
 
     isValid_ = true;
-    std::cout << "done." << std::endl;
+
+    return isValid_;
+}
+
+
+
+bool SampledBuffer::loadPNG(const std::string& imagePath)
+{
+    png::image<png::rgb_pixel> image (imagePath);
+
+    auto pixbuf = image.get_pixbuf();
+
+    imgWidth_ = image.get_width();
+    imgHeight_ = image.get_height();
+
+    int imageSize = imgWidth_ * imgHeight_ * 3;
+
+    data_ = new unsigned char[imageSize];
+
+    for (int i = 0 ; i < imageSize ; i+=3)
+    {
+        auto pix = pixbuf.get_pixel((i/3)%imgWidth_, (i/3)/imgWidth_);
+
+        data_[i] = pix.blue;
+        data_[i+1] = pix.green;
+        data_[i+2] = pix.red;
+    }
+
+    isValid_ = true;
+
+    return isValid_;
 }
 
 

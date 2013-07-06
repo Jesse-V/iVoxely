@@ -69,7 +69,7 @@ std::string Cube::getTexturePath(Type type)
 {
     //I'd like to use a switch case, but I was unable to find a way that compiles
     if (type == Type::DIRT)
-        return "Resources/Textures/dirt.bmp";
+        return "Resources/Textures/astley.png";
 
     throw std::runtime_error("Unknown texture path for cube type!");
 }
