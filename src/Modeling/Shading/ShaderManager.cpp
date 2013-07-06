@@ -57,14 +57,14 @@ std::string ShaderManager::assembleFragmentShaderStr(
         assembleFields(fragmentSnippets),
         assembleMethods(fragmentSnippets),
         assembleMainBodyCode(fragmentSnippets) + R".(
-            //final main body code for fragment shader from ShaderManager
+            //final fragment shader main body code from ShaderManager
             if (colors.textureColor == vec3(-1))
                 colors.textureColor = vec3(1);
 
             if (colors.lightBlend == vec3(-1))
-                colors.lightBlend = vec3(1);
+                colors.lightBlend = vec3(0);
 
-            vec3 color = colors.textureColor * colors.lightBlend;
+            vec3 color = colors.textureColor * (ambientLight + colors.lightBlend);
 
             #if __VERSION__ >= 130
                 fragmentColor = vec4(color, 1);

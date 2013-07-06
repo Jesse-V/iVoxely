@@ -40,6 +40,7 @@ void TextureBuffer::disable()
 
 
 
+//todo: some of this code belongs to SampledBuffer, base class's method could be called
 SnippetPtr TextureBuffer::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>(
@@ -73,7 +74,7 @@ SnippetPtr TextureBuffer::getFragmentShaderGLSL()
         ).",
         R".(
             //TextureBuffer main method code
-            vec3 textureColor = texture(textureSampler, UV).rgb;
+            colors.textureColor = texture(textureSampler, UV).rgb;
         )."
     );
 }

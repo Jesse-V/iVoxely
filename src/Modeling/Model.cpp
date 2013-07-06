@@ -44,19 +44,25 @@ void Model::saveAs(const ProgramPtr& program)
 {
     renderingProgram_ = program;
     std::cout << "Storing mesh and model data as program #" <<
-        program->getHandle() << "... ";
+        program->getHandle() << "... " << std::endl;
 
     mesh_->initialize(program->getHandle());
     mesh_->store();
+
+    std::cout << "Stored " << typeid(*mesh_).name() << ". ";
+    checkGlError();
 
     for_each (optionalDBs_.begin(), optionalDBs_.end(),
         [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
         {
             buffer->initialize(program->getHandle());
             buffer->store();
+
+            std::cout << "Stored " << typeid(*buffer).name() << ": ";
+            checkGlError();
         });
 
-    std::cout << "done." << std::endl;
+    std::cout << ".. done saving program." << std::endl;
     isStoredOnGPU_ = true;
 }
 

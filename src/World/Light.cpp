@@ -151,8 +151,9 @@ SnippetPtr Light::getFragmentShaderGLSL()
             {
                 vec4 pos = vec4(lights[j].position, 1);
                 float distance = length(fragmentPosition.xyz - pos.xyz);
-                float scaledDistance = distance * lights[j].power;
-                colors.lightBlend += lights[j].color * (1 - scaledDistance);
+                float scaledDistance = distance / lights[j].power;
+                vec3 luminosity = lights[j].color * (1 - scaledDistance);
+                colors.lightBlend += clamp(luminosity, 0, 1);
             }
         )."
     );

@@ -53,14 +53,14 @@ void Game::addCubes()
 
     //Chunk::generateCubes(scene_, 0, 0);
 
-    const int MIN = -5;
-    const int MAX = 5;
+    const int MIN = -15;
+    const int MAX = 15;
 
     for (int x = MIN; x < MAX; x++)
     {
         for (int y = MIN; y < MAX; y++)
         {
-            for (int z = 0; z < 1; z++)
+            for (int z = -2; z <= 0; z++)
             {
                 auto cube = std::make_shared<Cube>(Cube::Type::DIRT, x, y, z);
                 scene_->addModel(cube);
@@ -70,18 +70,20 @@ void Game::addCubes()
 
     std::cout << "... done adding cubes. Scene now has " <<
         scene_->getModels().size() << " Models." << std::endl;
+
+    checkGlError();
 }
 
 
 
 void Game::addLight()
 {
-    scene_->setAmbientLight(glm::vec3(0.75, 0.75, 0.75));
+    scene_->setAmbientLight(glm::vec3(1));
 
     auto light1 = std::make_shared<Light>(
-        glm::vec3(0), //position
-        glm::vec3(0, 0, 1),                       //green
-        1.0f                                //power
+        glm::vec3(0),       //position
+        glm::vec3(0, 0, 1), //green
+        2.0f                //power
     );
 
     scene_->addLight(light1);
@@ -89,10 +91,12 @@ void Game::addLight()
     auto light2 = std::make_shared<Light>(
         scene_->getCamera()->getPosition(), //position
         glm::vec3(1, 0, 0),                 //red
-        1.0f                                //power
+        2.0f                                //power
     );
 
     scene_->addLight(light2);
+
+    checkGlError();
 }
 
 
@@ -101,14 +105,12 @@ std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 {
     auto camera = std::make_shared<Camera>();
     camera->setAspectRatio(screenWidth / (float)screenHeight);
-    camera->setPosition(glm::vec3(0, 2, 0.5f));
+    camera->setPosition(glm::vec3(0, -2, 0.5f));
 
     camera->lookAt(
         glm::vec3(0, 0, 0.5f),
         glm::vec3(0, 0, 1)
     );
-
-
 
     return camera;
 }

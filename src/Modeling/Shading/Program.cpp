@@ -32,21 +32,26 @@ std::shared_ptr<cs5400::Program> cs5400::makeProgram(
 )
 {
     auto program = std::make_shared<Program>(vertex, fragment);
+    auto programHandle = program->getHandle();
 
-    glAttachShader(program->getHandle(), vertex->getHandle());
-    glAttachShader(program->getHandle(), fragment->getHandle());
-    glLinkProgram (program->getHandle());
+    glAttachShader(programHandle, vertex->getHandle());
+    glAttachShader(programHandle, fragment->getHandle());
+    glLinkProgram (programHandle);
 
     GLint link_ok = GL_FALSE;
-    glGetProgramiv(program->getHandle(), GL_LINK_STATUS, &link_ok);
+    glGetProgramiv(programHandle, GL_LINK_STATUS, &link_ok);
 
+    int bufLength = 0;
     GLchar buf[8192];
-    glGetProgramInfoLog(program->getHandle(), sizeof(buf), NULL, buf);
+    glGetProgramInfoLog(programHandle, sizeof(buf), &bufLength, buf);
+    checkGlError();
 
     if (link_ok)
     {
-        std::cout << "Attached and linked shaders. Program Info Log: " <<
-            std::endl << std::endl << buf << std::endl;
+        std::cout << "Attached and linked shaders.";
+        if (bufLength > 0)
+            std::cout << " Program Info Log: " << std::endl << std::endl << buf;
+        std::cout << std::endl;
     }
     else
     {
@@ -55,6 +60,27 @@ std::shared_ptr<cs5400::Program> cs5400::makeProgram(
         throw std::runtime_error(stream.str());
     }
 
-
     return program;
+}
+
+
+
+void checkGlError()
+{
+    std::cout << "GL status: ";
+
+    auto error = glGetError();
+    switch (error)
+    {
+        case GL_NO_ERROR :
+            std::cout << "GL_NO_ERROR" << std::endl;
+            break;
+
+        default:
+            std::cout << error << std::endl;
+
+            std::stringstream stream("");
+            stream << "GL ERROR: " << error;
+            throw std::runtime_error(stream.str());
+    }
 }

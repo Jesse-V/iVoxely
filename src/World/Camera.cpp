@@ -24,9 +24,9 @@ void Camera::reset()
     lookAt(glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 1.0, 0.0));
 
     fieldOfView_   = 45.0f; // frustrum viewing apeture
-    aspectRatio_   = 4.0f/3.0f;
-    nearFieldClip_ = 0.0001f;   // clip anything closer than this
-    farFieldClip_  = 100.0f; // clip anything farther than this
+    aspectRatio_   = 4.0f / 3.0f;
+    nearFieldClip_ = 0.005f;   // clip anything closer than this
+    farFieldClip_  = 30.0f; // clip anything farther than this
     projection_    = glm::perspective(fieldOfView_, aspectRatio_,
                                      nearFieldClip_, farFieldClip_);
 }
@@ -45,10 +45,12 @@ void Camera::sync(GLuint handle) const
     glUniformMatrix4fv(projMatrixUniform, 1, GL_FALSE,
                        glm::value_ptr(getProjectionMatrix()));
 
-    /*GLint normMatrixUniform = glGetUniformLocation(handle, "NormalMatrix");
+    /*
+    GLint normMatrixUniform = glGetUniformLocation(handle, "NormalMatrix");
     glm::mat3 normMatrix = glm::mat3(viewMatrix[0].xyz(), viewMatrix[1].xyz(), viewMatrix[2].xyz());
     glUniformMatrix3fv(normMatrixUniform, 1, GL_FALSE,
-                       glm::value_ptr(normMatrix));*/
+                       glm::value_ptr(normMatrix));
+    */
 
     if (viewMatrixUniform < 0 || projMatrixUniform < 0)
         throw std::runtime_error("Unable to find Camera uniform variables!");

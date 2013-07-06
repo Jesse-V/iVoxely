@@ -29,6 +29,8 @@ namespace cs5400
     );
 }
 
+void checkGlError();
+
 typedef std::shared_ptr<cs5400::Program> ProgramPtr;
 
 #endif
