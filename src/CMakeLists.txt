@@ -5,7 +5,7 @@ project(ivoxely)
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS  "-g -O3 --std=c++0x -Weverything -Wno-documentation -Wno-c++98-compat-pedantic -Wno-shadow -Wno-cast-align -Wno-padded -Wno-weak-vtables -Wno-non-virtual-dtor -Wno-unknown-pragmas -Wno-unused-parameter -Wno-deprecated-register -Werror -L/usr/local/lib -lpng")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	set(CMAKE_CXX_FLAGS  "-g -O3 --std=c++0x -Wall -Wextra -Wdouble-promotion -Wfloat-equal -Wunsafe-loop-optimizations -Wno-unused-parameter -L/usr/local/lib -lpng")
+	set(CMAKE_CXX_FLAGS  "-g -O3 --std=c++0x -Wall -Wextra -Wdouble-promotion -Wfloat-equal -Wunsafe-loop-optimizations -Wno-unused-parameter")
 endif()
 
 include_directories(. glm)
@@ -35,7 +35,7 @@ add_executable(ivoxely
 )
 
 IF(WIN32)
-    target_link_libraries(ivoxely glut glew32 GL)
+    target_link_libraries(ivoxely glut glew32 GL png)
 ELSE()
-    target_link_libraries(ivoxely glut GLEW GL)
+    target_link_libraries(ivoxely glut GLEW GL png)
 ENDIF()
