@@ -11,11 +11,12 @@ SampledBuffer::SampledBuffer(
     const std::vector<GLfloat>& coordinateMap):
     coordinateMap_(coordinateMap)
 {
-  // Attempt to load image as PNG first, failing this, attempt to load BMP.
-    if (! loadPNG(imagePath))
-    {
-      loadBMP(imagePath);
-    }
+    if (strHasEnding(imagePath, ".png"))
+        loadPNG(imagePath);
+    else if (strHasEnding(imagePath, ".bmp"))
+        loadBMP(imagePath);
+    else
+        throw std::runtime_error("Unrecognized file extension for " + imagePath);
 }
 
 
@@ -71,7 +72,7 @@ void SampledBuffer::storeCoordMap()
 
 
 
-bool SampledBuffer::loadBMP(const std::string& imagePath)
+void SampledBuffer::loadBMP(const std::string& imagePath)
 {
     std::cout << "Loading image file from " << imagePath << "... ";
     unsigned char header[54];
@@ -106,28 +107,26 @@ bool SampledBuffer::loadBMP(const std::string& imagePath)
     fclose(file);
 
     isValid_ = true;
-
-    return isValid_;
 }
 
 
 
-bool SampledBuffer::loadPNG(const std::string& imagePath)
+void SampledBuffer::loadPNG(const std::string& imagePath)
 {
-    png::image<png::rgb_pixel> image (imagePath);
+    png::image<png::rgb_pixel> image(imagePath);
 
     auto pixbuf = image.get_pixbuf();
 
-    imgWidth_ = image.get_width();
-    imgHeight_ = image.get_height();
+    imgWidth_ = (int)image.get_width();
+    imgHeight_ = (int)image.get_height();
 
     int imageSize = imgWidth_ * imgHeight_ * 3;
 
     data_ = new unsigned char[imageSize];
 
-    for (int i = 0 ; i < imageSize ; i+=3)
+    for (int i = 0; i < imageSize; i += 3)
     {
-        auto pix = pixbuf.get_pixel((i/3)%imgWidth_, (i/3)/imgWidth_);
+        auto pix = pixbuf.get_pixel((i / 3) % imgWidth_, (i / 3) / imgWidth_);
 
         data_[i] = pix.blue;
         data_[i+1] = pix.green;
@@ -135,8 +134,6 @@ bool SampledBuffer::loadPNG(const std::string& imagePath)
     }
 
     isValid_ = true;
-
-    return isValid_;
 }
 
 
@@ -148,4 +145,18 @@ void SampledBuffer::deleteBufferFromRAM()
         delete [] data_;
         isValid_ = false;
     }
+}
+
+
+
+bool SampledBuffer::strHasEnding(const std::string& string, const std::string& ending)
+{
+    if (string.length() >= ending.length())
+    {
+        auto value = string.compare(string.length() - ending.length(),
+                                    ending.length(), ending);
+        return 0 == value;
+    }
+    else
+        return false;
 }

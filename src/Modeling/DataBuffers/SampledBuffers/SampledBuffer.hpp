@@ -15,8 +15,8 @@ class SampledBuffer : public OptionalDataBuffer
         ~SampledBuffer();
         //default copy constructor should be fine
 
-        bool loadBMP(const std::string& imagePath);
-        bool loadPNG(const std::string& imagePath);
+        void loadBMP(const std::string& imagePath);
+        void loadPNG(const std::string& imagePath);
         void deleteBufferFromRAM();
 
         virtual void initialize(GLuint handle);
@@ -25,6 +25,8 @@ class SampledBuffer : public OptionalDataBuffer
     protected:
         void storeImage();
         void storeCoordMap();
+
+        bool strHasEnding(const std::string& strng, const std::string& ending);
 
     protected:
         int imgWidth_, imgHeight_;
