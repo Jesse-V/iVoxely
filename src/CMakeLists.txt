@@ -37,7 +37,7 @@ add_executable(ivoxely
 )
 
 IF(WIN32)
-    target_link_libraries(ivoxely glut glew32 GL)
+    target_link_libraries(ivoxely glut glew32 GL png)
 ELSE()
-    target_link_libraries(ivoxely glut GLEW GL)
+    target_link_libraries(ivoxely glut GLEW GL png)
 ENDIF()
