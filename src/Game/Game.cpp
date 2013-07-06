@@ -39,7 +39,7 @@ void Game::addGround()
     std::vector<std::shared_ptr<OptionalDataBuffer>> buffers = {
         std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWASER(mesh)),
         std::make_shared<TextureBuffer>(
-            "Resources/Textures/test_texture.bmp",
+            "Resources/Textures/astley.png",
             CoordinateMapReader::getMap("Resources/Coordinate Maps/square.coord")
         )
     };
