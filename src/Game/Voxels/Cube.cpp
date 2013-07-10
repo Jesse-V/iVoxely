@@ -24,6 +24,7 @@ Cube::Cube(Type type, int x, int y, int z) :
 
 BufferList Cube::assembleDataBuffers(Type type)
 {
+    type_ = type;
     BufferList buffers = { getNormalBuffer(), getTextureBuffer() };
     return buffers;
 }
@@ -70,6 +71,8 @@ std::string Cube::getTexturePath(Type type)
     //I'd like to use a switch case, but I was unable to find a way that compiles
     if (type == Type::DIRT)
         return "Resources/Textures/dirt.png";
+    if (type == Type::STONE)
+        return "Resources/Textures/stone.png";
 
     throw std::runtime_error("Unknown texture path for cube type!");
 }

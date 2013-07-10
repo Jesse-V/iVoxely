@@ -20,7 +20,7 @@ class Cube : public Model
     public: //structs
         enum class Type : unsigned short
         {
-            DIRT
+            DIRT, STONE
         };
 
         struct CubeTypeHash
