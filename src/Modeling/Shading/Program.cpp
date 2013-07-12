@@ -2,6 +2,7 @@
 #include "Program.hpp"
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 
 
 cs5400::Program::Program(
@@ -80,7 +81,7 @@ void checkGlError()
             std::cout << error << std::endl;
 
             std::stringstream stream("");
-            stream << "GL ERROR: " << error;
+            stream << "GL ERROR: 0x" << std::hex << error;
             throw std::runtime_error(stream.str());
     }
 }
