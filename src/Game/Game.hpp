@@ -6,6 +6,15 @@
 #include "World/Scene.hpp"
 #include <memory>
 
+/**
+    Game is a high-level class for handling larger game-play tasks.
+    It contracts the construction of the current Scene, and passes mouse and
+    keyboard inputs to the Player. It also accepts update and render methods
+    for a basic gameplay loop. It can use the update function to ask any
+    animations or actions to step forward a certain amount of milliseconds
+    (typically the last time the update function was called) and then renders
+    the current Scene onto the screen.
+**/
 class Game
 {
     public:

@@ -13,7 +13,7 @@ TextureBuffer::TextureBuffer(
 void TextureBuffer::initialize(GLuint programHandle)
 {
     SampledBuffer::initialize(programHandle);
-    attribute_texcoord_ = glGetAttribLocation(programHandle, "texcoord");
+    texCoordAttrib_ = glGetAttribLocation(programHandle, "textureCoordinate");
 }
 
 
@@ -21,21 +21,21 @@ void TextureBuffer::initialize(GLuint programHandle)
 void TextureBuffer::store()
 {
     SampledBuffer::store();
-    glVertexAttribPointer(attribute_texcoord_, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(texCoordAttrib_, 2, GL_FLOAT, GL_FALSE, 0, 0);
 }
 
 
 
 void TextureBuffer::enable()
 {
-    glEnableVertexAttribArray(attribute_texcoord_);
+    glEnableVertexAttribArray(texCoordAttrib_);
 }
 
 
 
 void TextureBuffer::disable()
 {
-    glDisableVertexAttribArray(attribute_texcoord_);
+    glDisableVertexAttribArray(texCoordAttrib_);
 }
 
 
@@ -46,15 +46,15 @@ SnippetPtr TextureBuffer::getVertexShaderGLSL()
     return std::make_shared<ShaderSnippet>(
         R".(
             //TextureBuffer fields
-            in vec2 texcoord;
-            out vec2 UV;
+            in vec2 textureCoordinate;
+            out vec2 UVcoordinate;
         ).",
         R".(
             //TextureBuffer methods
         ).",
         R".(
             //TextureBuffer main method code
-            UV = texcoord;
+            UVcoordinate = textureCoordinate;
         )."
     );
 }
@@ -67,14 +67,14 @@ SnippetPtr TextureBuffer::getFragmentShaderGLSL()
         R".(
             //TextureBuffer fields
             uniform sampler2D textureSampler;
-            in vec2 UV;
+            in vec2 UVcoordinate;
         ).",
         R".(
             //TextureBuffer methods
         ).",
         R".(
             //TextureBuffer main method code
-            colors.textureColor = texture(textureSampler, UV).rgb;
+            colors.textureColor = texture(textureSampler, UVcoordinate).rgb;
         )."
     );
 }

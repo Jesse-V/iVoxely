@@ -6,6 +6,12 @@
 #include "glm/glm.hpp"
 #include <GL/glew.h>
 
+/**
+    Defines a point-light, that is, a light defined from a point in space.
+    A point-light can be simply defined as it is here: a position, color,
+    and power. The power variable defines its intensity and how far it appears
+    to spread out before it dissipates into negletable levels.
+**/
 class Light : public ShaderUtilizer
 {
     public:

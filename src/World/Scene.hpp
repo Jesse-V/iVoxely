@@ -9,6 +9,13 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include <vector>
 
+/**
+    A Scene is basically a high-level container for Models, Lights, and a Camera.
+    This allows for an application to use multiple Scenes for different environments
+    or locations. Another advantage is that Scene::render() will handle the
+    management of rendering all Models with all the Lights, as seen by the given
+    Camera.
+**/
 class Scene
 {
     public:

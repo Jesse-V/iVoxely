@@ -7,6 +7,17 @@
 #include <memory>
 #include <string>
 
+/**
+    Defines the functionality of a fisheye (perspective) camera.
+    A Camera is defined by three basic vectors: its position, viewing direction,
+    and what is meant by "up". Since this is a perspective camera that resembles
+    natural viewing, the Camera is also defined by Field of View and Aspect Ratio
+    variables. The frustum is defined by this two variables, but is bounded
+    depth-wise by the near and far field clips. Only fragments of polygons within
+    these clip spaces will be rendered. In the mathematics of computer graphics,
+    a camera is nothing more than another matrix that is used to project a
+    polygon onto the screen. It defines the "camera space".
+**/
 class Camera
 {
     public:

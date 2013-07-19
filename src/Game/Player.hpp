@@ -5,6 +5,13 @@
 #include "World/Scene.hpp"
 #include <memory>
 
+/**
+    The Player class handles functions relating to user interaction and movement.
+    Its main goal is to represent the user interacting with the Scene.
+    For example, one of its basic jobs is to accept and handle mouse and keyboard
+    actions and use them to move the Scene's Camera accordingly.
+    the Scene's Camera.
+**/
 class Player
 {
     public:

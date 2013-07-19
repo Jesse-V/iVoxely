@@ -1,12 +1,11 @@
 
-#define GLM_SWIZZLE
-
 #include "Camera.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <memory>
 #include <sstream>
 #include <stdexcept>
+
 
 //http://stackoverflow.com/questions/12138721/rotating-a-open-gl-camera-correctly-using-glm
 

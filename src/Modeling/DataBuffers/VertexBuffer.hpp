@@ -6,6 +6,14 @@
 #include "glm/glm.hpp"
 #include <vector>
 
+/**
+    A VertexBuffer contains a set of points in 3D space. These help define
+    the shape of a Mesh. A VertexBuffer can be drawn by itself when using an
+    IndexBuffer is not appropriate, but it is often a better idea to use
+    an IndexBuffer in conjunction with a VertexBuffer to define a Mesh.
+    A VertexBuffer has GLSL data GPU-side: each vertex is given a 3D vector that
+    defines its position in model-space.
+**/
 class VertexBuffer : public DataBuffer
 {
     public:

@@ -10,6 +10,18 @@
 #include <vector>
 #include <GL/glut.h>
 
+/**
+    A ShaderManager's primary job is to assemble GLSL code from the ShaderManager
+    subclasses, and then create a cs5400:Program from that shader code.
+    As GLSL is C-based, preprocessor directives go first, followed by fields,
+    followed by methods, followed by code in main(). The ShaderManager
+    assembles the GLSL code in this order, and then uses classes within the
+    cs5400 namespace to register a program on the GPU from this code. The
+    CPU-side code is then free to hook into GLSL variables under this Program.
+    The ShaderManager classes makes heavy use of typedefs to reduce the length
+    of templatized types. Refer to Program.hpp, ShaderUtilizer.hpp, and
+    /World/Light.hpp for full typedef declarations if they are not obvious.
+**/
 class ShaderManager
 {
     public:
