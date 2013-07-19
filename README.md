@@ -1,27 +1,43 @@
 # iVoxely
 
-Voxel-based game in C++ and OpenGL.
+This is voxel-based game in C++11 and OpenGL. [At the moment,](https://github.com/Jesse-V/iVoxely/issues/milestones), the basic rendering engine is nearly complete, and we are starting work on building the landscape scenery for the game. iVoxely is under active development by two developers: pcm2718 (Parker M.) and I.
 
-### Compilation instructions
+### System requirements
 
-Before attempting to compile and run, please make sure you have the required dependencies installed (see below). Once you have satisfied those requirements, then you should be able to compile it. I'm building this using the Clang/LLVM 3.2 compiler because it has a number of significant advantages over GCC. If you'd to do the same, be sure that Clang 3.2 is installed (see below). Then navigate to the Source directory and run "./ClangCompileRun.sh" to point some environmental variables to Clang, compile the code, and then execute the application. If you prefer GCC, run "./compileRun.sh" which will use GCC and then execute the application. The CMakeClean.sh script will remove all build files, producing a clean compilation environment, which is especially useful when preparing to push to git.
+1. OpenGL 3.0 (GLSL 130). I highly recommend proprietary vendor drivers.
+2. The GLEW, Freeglut, GLM, and png++ libraries.
+3. The Linux operating system. Mint/*buntu/Debian preferred.
 
-##### Dependencies and prerequisites
+Freeglut are used to create the window. GLEW helps load OpenGL, which powers the rendering. The GLM library performs linear-algebra operations CPU-side, and png++ is used to load .png textures.
 
-This project uses C++11, Glew, Freeglut, GLM, and cmake. This C++11 code relies on the GLEW and Freeglut libraries to create the window, OpenGL for rendering, the GLM library for OpenGL mathematics, and cmake for generating platform-independent compilation instructions (such as makefiles). The build-essential package is needed for linking cmake to the compiler. If you do not have Glew, Freeglut, GLM, cmake, or build-essential installed, these libraries can be installed from the Mint/Ubuntu repos with the following command:
+### Installation
 
-sudo apt-get install libglew-dev freeglut3-dev libglm-dev cmake build-essential
+Currently the only way to install iVoxely is to compile it. Luckily, this is pretty easy, especially in Linux. The main trick is to ensure that the necessary components are installed beforehand, otherwise there will be errors during the compilation process. Thankfully, installing these libraries is very straightforward with the following command:
 
-##### Clang/LLVM
+**sudo apt-get install libglew-dev freeglut3-dev libglm-dev libpng++-dev cmake build-essential**
 
-I build this code using the Clang/LLVM 3.2 compiler. There are many ways to install Clang 3.2, but the following method should work in Linux Mint 14 or Ubuntu Quantal Quetzal:
+Then it should be ready to compile. This project supports two compilers: Clang and GCC. I prefer the former because it compiles faster, seems more intelligent, has better diagnostic messages, and [for other reasons](http://clang.llvm.org/comparison.html). I have shell scripts set up in the _src_ directory that make it easy to compile and run the project. To run them or to compile manually, navigate into the _src_ directory, and run either **./ClangCompileRun** to use Clang, or run **./compileRun** for GCC. This compiles and launches the produced executable.
 
-sudo add-apt-repository ppa:kxstudio-team/builds<br>
-sudo apt-get update<br>
-sudo apt-get install clang<br>
+I develop iVoxely using Clang under Linux Mint 14, which inherits Quantal's (12.10) packages. I'm running the nightly developer's build of Clang 3.4, which you too can get by running:
 
-Note that Clang 3.2 seems to have issues both with std::thread and std::async, and the problem relates to the stdlibc++ library. For these, GCC works fine. http://permalink.gmane.org/gmane.comp.compilers.clang.scm/70802 apparently fixes Clang's incompatibility with std::thread. There is no threading code currently in this project, so there's no problem here yet. It seems reasonable that this patch would be included in a higher version of Clang, and we'll upgrade to that as it becomes available in the Ubuntu/Mint repositories.
+* *sudo echo "deb http://llvm.org/apt/quantal/ llvm-toolchain-quantal main" > /etc/apt/sources.list.d/llvm.list*
+* *sudo apt-get update*
+* *sudo apt-get clang-3.4*
+
+Pcm2718 is helping develop using GCC under Slackware. It can take some time to install all the libraries and properly set up the build environment in Slackware, but it is possible.
+
+### Development
+
+There are three main branches:
+
+1. The _master_ branch is the stable development edition. The version at the end (not in the middle) of this branch will compile and run generally as intended, though it may have bugs and features may not be in their final state. This is basically a working snapshot of the project.
+2. The _packaging_ branch is the stable edition. The master branch will merge into this when particular milestones and sets of features have been finished off and generally smoothed out. These builds will be available for installation through [my Launchpad PPA](https://launchpad.net/~jvictors), though this is not available at the moment.
+3. The _*-dev_ branches are unstable development. These are cutting-edge development, and builds here are not guaranteed to compile or even work. I'll pull from master, develop a feature or fix something, and then merge my JesseV-dev branch with master when I finish.
+
+The *clean.sh* script in the _src_ directory is useful for cleaning out the files generated by CMake when it builds and compiles the code. Since this process is dependent on the working directory and environment, it makes sense to me to run this script to clean the build environment before I push to Github.
+
+Wherever reasonably possible, the programming style strives to follow http://geosoft.no/development/cppstyle.html with the exception of #85.
 
 ### Origin
 
-This project is based on the framework developed in the https://github.com/Jesse-V/CS5400_Final_Project repo from which https://github.com/Jesse-V/OpenGL_Texture_Mapping was based.
+This project is based on the framework developed in the [CS5400 Final Project repo](https://github.com/Jesse-V/CS5400_Final_Project) from which [https://github.com/Jesse-V/OpenGL_Texture_Mapping](my OpenGL Texture Mapping project) was based.
