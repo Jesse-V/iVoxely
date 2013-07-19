@@ -66,11 +66,7 @@ std::string ShaderManager::assembleFragmentShaderStr(
 
             vec3 color = colors.textureColor * (ambientLight + colors.lightBlend);
 
-            #if __VERSION__ >= 130
-                fragmentColor = vec4(color, 1);
-            #else
-                gl_FragColor = vec4(color, 1);
-            #endif
+            gl_FragColor = vec4(color, 1);
         )."
     );
 }
@@ -179,7 +175,7 @@ std::string ShaderManager::buildShader(const std::string& fields,
 {
     //return fields + methods + mainBodyCode;
     return R".(
-            #version 130
+            #version 120
         )."
         + fields
         + "\n"

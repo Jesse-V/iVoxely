@@ -100,7 +100,7 @@ SnippetPtr Light::getVertexShaderGLSL()
     return std::make_shared<ShaderSnippet>(
         R".(
             //Light fields
-            out vec4 fragmentPosition;
+            varying vec4 fragmentPosition;
         ).",
         R".(
             //Light methods
@@ -134,7 +134,7 @@ SnippetPtr Light::getFragmentShaderGLSL()
             };
 
             uniform Light lights[)." << nLights_ << R".(];
-            in vec4 fragmentPosition;
+            varying vec4 fragmentPosition;
         ).";
 
     return std::make_shared<ShaderSnippet>(

@@ -68,8 +68,8 @@ SnippetPtr NormalBuffer::getVertexShaderGLSL()
     return std::make_shared<ShaderSnippet>(
         R".(
             //NormalBuffer fields
-            in vec3 vertexNormal; //normal vector of the vertex
-            out vec3 normal_camera;
+            attribute vec3 vertexNormal; //normal vector of the vertex
+            varying vec3 normal_camera;
         ).",
         R".(
             //NormalBuffer methods
@@ -89,7 +89,7 @@ SnippetPtr NormalBuffer::getFragmentShaderGLSL()
     return std::make_shared<ShaderSnippet>(
         R".(
             //NormalBuffer fields
-            in vec3 normal_camera;
+            varying vec3 normal_camera;
         ).",
         R".(
             //NormalBuffer methods
