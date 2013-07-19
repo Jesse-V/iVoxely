@@ -29,7 +29,7 @@ class IndexBuffer : public DataBuffer
         std::vector<Triangle> getTriangles();
 
     private:
-        std::vector<Triangle> triangles_; //indexes for triangles
+        std::vector<Triangle> triangles_; //indices for triangles
         GLuint meshBuffer_;
 };
 

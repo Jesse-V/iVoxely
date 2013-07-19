@@ -27,7 +27,7 @@ class TextureBuffer : public SampledBuffer
         virtual SnippetPtr getFragmentShaderGLSL();
 
     private:
-        GLint attribute_texcoord_;
+        GLint texCoordAttrib_;
 };
 
 #endif

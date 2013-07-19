@@ -12,13 +12,13 @@
 
 /**
     A PlyParser implements a reader for .ply files. PLY files are essentially
-    defined as a list of points in space, followed by a list of sets of indexes
+    defined as a list of points in space, followed by a list of sets of indices
     corresponding to the bounds of the plane defined by the referenced points.
     Some PLY files include additional per-vertex data, such as colors or normals.
     Here though, this PlyParser only has the ability to read a simple mesh of
     triangles from ASCII .ply files. Other data can be included in the file,
     though X,Y,Z data must come first in the "element" section, and triangle
-    indexes must be first in the "face" section. Any other data will be ignored.
+    indices must be first in the "face" section. Any other data will be ignored.
     If a .ply mesh is defined by GL_QUADS instead of GL_TRIANGLES, an exception
     will be thrown during parsing. 
 **/

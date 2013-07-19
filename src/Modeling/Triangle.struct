@@ -10,7 +10,7 @@
     Here is a Triangle does not represent these points as locations
     in 3D or 4D space, but rather as references to these points.
     For example, a Triangle could contain {17, 12, 39}, which would be
-    indexes corresponding to the 17th, 12th, and 39th point, respectively.
+    indices corresponding to the 17th, 12th, and 39th point, respectively.
 **/
 struct Triangle
 {
