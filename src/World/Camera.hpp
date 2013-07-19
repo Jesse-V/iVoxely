@@ -2,6 +2,8 @@
 #ifndef CAMERA
 #define CAMERA
 
+#define GLM_SWIZZLE
+
 #include "glm/glm.hpp"
 #include <GL/glew.h>
 #include <memory>
