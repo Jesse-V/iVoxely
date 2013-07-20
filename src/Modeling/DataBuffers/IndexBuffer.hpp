@@ -3,7 +3,7 @@
 #define INDEX_BUFFER
 
 #include "DataBuffer.hpp"
-#include "../Triangle.struct"
+#include "Modeling/Mesh/Triangle.struct"
 #include <vector>
 
 /**

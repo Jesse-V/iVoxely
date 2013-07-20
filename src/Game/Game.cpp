@@ -121,7 +121,7 @@ std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
     camera->setPosition(glm::vec3(0, -2, 0.5f));
 
     camera->lookAt(
-        glm::vec3(0, 0, 0.5f),
+        glm::vec3(0, 0, 0.5),
         glm::vec3(0, 0, 1)
     );
 

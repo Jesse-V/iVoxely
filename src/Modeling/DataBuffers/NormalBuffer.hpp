@@ -4,7 +4,7 @@
 
 #include "OptionalDataBuffer.hpp"
 #include "Modeling/Mesh/Mesh.hpp"
-#include "../Triangle.struct"
+#include "Modeling/Mesh/Triangle.struct"
 #include <vector>
 #include <string>
 

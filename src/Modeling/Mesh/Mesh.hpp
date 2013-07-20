@@ -4,7 +4,7 @@
 
 #include "Modeling/DataBuffers/IndexBuffer.hpp"
 #include "Modeling/DataBuffers/VertexBuffer.hpp"
-#include "Modeling/Triangle.struct"
+#include "Triangle.struct"
 
 /**
     A Mesh contains the set of simple polygons that comprise a representation

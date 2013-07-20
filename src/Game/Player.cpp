@@ -17,28 +17,28 @@ void Player::onKeyPress(unsigned char key)
     switch(key)
     {
         case 'a':
-            camera->translateX(-TRANSLATION_SPEED);
+            camera->moveRight(-TRANSLATION_SPEED);
             break;
 
         case 'd':
-            camera->translateX(TRANSLATION_SPEED);
+            camera->moveRight(TRANSLATION_SPEED);
             break;
 
         case 's':
-            camera->translateY(-TRANSLATION_SPEED);
+            camera->moveForward(-TRANSLATION_SPEED);
             break;
 
         case 'w':
-            camera->translateY(TRANSLATION_SPEED);
+            camera->moveForward(TRANSLATION_SPEED);
             break;
-
+/*
         case 'q':
-            camera->translateZ(-TRANSLATION_SPEED);
+            camera->moveUp(-TRANSLATION_SPEED);
             break;
 
         case 'e':
-            camera->translateZ(TRANSLATION_SPEED);
-            break;
+            camera->moveUp(TRANSLATION_SPEED);
+            break;*/
     }
 
     //scene_->getLights()[0]->setPosition(scene_->getCamera()->getPosition());
@@ -68,6 +68,14 @@ void Player::onSpecialKeyPress(int key)
 
         case GLUT_KEY_RIGHT:
             camera->yaw(-ROTATION_SPEED);
+            break;
+
+        case GLUT_KEY_PAGE_UP:
+            camera->roll(-ROTATION_SPEED);
+            break;
+
+        case GLUT_KEY_PAGE_DOWN:
+            camera->roll(ROTATION_SPEED);
             break;
     }
 

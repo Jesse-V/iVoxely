@@ -5,6 +5,7 @@
 #include <memory>
 #include <sstream>
 #include <stdexcept>
+#include <iostream>
 
 
 //http://stackoverflow.com/questions/12138721/rotating-a-open-gl-camera-correctly-using-glm
@@ -22,35 +23,28 @@ void Camera::reset()
     setPosition(glm::vec3(0.0, 0.0, 0.5));
     lookAt(glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 1.0, 0.0));
 
-    fieldOfView_   = 45.0f; // frustrum viewing apeture
-    aspectRatio_   = 4.0f / 3.0f;
-    nearFieldClip_ = 0.005f;   // clip anything closer than this
-    farFieldClip_  = 30.0f; // clip anything farther than this
-    projection_    = glm::perspective(fieldOfView_, aspectRatio_,
-                                     nearFieldClip_, farFieldClip_);
+    fieldOfView_   = 45.0f;         // frustrum viewing aperture
+    aspectRatio_   = 4.0f / 3.0f;   // frustrum view angling
+    nearFieldClip_ = 0.005f;        // clip anything closer than this
+    farFieldClip_  = 30.0f;         // clip anything farther than this
+    updateProjectionMatrix();
 }
 
 
 
-void Camera::sync(GLuint handle) const
+void Camera::sync(GLuint programHandle) const
 {
-    GLint viewMatrixUniform = glGetUniformLocation(handle, "viewMatrix");
-    glm::mat4 viewMatrix = glm::lookAt(
-        getPosition(), getLookDirection(), getUpVector());
+    //assemble view matrix and sync with program handle
+    GLint viewMatrixUniform = glGetUniformLocation(programHandle, "viewMatrix");
     glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE,
-                       glm::value_ptr(viewMatrix));
+                       glm::value_ptr(getViewMatrix()));
 
-    GLint projMatrixUniform = glGetUniformLocation(handle, "projMatrix");
+    //sync projection matrix with program handle
+    GLint projMatrixUniform = glGetUniformLocation(programHandle, "projMatrix");
     glUniformMatrix4fv(projMatrixUniform, 1, GL_FALSE,
                        glm::value_ptr(getProjectionMatrix()));
 
-    /*
-    GLint normMatrixUniform = glGetUniformLocation(handle, "NormalMatrix");
-    glm::mat3 normMatrix = glm::mat3(viewMatrix[0].xyz(), viewMatrix[1].xyz(), viewMatrix[2].xyz());
-    glUniformMatrix3fv(normMatrixUniform, 1, GL_FALSE,
-                       glm::value_ptr(normMatrix));
-    */
-
+    //assert that they went through to GLSL variables
     if (viewMatrixUniform < 0 || projMatrixUniform < 0)
         throw std::runtime_error("Unable to find Camera uniform variables!");
 }
@@ -58,54 +52,84 @@ void Camera::sync(GLuint handle) const
 
 
 // Set the camera to an arbitrary location without changing orientation
-void Camera::setPosition(const glm::vec3& pos)
+void Camera::setPosition(const glm::vec3& newPosition)
 {
-    position_ = pos;
+    if (newPosition == lookingAt_)
+        throw std::runtime_error("Cannot be where we're looking at!");
+
+    position_ = newPosition;
 }
 
 
 
 // Set the orientation of the camera without changing its position_
-void Camera::lookAt(const glm::vec3& newLookVector, const glm::vec3& newUpVector_)
+void Camera::lookAt(const glm::vec3& newLookVector, const glm::vec3& newUpVector)
 {
-    lookDirection_ = newLookVector;
-    upVector_ = newUpVector_;
+    if (newLookVector == position_)
+        throw std::runtime_error("Cannot look at same point as position!");
+
+    lookingAt_ = newLookVector;
+    upVector_ = newUpVector;
 }
 
 
 
-void Camera::translateX(float theta)
+void Camera::translateX(float magnitude)
 {
-    translate(glm::vec3(theta, 0, 0));
+    translate(glm::vec3(magnitude, 0, 0));
 }
 
 
 
-void Camera::translateY(float theta)
+void Camera::translateY(float magnitude)
 {
-    translate(glm::vec3(0, theta, 0));
+    translate(glm::vec3(0, magnitude, 0));
 }
 
 
 
-void Camera::translateZ(float theta)
+void Camera::translateZ(float magnitude)
 {
-    translate(glm::vec3(0, 0, theta));
+    translate(glm::vec3(0, 0, magnitude));
 }
 
 
 
-// Translate the camera along X/Y/Z
-void Camera::translate(const glm::vec3& xyzTheta)
+//translate the camera along X/Y/Z
+void Camera::translate(const glm::vec3& delta)
 {
-    glm::vec4 pos(position_, 1.0);
-    glm::vec4 look(lookDirection_, 1.0);
-    glm::mat4 matrix = glm::translate(glm::mat4(), xyzTheta);
-    pos = matrix * pos;
-    look = matrix * look;
+    /*
+    glm::mat4 magMatrix = glm::translate(glm::mat4(), delta);
+    position_  = (magMatrix * glm::vec4(position_,      1)).xyz();
+    lookingAt_ = (magMatrix * glm::vec4(lookingAt_, 1)).xyz();
+    */
 
-    position_ = pos.xyz();
-    lookDirection_ = look.xyz();
+    position_ += delta;
+    lookingAt_ += delta;
+}
+
+
+
+void Camera::moveForward(float magnitude)
+{
+    glm::vec3 orientation = glm::normalize(lookingAt_ - position_);
+    translate(orientation * magnitude);
+}
+
+
+
+void Camera::moveRight(float magnitude)
+{
+    glm::vec3 orientation = glm::normalize(lookingAt_ - position_);
+    glm::vec3 vec = glm::normalize(glm::cross(orientation, upVector_));
+    translate(vec * magnitude);
+}
+
+
+
+void Camera::moveUp(float magnitude)
+{
+    translate(glm::normalize(upVector_) * magnitude);
 }
 
 
@@ -114,10 +138,10 @@ void Camera::translate(const glm::vec3& xyzTheta)
 void Camera::pitch(float theta)
 {
     glm::mat4 matrix = glm::rotate(glm::mat4(), theta,
-                                   glm::cross(lookDirection_, upVector_));
+                                   glm::cross(lookingAt_, upVector_));
 
-    glm::vec4 look(lookDirection_, 0.0);
-    lookDirection_ = (matrix * look).xyz();
+    glm::vec4 look(lookingAt_, 0.0);
+    lookingAt_ = (matrix * look).xyz();
 
     glm::vec4 up(upVector_, 0.0);
     upVector_ = (matrix * up).xyz();
@@ -130,8 +154,8 @@ void Camera::yaw(float theta)
 {
     glm::mat4 matrix = glm::rotate(glm::mat4(), theta, upVector_);
 
-    glm::vec4 look(lookDirection_, 0.0);
-    lookDirection_ = (matrix * look).xyz();
+    glm::vec4 look(lookingAt_, 0.0);
+    lookingAt_ = (matrix * look).xyz();
 }
 
 
@@ -139,10 +163,42 @@ void Camera::yaw(float theta)
 // Roll the camera along the look axis
 void Camera::roll(float theta)
 {
-    glm::mat4 matrix = glm::rotate(glm::mat4(), theta, lookDirection_);
+    glm::mat4 matrix = glm::rotate(glm::mat4(), theta, lookingAt_);
 
     glm::vec4 up(upVector_, 0.0);
     upVector_ = (matrix * up).xyz();
+}
+
+
+
+void Camera::setFieldOfView(float degrees)
+{
+    fieldOfView_ = degrees;
+    updateProjectionMatrix();
+}
+
+
+
+void Camera::setAspectRatio(float ratio)
+{
+    aspectRatio_ = ratio;
+    updateProjectionMatrix();
+}
+
+
+
+void Camera::setNearFieldClipDistance(float distance)
+{
+    nearFieldClip_ = distance;
+    updateProjectionMatrix();
+}
+
+
+
+void Camera::setFarFieldClipDistance(float distance)
+{
+    farFieldClip_ = distance;
+    updateProjectionMatrix();
 }
 
 
@@ -153,46 +209,16 @@ void Camera::setPerspective(
     float nearClipDistance, float farClipDistance
 )
 {
-    fieldOfView_   = fieldOfViewDegrees;
     aspectRatio_   = aspectRatio;
     nearFieldClip_ = nearClipDistance;
     farFieldClip_  = farClipDistance;
-    projection_ = glm::perspective(fieldOfView_, aspectRatio_,
-                                   nearFieldClip_, farFieldClip_);
+    setFieldOfView(fieldOfViewDegrees);
 }
 
 
 
-void Camera::setFieldOfView(float degrees)
+void Camera::updateProjectionMatrix()
 {
-    fieldOfView_ = degrees;
-    projection_ = glm::perspective(fieldOfView_, aspectRatio_,
-                                  nearFieldClip_, farFieldClip_);
-}
-
-
-
-void Camera::setAspectRatio(float ratio)
-{
-    aspectRatio_ = ratio;
-    projection_ = glm::perspective(fieldOfView_, aspectRatio_,
-                                  nearFieldClip_, farFieldClip_);
-}
-
-
-
-void Camera::setNearFieldClipDistance(float distance)
-{
-    nearFieldClip_ = distance;
-    projection_ = glm::perspective(fieldOfView_, aspectRatio_,
-                                  nearFieldClip_, farFieldClip_);
-}
-
-
-
-void Camera::setFarFieldClipDistance(float distance)
-{
-    farFieldClip_ = distance;
     projection_ = glm::perspective(fieldOfView_, aspectRatio_,
                                   nearFieldClip_, farFieldClip_);
 }
@@ -201,13 +227,6 @@ void Camera::setFarFieldClipDistance(float distance)
 
 //accessors:
 
-glm::vec3 Camera::getLookDirection() const
-{
-    return lookDirection_;
-}
-
-
-
 glm::vec3 Camera::getPosition() const
 {
     return position_;
@@ -215,9 +234,23 @@ glm::vec3 Camera::getPosition() const
 
 
 
+glm::vec3 Camera::getLookingAt() const
+{
+    return lookingAt_;
+}
+
+
+
 glm::vec3 Camera::getUpVector() const
 {
     return upVector_;
+}
+
+
+
+glm::mat4 Camera::getViewMatrix() const
+{
+    return glm::lookAt(getPosition(), getLookingAt(), getUpVector());
 }
 
 
@@ -261,8 +294,8 @@ std::string Camera::toString() const
 {
     std::stringstream ss;
 
-    ss << "LookV: <" << lookDirection_.x << ", " << lookDirection_.y <<
-                    ", " << lookDirection_.z << "> ";
+    ss << "Look@: <" << lookingAt_.x << ", " << lookingAt_.y <<
+                    ", " << lookingAt_.z << "> ";
     ss << "UpV: <"   << upVector_.x << ", " << upVector_.y <<
                     ", " << upVector_.z << "> ";
     ss << "Pos: <"   << position_.x << ", " << position_.y <<
