@@ -107,7 +107,7 @@ SnippetPtr Light::getVertexShaderGLSL()
         ).",
         R".(
             //Light main method code
-            fragmentPosition = projMatrix * modelMatrix * vec4(vertex, 1);
+            fragmentPosition = modelMatrix * vec4(vertex, 1);
         )."
     );
 }

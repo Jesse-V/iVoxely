@@ -116,11 +116,7 @@ void Game::addLight()
 
 std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 {
-    auto camera = std::make_shared<Camera>(
-        glm::vec3(0, -2, 0.5f), //position
-        glm::vec3(0, 0, 1),     //looking this way
-        0                       //no roll, regular up vector
-    );
+    auto camera = std::make_shared<Camera>();
     camera->setAspectRatio(screenWidth / (float)screenHeight);
     camera->setPosition(glm::vec3(0, -2, 0.5f));
 
