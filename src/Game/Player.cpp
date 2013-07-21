@@ -31,14 +31,14 @@ void Player::onKeyPress(unsigned char key)
         case 'w':
             camera->moveForward(TRANSLATION_SPEED);
             break;
-/*
+
         case 'q':
             camera->moveUp(-TRANSLATION_SPEED);
             break;
 
         case 'e':
             camera->moveUp(TRANSLATION_SPEED);
-            break;*/
+            break;
     }
 
     //scene_->getLights()[0]->setPosition(scene_->getCamera()->getPosition());

@@ -47,7 +47,7 @@ class Camera
         //orientation controls
         void roll(float theta);
         void pitch(float theta);
-        void yaw(float theta);
+        void yaw(float theta, bool aroundUpVector = true);
 
         //adjusts the the camera's frustrum (its fisheye perspective properties)
         void setFieldOfView(float degrees);

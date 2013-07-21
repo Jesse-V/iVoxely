@@ -98,12 +98,6 @@ void Camera::translateZ(float magnitude)
 //translate the camera along X/Y/Z
 void Camera::translate(const glm::vec3& delta)
 {
-    /*
-    glm::mat4 magMatrix = glm::translate(glm::mat4(), delta);
-    position_  = (magMatrix * glm::vec4(position_,      1)).xyz();
-    lookingAt_ = (magMatrix * glm::vec4(lookingAt_, 1)).xyz();
-    */
-
     position_ += delta;
     lookingAt_ += delta;
 }
@@ -137,36 +131,36 @@ void Camera::moveUp(float magnitude)
 // Pitch the camera along the axis orthogonal to the up and look vectors
 void Camera::pitch(float theta)
 {
-    glm::mat4 matrix = glm::rotate(glm::mat4(), theta,
-                                   glm::cross(lookingAt_, upVector_));
+    glm::vec3 lookVector = lookingAt_ - position_;
+    glm::vec3 tangental = glm::cross(lookVector, upVector_);
+    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), theta, tangental);
 
-    glm::vec4 look(lookingAt_, 0.0);
-    lookingAt_ = (matrix * look).xyz();
-
-    glm::vec4 up(upVector_, 0.0);
-    upVector_ = (matrix * up).xyz();
+    upVector_  = (rotationMatrix * glm::vec4(upVector_,  1)).xyz();
+    lookVector = (rotationMatrix * glm::vec4(lookVector, 1)).xyz();
+    lookingAt_ = position_ + lookVector;
 }
 
 
 
 // Yaw the camera along the up vector
-void Camera::yaw(float theta)
+void Camera::yaw(float theta, bool aroundUpVector)
 {
-    glm::mat4 matrix = glm::rotate(glm::mat4(), theta, upVector_);
+    glm::vec3 vectorOfRotation = aroundUpVector ? upVector_ : glm::vec3(0, 0, 1);
+    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), theta, vectorOfRotation);
 
-    glm::vec4 look(lookingAt_, 0.0);
-    lookingAt_ = (matrix * look).xyz();
+    glm::vec3 lookVector = lookingAt_ - position_;
+    lookVector = (rotationMatrix * glm::vec4(lookVector, 1)).xyz();
+    lookingAt_ = position_ + lookVector;
 }
 
 
 
-// Roll the camera along the look axis
+//rolls the camera by rotating the up vector around the look direction
 void Camera::roll(float theta)
 {
-    glm::mat4 matrix = glm::rotate(glm::mat4(), theta, lookingAt_);
-
-    glm::vec4 up(upVector_, 0.0);
-    upVector_ = (matrix * up).xyz();
+    glm::vec3 orientation = glm::normalize(lookingAt_ - position_);
+    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), theta, orientation);
+    upVector_ = (rotationMatrix * glm::vec4(upVector_, 1)).xyz();
 }
 
 
