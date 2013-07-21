@@ -8,6 +8,9 @@
 #include <iostream>
 
 
+typedef std::unordered_multimap<char, int> MyMap;
+
+
 Scene::Scene(const std::shared_ptr<Camera>& camera):
     camera_(camera)
 {}
@@ -16,8 +19,20 @@ Scene::Scene(const std::shared_ptr<Camera>& camera):
 
 void Scene::addModel(const std::shared_ptr<Model>& model)
 {
-    models_.push_back(model);
-   // std::cout << "Successfully added a Model to the Scene." << std::endl;
+    if (!model->isStoredOnGPU())
+    {
+        auto program = model->getProgram();
+        if (!program)
+        {
+            program = ShaderManager::createProgram(model,
+                         getVertexShaderGLSL(), getFragmentShaderGLSL(),
+                         lights_);
+        }
+        
+        model->saveAs(program);
+    }
+
+    map_.insert(ProgramModelMultimap::value_type(model->getProgram(), model));
 }
 
 
@@ -45,28 +60,33 @@ void Scene::setAmbientLight(const glm::vec3& rgb)
 
 
 
+void Scene::sync()
+{
+    for (auto keyIterator = map_.begin(); keyIterator != map_.end(); 
+        keyIterator = map_.equal_range(keyIterator->first).second)
+    {
+        auto program = keyIterator->first;
+        GLuint handle = program->getHandle();
+
+        glUseProgram(handle);
+        camera_->sync(handle);
+        syncLighting(handle);
+    }
+}
+
+
+
 //render all models and lights in the scene, as viewed from the camera_
 void Scene::render()
 {
-    for_each (models_.begin(), models_.end(),
-        [&](std::shared_ptr<Model>& model)
+    sync();
+
+    for_each (map_.begin(), map_.end(),
+        [&](const std::pair<ProgramPtr, ModelPtr>& pair)
         {
-            if (!model->isStoredOnGPU())
-            {
-                auto program = model->getProgram();
-                if (!program)
-                    program = ShaderManager::createProgram(model,
-                            getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_);
-                model->saveAs(program);
-            }
-
-            GLuint handle = model->getProgram()->getHandle();
-            glUseProgram(handle);
-
-            camera_->sync(handle);
-            syncLights(handle);
-
-            model->render(glGetUniformLocation(handle, "modelMatrix"));
+            auto programHandle = pair.first->getHandle();
+            auto model = pair.second;
+            model->render(glGetUniformLocation(programHandle, "modelMatrix"));
         }
     );
 }
@@ -80,9 +100,9 @@ std::shared_ptr<Camera> Scene::getCamera()
 
 
 
-std::vector<std::shared_ptr<Model>> Scene::getModels()
+int Scene::getModelCount()
 {
-    return models_;
+    return map_.size();
 }
 
 
@@ -101,7 +121,7 @@ glm::vec3 Scene::getAmbientLight()
 
 
 
-void Scene::syncLights(GLuint handle)
+void Scene::syncLighting(GLuint handle)
 {
     GLint ambientLightUniform = glGetUniformLocation(handle, "ambientLight");
     glUniform3fv(ambientLightUniform, 1, glm::value_ptr(ambientLight_));
@@ -180,7 +200,7 @@ SnippetPtr Scene::getFragmentShaderGLSL()
 
 
 void Scene::assertModelsContainNormalBuffers()
-{
+{/*
     std::vector<glm::vec3> emptyVec;
     auto normBuffer = std::make_shared<NormalBuffer>(emptyVec);
     for_each (models_.begin(), models_.end(),
@@ -206,5 +226,5 @@ void Scene::assertModelsContainNormalBuffers()
                 throw std::runtime_error(stream.str());
             }
         }
-    );
+    );*/
 }

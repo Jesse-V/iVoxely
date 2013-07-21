@@ -7,7 +7,11 @@
 #include "Modeling/Shading/Program.hpp"
 #include "Modeling/Model.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include <unordered_map>
 #include <vector>
+
+typedef std::shared_ptr<Model> ModelPtr;
+typedef std::unordered_multimap<ProgramPtr, ModelPtr> ProgramModelMultimap;
 
 /**
     A Scene is basically a high-level container for Models, Lights, and a Camera.
@@ -24,22 +28,26 @@ class Scene
         void addLight(const std::shared_ptr<Light>& light);
         void setCamera(const std::shared_ptr<Camera>& camera);
         void setAmbientLight(const glm::vec3& rgb);
-        void render();
+        void sync();
+        void render(); //iterate through all Programs to render
 
         std::shared_ptr<Camera> getCamera();
-        std::vector<std::shared_ptr<Model>> getModels();
-        std::vector<std::shared_ptr<Light>> getLights();
+        int getModelCount();
+        //std::vector<ModelPtr> getModels();
+        //std::vector<ProgramPtr> getPrograms();
+        //int getModelCount(), getProgramCount();
+        LightList getLights();
         glm::vec3 getAmbientLight();
 
         virtual SnippetPtr getVertexShaderGLSL();
         virtual SnippetPtr getFragmentShaderGLSL();
 
     private:
-        void syncLights(GLuint handle);
+        void syncLighting(GLuint handle);
         void assertModelsContainNormalBuffers();
 
     private:
-        std::vector<std::shared_ptr<Model>> models_;
+        ProgramModelMultimap map_; //1-to-many map between Programs and Models
         LightList lights_;
         std::shared_ptr<Camera> camera_;
         glm::vec3 ambientLight_;

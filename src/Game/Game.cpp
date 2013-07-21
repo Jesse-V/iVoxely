@@ -52,7 +52,7 @@ void Game::addCubes()
     static std::mt19937 mersenneTwister; //Mersenne Twister PRNG. WAY better randomness!
     static std::uniform_real_distribution<float> randomFloat(0, 1);
 
-    std::cout << "Currently " << scene_->getModels().size() <<
+    std::cout << "Currently " << scene_->getModelCount() <<
         " Models in Scene. Adding Cubes... " << std::endl;
 
     //Chunk::generateCubes(scene_, 0, 0);
@@ -67,21 +67,21 @@ void Game::addCubes()
     {
         for (int y = MIN; y < MAX; y++)
         {
-            for (int z = 0; z <= 0; z++)
+            for (int z = -3; z <= 0; z++)
             {
                 auto cube = std::make_shared<Cube>(Cube::Type::STONE, x, y, z);
                 scene_->addModel(cube);
             }
         }
     }
-
+    
     std::cout << "... done adding cubes. Scene now has " <<
-        scene_->getModels().size() << " Models." << std::endl;
+        scene_->getModelCount() << " Models." << std::endl;
 
-    if (scene_->getModels().size() > 9000)
+    if (scene_->getModelCount() > 9000)
         std::cout << "It's over 9000!!!" << std::endl;
 
-    if (scene_->getModels().size() > 125 * 125)
+    if (scene_->getModelCount() > 90000)
         std::cout << "WARNING: likely FPS issues rendering that many cubes!" << std::endl;
 
     checkGlError();
