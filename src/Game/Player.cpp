@@ -55,11 +55,11 @@ void Player::onSpecialKeyPress(int key)
     switch(key)
     {
         case GLUT_KEY_UP:
-            camera->pitch(ROTATION_SPEED);
+            camera->constrainedPitch(ROTATION_SPEED);
             break;
 
         case GLUT_KEY_DOWN:
-            camera->pitch(-ROTATION_SPEED);
+            camera->constrainedPitch(-ROTATION_SPEED);
             break;
 
         case GLUT_KEY_LEFT:
@@ -71,11 +71,11 @@ void Player::onSpecialKeyPress(int key)
             break;
 
         case GLUT_KEY_PAGE_UP:
-            camera->roll(-ROTATION_SPEED);
+            camera->constrainedRoll(-ROTATION_SPEED);
             break;
 
         case GLUT_KEY_PAGE_DOWN:
-            camera->roll(ROTATION_SPEED);
+            camera->constrainedRoll(ROTATION_SPEED);
             break;
     }
 

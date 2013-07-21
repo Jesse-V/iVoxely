@@ -29,8 +29,11 @@ class Camera
 
         //position and orient the camera
         void setPosition(const glm::vec3& newPosition);
-        void lookAt(const glm::vec3& look,
+        void lookAt(const glm::vec3& point,
                     const glm::vec3& up = glm::vec3(0, 0, 1)
+        );
+        void orient(const glm::vec3& position, const glm::vec3& viewingVector,
+                    float roll = 0
         );
 
         //translation irregardless of orientation
@@ -45,9 +48,11 @@ class Camera
         void moveUp(float magnitude);
 
         //orientation controls
-        void roll(float theta);
         void pitch(float theta);
         void yaw(float theta, bool aroundUpVector = true);
+        void roll(float theta);
+        bool constrainedPitch(float theta);
+        bool constrainedRoll(float theta);
 
         //adjusts the the camera's frustrum (its fisheye perspective properties)
         void setFieldOfView(float degrees);
@@ -60,8 +65,9 @@ class Camera
         //accessors for camera's position and orientation
         glm::vec3 getPosition() const;
         glm::vec3 getLookingAt() const;
+        glm::vec3 calculateLookDirection() const;
         glm::vec3 getUpVector() const;
-        glm::mat4 getViewMatrix() const;
+        glm::mat4 calculateViewMatrix() const;
 
         //accessors for camera frustrum (perspective matrix properties)
         float getFOV() const;
@@ -80,7 +86,7 @@ class Camera
         float fieldOfView_, aspectRatio_, nearFieldClip_, farFieldClip_;
         glm::mat4 projection_;
 
-    //cool function ideas: getLookDirection(), setViewingAngle, rotateAround
+    //it'd be cool to have a rotateAround function
 };
 
 #endif

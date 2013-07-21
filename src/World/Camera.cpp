@@ -8,8 +8,6 @@
 #include <iostream>
 
 
-//http://stackoverflow.com/questions/12138721/rotating-a-open-gl-camera-correctly-using-glm
-
 Camera::Camera()
 {
     reset();
@@ -37,7 +35,7 @@ void Camera::sync(GLuint programHandle) const
     //assemble view matrix and sync with program handle
     GLint viewMatrixUniform = glGetUniformLocation(programHandle, "viewMatrix");
     glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE,
-                       glm::value_ptr(getViewMatrix()));
+                       glm::value_ptr(calculateViewMatrix()));
 
     //sync projection matrix with program handle
     GLint projMatrixUniform = glGetUniformLocation(programHandle, "projMatrix");
@@ -63,13 +61,30 @@ void Camera::setPosition(const glm::vec3& newPosition)
 
 
 // Set the orientation of the camera without changing its position_
-void Camera::lookAt(const glm::vec3& newLookVector, const glm::vec3& newUpVector)
+void Camera::lookAt(const glm::vec3& gazePoint, const glm::vec3& upVector)
 {
-    if (newLookVector == position_)
+    if (gazePoint == position_)
         throw std::runtime_error("Cannot look at same point as position!");
 
-    lookingAt_ = newLookVector;
-    upVector_ = newUpVector;
+    lookingAt_ = gazePoint;
+    upVector_ = upVector;
+}
+
+
+
+void Camera::orient(const glm::vec3& position, const glm::vec3& viewingVector,
+                    float roll
+)
+{
+    throw std::runtime_error("Camera::orient unsupported: upVector issues");
+    /*
+    position_ = position;
+    lookingAt_ = position + viewingVector;
+
+    auto orientation = calculateLookDirection();
+    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), roll, orientation);
+    upVector_ = (rotationMatrix * glm::vec4(upVector_, 1)).xyz();
+    */
 }
 
 
@@ -106,17 +121,16 @@ void Camera::translate(const glm::vec3& delta)
 
 void Camera::moveForward(float magnitude)
 {
-    glm::vec3 orientation = glm::normalize(lookingAt_ - position_);
-    translate(orientation * magnitude);
+    translate(calculateLookDirection() * magnitude);
 }
 
 
 
 void Camera::moveRight(float magnitude)
 {
-    glm::vec3 orientation = glm::normalize(lookingAt_ - position_);
-    glm::vec3 vec = glm::normalize(glm::cross(orientation, upVector_));
-    translate(vec * magnitude);
+    glm::vec3 orientation = calculateLookDirection();
+    glm::vec3 tangental = glm::normalize(glm::cross(orientation, upVector_));
+    translate(tangental * magnitude);
 }
 
 
@@ -160,9 +174,53 @@ void Camera::yaw(float theta, bool aroundUpVector)
 //rolls the camera by rotating the up vector around the look direction
 void Camera::roll(float theta)
 {
-    glm::vec3 orientation = glm::normalize(lookingAt_ - position_);
+    glm::vec3 orientation = calculateLookDirection();
     glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), theta, orientation);
     upVector_ = (rotationMatrix * glm::vec4(upVector_, 1)).xyz();
+}
+
+
+
+//returns true if the pitch attempt failed due to constraints
+bool Camera::constrainedPitch(float theta)
+{
+    auto oldUpVector = upVector_;
+    auto oldLookingAt = lookingAt_;
+
+    pitch(theta);
+
+    /*
+        revert the pitch if any of the conditions are true:
+        (orientation.z < 0 && upVector_.z < 0) ==> if looking down upside-down
+        (orientation.z > 0 && upVector_.z < 0) ==> if looking up but tilted back
+    */
+
+    if (upVector_.z < 0 && fabs(calculateLookDirection().z) > 0.00001f) // != 0
+    {
+        upVector_ = oldUpVector;
+        lookingAt_ = oldLookingAt;
+        std::cout << "Camera pitch constrained. Reverted request." << std::endl;
+        return true;
+    }
+
+    return false;
+}
+
+
+
+bool Camera::constrainedRoll(float theta)
+{
+    auto oldUpVector = upVector_;
+    roll(theta);
+
+    if (upVector_.z < 0)
+    {
+        upVector_ = oldUpVector;
+        std::cout << "Camera roll constrained. Reverted request." << std::endl;
+        return true;
+    }
+
+    return false;
 }
 
 
@@ -216,7 +274,7 @@ void Camera::setPerspective(
 void Camera::updateProjectionMatrix()
 {
     projection_ = glm::perspective(fieldOfView_, aspectRatio_,
-                                  nearFieldClip_, farFieldClip_);
+                                   nearFieldClip_, farFieldClip_);
 }
 
 
@@ -237,6 +295,13 @@ glm::vec3 Camera::getLookingAt() const
 
 
 
+glm::vec3 Camera::calculateLookDirection() const
+{
+    return glm::normalize(lookingAt_ - position_);
+}
+
+
+
 glm::vec3 Camera::getUpVector() const
 {
     return upVector_;
@@ -244,7 +309,7 @@ glm::vec3 Camera::getUpVector() const
 
 
 
-glm::mat4 Camera::getViewMatrix() const
+glm::mat4 Camera::calculateViewMatrix() const
 {
     return glm::lookAt(getPosition(), getLookingAt(), getUpVector());
 }
