@@ -142,7 +142,8 @@ void Camera::pitch(float theta)
 
 
 
-// Yaw the camera along the up vector
+// Yaw the camera typically around the up vector.
+// If aroundUpVector is false, the camera yaws around (0, 0, 1), the global up
 void Camera::yaw(float theta, bool aroundUpVector)
 {
     glm::vec3 vectorOfRotation = aroundUpVector ? upVector_ : glm::vec3(0, 0, 1);
@@ -150,6 +151,7 @@ void Camera::yaw(float theta, bool aroundUpVector)
 
     glm::vec3 lookVector = lookingAt_ - position_;
     lookVector = (rotationMatrix * glm::vec4(lookVector, 1)).xyz();
+    upVector_  = (rotationMatrix * glm::vec4(upVector_,  1)).xyz();
     lookingAt_ = position_ + lookVector;
 }
 
