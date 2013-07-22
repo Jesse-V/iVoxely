@@ -60,7 +60,7 @@ void Model::saveAs(const ProgramPtr& program)
             checkGlError();
         });
 
-    std::cout << ".. done saving program." << std::endl;
+    std::cout << "... done saving program." << std::endl;
 }
 
 

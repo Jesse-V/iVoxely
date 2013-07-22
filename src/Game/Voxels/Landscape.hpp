@@ -12,7 +12,7 @@ class Landscape
 {
     public:
         void generateChunk(const std::shared_ptr<Scene>& scene);
-        void addCube(Cube::Type type, int x, int y, int z,
+        void addCube(const std::shared_ptr<Cube>& cube,
                      const std::shared_ptr<Scene>& scene
         );
 

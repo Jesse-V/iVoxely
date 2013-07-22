@@ -11,12 +11,15 @@ SampledBuffer::SampledBuffer(
     const std::vector<GLfloat>& coordinateMap):
     coordinateMap_(coordinateMap)
 {
+    std::cout << "Loading image from " << imagePath << " ...";
     if (strHasEnding(imagePath, ".png"))
         loadPNG(imagePath);
     else if (strHasEnding(imagePath, ".bmp"))
         loadBMP(imagePath);
     else
         throw std::runtime_error("Unrecognized file extension for " + imagePath);
+
+    std::cout << " done" << std::endl;
 }
 
 

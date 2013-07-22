@@ -39,17 +39,7 @@ void Scene::addLight(const std::shared_ptr<Light>& light)
 {
     assertModelsContainNormalBuffers();
     lights_.push_back(light);
-/*
-    for (auto keyIterator = map_.begin(); keyIterator != map_.end(); 
-        keyIterator = map_.equal_range(keyIterator->first).second)
-    {
-        auto model = keyIterator->second;
-        auto program = ShaderManager::createProgram(model,
-            getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_);
-
-        model->saveAs(program);
-    }*/
-
+    
     std::cout << "Successfully added a Light to the Scene." << std::endl;
 }
 

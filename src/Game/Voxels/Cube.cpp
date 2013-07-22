@@ -35,6 +35,7 @@ std::shared_ptr<Mesh> Cube::getMesh()
     //all Cubes have the same Mesh, but if it's not there, then make it
     if (!mesh_)
         mesh_ = PlyParser::getMesh("Resources/Meshes/cube.ply");
+        
     return mesh_; //return the cached value
 }
 
@@ -84,12 +85,28 @@ std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
 
     auto value = textureCache.find(type_);
     if (value != textureCache.end())
+    {
+        std::cout << "Found TextureBuffer " << value->second << " in cache." << std::endl;
         return value->second; //if cached, return it
+    }
+
+    std::cout << "Generating TextureBuffer for Cube::Type " << (int)type_ << 
+        " ..." << std::endl;
 
     //if not cached, make it, and then cache it
     auto textureBuffer = std::make_shared<TextureBuffer>(
         getTexturePath(type_), getCoordinateMap()
     );
     textureCache[type_] = textureBuffer;
+
+    std::cout << "... done creating TextureBuffer" << std::endl;
+
     return textureBuffer;
+}
+
+
+
+Cube::Type Cube::getType()
+{
+    return type_;
 }

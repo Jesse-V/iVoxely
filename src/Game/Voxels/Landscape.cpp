@@ -18,8 +18,8 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
 
     //Chunk::generateCubes(scene, 0, 0);
 
-    const int MIN = -32;
-    const int MAX = 32;
+    const int MIN = -3;
+    const int MAX = 3;
 
     //player should be 8 blocks tall (vs 2 in Minecraft)
     //chunks are 64*64*64
@@ -30,8 +30,12 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
         {
             for (int z = 0; z <= 0; z++)
             {
-                auto type = Cube::Type::STONE;
-                addCube(type, x, y, z, scene);
+                float val = randomFloat(mersenneTwister);
+
+                auto type = val > 0.5 ? Cube::Type::DIRT : Cube::Type::STONE;
+                std::cout << "Creating Cube, type " << (int)type << " ..." << std::endl;
+                auto cube = std::make_shared<Cube>(type, x, y, z);
+                addCube(cube, scene);
             }
         }
     }
@@ -50,28 +54,29 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
 
 
 
-void Landscape::addCube(Cube::Type type, int x, int y, int z,
+void Landscape::addCube(const std::shared_ptr<Cube>& cube,
                         const std::shared_ptr<Scene>& scene
 )
 {
-    auto cube = std::make_shared<Cube>(type, x, y, z);
-
-    auto value = programCache_.find(type);
+    auto value = programCache_.find(cube->getType());
     if (value == programCache_.end())
     { //not in cache
-        std::cout << "Constructing Program for uncached CubeType " << (int)type
-            << " ..." << std::endl;
+        std::cout << "Constructing Program for uncached CubeType " << 
+            (int)cube->getType() << " ..." << std::endl;
+
         auto program = ShaderManager::createProgram(cube,
             scene->getVertexShaderGLSL(), scene->getFragmentShaderGLSL(),
             scene->getLights()
         );
-
         scene->addModel(cube, program, true); //add and saveAs
-        programCache_[type] = program; //add program to cache
+        programCache_[cube->getType()] = program; //add program to cache
+
         std::cout << "... done constructing Program. Cached it." << std::endl;
     }
     else
     { //already in cache
+        std::cout << "Found Program " << value->second->getHandle() << " in cache." << std::endl;
         scene->addModel(cube, value->second, false); //add, already saved
     }
+    std::cout << "... done adding cube" << std::endl;
 }
