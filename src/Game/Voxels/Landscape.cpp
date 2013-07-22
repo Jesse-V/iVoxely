@@ -33,7 +33,7 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
                 float val = randomFloat(mersenneTwister);
 
                 auto type = val > 0.5 ? Cube::Type::DIRT : Cube::Type::STONE;
-                std::cout << "Creating Cube, type " << (int)type << " ..." << std::endl;
+                std::cout << "Adding Cube, type " << (int)type << " ..." << std::endl;
                 auto cube = std::make_shared<Cube>(type, x, y, z);
                 addCube(cube, scene);
             }
@@ -61,8 +61,7 @@ void Landscape::addCube(const std::shared_ptr<Cube>& cube,
     auto value = programCache_.find(cube->getType());
     if (value == programCache_.end())
     { //not in cache
-        std::cout << "Constructing Program for uncached CubeType " << 
-            (int)cube->getType() << " ..." << std::endl;
+        std::cout << "No Program found in cache. Constructing... " << std::endl;
 
         auto program = ShaderManager::createProgram(cube,
             scene->getVertexShaderGLSL(), scene->getFragmentShaderGLSL(),

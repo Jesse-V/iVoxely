@@ -12,6 +12,7 @@ SampledBuffer::SampledBuffer(
     coordinateMap_(coordinateMap)
 {
     std::cout << "Loading image from " << imagePath << " ...";
+    
     if (strHasEnding(imagePath, ".png"))
         loadPNG(imagePath);
     else if (strHasEnding(imagePath, ".bmp"))

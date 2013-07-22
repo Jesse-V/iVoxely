@@ -59,6 +59,15 @@ SnippetPtr TextureBuffer::getVertexShaderGLSL()
     );
 }
 
+#include <iostream>
+void TextureBuffer::derp()
+{
+    std::cout << "Texture image: ";
+    for (int j = 0; j < 80; j++)
+        std::cout << data_[j];
+    std::cout << std::endl;
+}
+
 
 
 SnippetPtr TextureBuffer::getFragmentShaderGLSL()

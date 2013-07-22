@@ -34,7 +34,11 @@ std::shared_ptr<Mesh> Cube::getMesh()
 {
     //all Cubes have the same Mesh, but if it's not there, then make it
     if (!mesh_)
+    {
+        std::cout << "Cube Mesh not initialized. Creating... " << std::endl;
         mesh_ = PlyParser::getMesh("Resources/Meshes/cube.ply");
+        std::cout << "... done loading Cube Mesh." << std::endl;
+    }
         
     return mesh_; //return the cached value
 }
@@ -49,7 +53,12 @@ std::shared_ptr<NormalBuffer> Cube::getNormalBuffer()
 
     //all Cubes have the same NormalBuffer, so we can cache it
     if (!normalBuffer_)
+    {
+        std::cout << "Cube NormalBuffer not initialized. Creating... " << std::endl;
         normalBuffer_ = std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWE(mesh_));
+        std::cout << "... done creating Cube NormalBuffer." << std::endl;
+    }
+    
     return normalBuffer_;
 }
 
@@ -97,6 +106,7 @@ std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
     auto textureBuffer = std::make_shared<TextureBuffer>(
         getTexturePath(type_), getCoordinateMap()
     );
+    std::cout << "Added TextureBuffer " << textureBuffer << " to cache." << std::endl;
     textureCache[type_] = textureBuffer;
 
     std::cout << "... done creating TextureBuffer" << std::endl;

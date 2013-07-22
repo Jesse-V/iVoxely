@@ -29,7 +29,11 @@ void Scene::addModel(const ModelPtr& model)
 void Scene::addModel(const ModelPtr& model, const ProgramPtr& program, bool save)
 {
     if (save)
+    {
         model->saveAs(program);
+        std::cout << "Saved Model " << model << " under " << program->getHandle() << std::endl;
+    }
+        
     map_.insert(ProgramModelMultimap::value_type(program, model));
 }
 
@@ -39,7 +43,7 @@ void Scene::addLight(const std::shared_ptr<Light>& light)
 {
     assertModelsContainNormalBuffers();
     lights_.push_back(light);
-    
+
     std::cout << "Successfully added a Light to the Scene." << std::endl;
 }
 
@@ -73,7 +77,7 @@ void Scene::sync()
     }
 }
 
-
+#include "Modeling/DataBuffers/SampledBuffers/TextureBuffer.hpp"
 
 void Scene::render()
 {
@@ -84,9 +88,31 @@ void Scene::render()
         {
             auto programHandle = pair.first->getHandle();
             auto model = pair.second;
+            std::cout << "Rendering " << model << " under program " << programHandle;
+            
+            BufferList list = model->getOptionalDataBuffers();
+            std::cout << ": { ";
+            for_each (list.begin(), list.end(),
+                [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
+                {
+                    //std::cout << typeid(*buffer).name() << " ";
+                    std::cout << buffer << "(" << typeid(*buffer).name() << ") ";
+                }
+            );
+
+            std::cout << "}" << std::endl;
+
+            list[1]->derp();
+
+
             model->render(glGetUniformLocation(programHandle, "modelMatrix"));
         }
     );
+
+    std::cout << std::endl;
+
+    //if (lights_.size() > 0)
+    //    throw std::runtime_error("DERP");
 }
 
 
