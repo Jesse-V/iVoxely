@@ -38,9 +38,7 @@ class Model
         void setRenderMode(GLenum newMode);
         void render(GLint modelMatrixID);
 
-        virtual ProgramPtr getProgram();
         BufferList getOptionalDataBuffers();
-        bool isStoredOnGPU();
 
     private:
         void enableDataBuffers();
@@ -49,9 +47,8 @@ class Model
     protected:
         std::shared_ptr<Mesh> mesh_;
         BufferList optionalDBs_;
-        ProgramPtr renderingProgram_;
         glm::mat4 modelMatrix_;
-        bool isVisible_, isStoredOnGPU_;
+        bool isVisible_;
         GLenum renderMode_;
 };
 

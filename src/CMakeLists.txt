@@ -17,6 +17,7 @@ add_executable(ivoxely
     Game/Player.cpp
     Game/Voxels/Cube.cpp
     Game/Voxels/Chunk.cpp
+    Game/Voxels/Landscape.cpp
     World/Scene.cpp
     World/Camera.cpp
     World/Light.cpp

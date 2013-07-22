@@ -17,22 +17,20 @@ Scene::Scene(const std::shared_ptr<Camera>& camera):
 
 
 
-void Scene::addModel(const std::shared_ptr<Model>& model)
+void Scene::addModel(const ModelPtr& model)
 {
-    if (!model->isStoredOnGPU())
-    {
-        auto program = model->getProgram();
-        if (!program)
-        {
-            program = ShaderManager::createProgram(model,
-                         getVertexShaderGLSL(), getFragmentShaderGLSL(),
-                         lights_);
-        }
-        
-        model->saveAs(program);
-    }
+    addModel(model, ShaderManager::createProgram(model,
+        getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_)
+    );
+}
 
-    map_.insert(ProgramModelMultimap::value_type(model->getProgram(), model));
+
+
+void Scene::addModel(const ModelPtr& model, const ProgramPtr& program, bool save)
+{
+    if (save)
+        model->saveAs(program);
+    map_.insert(ProgramModelMultimap::value_type(program, model));
 }
 
 
@@ -41,6 +39,17 @@ void Scene::addLight(const std::shared_ptr<Light>& light)
 {
     assertModelsContainNormalBuffers();
     lights_.push_back(light);
+/*
+    for (auto keyIterator = map_.begin(); keyIterator != map_.end(); 
+        keyIterator = map_.equal_range(keyIterator->first).second)
+    {
+        auto model = keyIterator->second;
+        auto program = ShaderManager::createProgram(model,
+            getVertexShaderGLSL(), getFragmentShaderGLSL(), lights_);
+
+        model->saveAs(program);
+    }*/
+
     std::cout << "Successfully added a Light to the Scene." << std::endl;
 }
 
@@ -76,7 +85,6 @@ void Scene::sync()
 
 
 
-//render all models and lights in the scene, as viewed from the camera_
 void Scene::render()
 {
     sync();
@@ -132,6 +140,13 @@ void Scene::syncLighting(GLuint handle)
 
 
 
+void Scene::ensureModelIsStored(const ModelPtr& model)
+{
+    
+}
+
+
+
 SnippetPtr Scene::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>(
@@ -143,8 +158,7 @@ SnippetPtr Scene::getVertexShaderGLSL()
             uniform mat4 viewMatrix, projMatrix; //Camera view and projection matrices
             uniform mat4 modelMatrix; //matrix transforming model mesh into world space
 
-            varying vec3 pos_world;
-            varying vec3 eyedirection_camera;
+            varying float render;
         ).",
         R".(
             //Scene methods
@@ -157,10 +171,10 @@ SnippetPtr Scene::getVertexShaderGLSL()
         R".(
             //Scene main method code
             gl_Position = projectVertex();
-            pos_world = (modelMatrix * vec4(vertex, 1)).xyz; //Convert from model space to world space
-
-            vec3 vpos_camera = (viewMatrix * modelMatrix * vec4(vertex, 1)).xyz;
-            eyedirection_camera = -vpos_camera;
+            
+            render = 0;
+            if ((viewMatrix * modelMatrix * vec4(vertex, 1)).z < 0)
+                render = 1;
         )."
     );
 }
@@ -177,9 +191,6 @@ SnippetPtr Scene::getFragmentShaderGLSL()
             uniform vec3 ambientLight;
             uniform mat4 viewMatrix, projMatrix; //Camera view and projection matrices
             uniform mat4 modelMatrix; //matrix transforming model mesh into world space
-            varying vec3 pos_world;
-
-            varying vec4 fragmentColor;
 
             struct Colors
             {

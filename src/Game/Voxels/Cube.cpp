@@ -9,7 +9,6 @@
 
 std::shared_ptr<Mesh> Cube::mesh_;
 std::shared_ptr<NormalBuffer> Cube::normalBuffer_;
-std::unordered_map<Cube::Type, ProgramPtr, Cube::CubeTypeHash> Cube::programCache_;
 
 
 Cube::Cube(Type type, int x, int y, int z) :
@@ -97,19 +96,11 @@ std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
 
 
 
-ProgramPtr Cube::getProgram()
-{
-    auto value = programCache_.find(type_);
-    if (value != programCache_.end())
-        return value->second; //if it's cached, return it
-
-    return nullptr; //we can't return or create it at this point
-}
-
-
-
+/*
 void Cube::saveAs(const ProgramPtr& program)
 {
+    static std::unordered_map<Type, ProgramPtr, CubeTypeHash> programCache_;
+
     auto value = programCache_.find(type_); //look for it in cache
 
     //use and store it if it isn't in the cache
@@ -118,6 +109,5 @@ void Cube::saveAs(const ProgramPtr& program)
         Model::saveAs(program);
         programCache_[type_] = program;
     }
-
-    isStoredOnGPU_ = true;
 }
+*/

@@ -1,4 +1,5 @@
 #!/bin/sh
 cmake .
-make
-./ivoxely
+if (make) then
+    ./ivoxely
+fi

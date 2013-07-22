@@ -36,8 +36,8 @@ class Cube : public Model
         std::string getTexturePath(Type type);
         std::shared_ptr<TextureBuffer> getTextureBuffer();
 
-        virtual ProgramPtr getProgram();
-        virtual void saveAs(const ProgramPtr& program);
+        //virtual ProgramPtr getProgram();
+        //virtual void saveAs(const ProgramPtr& program);
 
         static std::shared_ptr<Mesh> getMesh();
         static std::shared_ptr<NormalBuffer> getNormalBuffer();
@@ -51,7 +51,6 @@ class Cube : public Model
 
         static std::shared_ptr<Mesh> mesh_;
         static std::shared_ptr<NormalBuffer> normalBuffer_;
-        static std::unordered_map<Type, ProgramPtr, CubeTypeHash> programCache_;
 };
 
 #endif

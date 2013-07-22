@@ -7,8 +7,8 @@
 
 
 Model::Model(const std::shared_ptr<Mesh>& mesh):
-    mesh_(mesh), renderingProgram_(nullptr), modelMatrix_(glm::mat4()),
-    isVisible_(true), isStoredOnGPU_(false), renderMode_(GL_TRIANGLES)
+    mesh_(mesh), modelMatrix_(glm::mat4()),
+    isVisible_(true), renderMode_(GL_TRIANGLES)
 {}
 
 
@@ -21,9 +21,8 @@ Model::Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs):
 
 Model::Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs,
     GLenum renderMode):
-    mesh_(mesh), optionalDBs_(optionalDBs), renderingProgram_(nullptr),
-    modelMatrix_(glm::mat4()),
-    isVisible_(true), isStoredOnGPU_(false), renderMode_(renderMode)
+    mesh_(mesh), optionalDBs_(optionalDBs), modelMatrix_(glm::mat4()),
+    isVisible_(true), renderMode_(renderMode)
 {
     /*
     std::cout << "Created a Model with { ";
@@ -42,7 +41,6 @@ Model::Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs,
 
 void Model::saveAs(const ProgramPtr& program)
 {
-    renderingProgram_ = program;
     std::cout << "Storing mesh and model data as program #" <<
         program->getHandle() << "... " << std::endl;
 
@@ -63,7 +61,6 @@ void Model::saveAs(const ProgramPtr& program)
         });
 
     std::cout << ".. done saving program." << std::endl;
-    isStoredOnGPU_ = true;
 }
 
 
@@ -91,23 +88,9 @@ void Model::setRenderMode(GLenum newMode)
 
 
 
-ProgramPtr Model::getProgram()
-{
-    return renderingProgram_;
-}
-
-
-
 BufferList Model::getOptionalDataBuffers()
 {
     return optionalDBs_;
-}
-
-
-
-bool Model::isStoredOnGPU()
-{
-    return isStoredOnGPU_;
 }
 
 
@@ -118,8 +101,8 @@ void Model::render(GLint modelMatrixID)
     if (modelMatrixID < 0)
         throw std::runtime_error("Invalid handle passed to Model!");
 
-    if (!isStoredOnGPU_)
-        throw std::runtime_error("Model has not been initialized!");
+    //if (!isStoredOnGPU_)
+    //    throw std::runtime_error("Model has not been initialized!");
 
     if (isVisible_)
     {

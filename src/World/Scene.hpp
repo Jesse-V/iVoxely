@@ -24,7 +24,8 @@ class Scene
 {
     public:
         Scene(const std::shared_ptr<Camera>& camera);
-        void addModel(const std::shared_ptr<Model>& obj);
+        void addModel(const ModelPtr& model);
+        void addModel(const ModelPtr& model, const ProgramPtr& program, bool save = true);
         void addLight(const std::shared_ptr<Light>& light);
         void setCamera(const std::shared_ptr<Camera>& camera);
         void setAmbientLight(const glm::vec3& rgb);
@@ -44,6 +45,7 @@ class Scene
 
     private:
         void syncLighting(GLuint handle);
+        void ensureModelIsStored(const ModelPtr& model);
         void assertModelsContainNormalBuffers();
 
     private:

@@ -9,7 +9,8 @@ std::size_t Light::nLights_ = 0;
 
 
 Light::Light(const glm::vec3& position, const glm::vec3& color, float power):
-    position_(position), color_(color), power_(power), emitting_(true)
+    position_(position), color_(glm::normalize(color)),
+    power_(power), emitting_(true)
 {
     nLights_++;
 }
@@ -87,10 +88,10 @@ void Light::sync(GLuint handle, std::size_t lightID)
     float power = isEmitting() ? getPower() : 0;
     glUniform1f(powerLoc, power);
 
-    //std::cout << handle << " " << lightID << " " << posLoc << " " << colorLoc << " " << powerLoc << std::endl;
+    //std::cout << handle << " " << lightID << " " << nLights_ << " " << posLoc << " " << colorLoc << " " << powerLoc << std::endl;
 
-    if (posLoc < 0 || colorLoc < 0 || powerLoc < 0)
-        throw std::runtime_error("Unable to find Light uniform variables!");
+    //if (posLoc < 0 || colorLoc < 0 || powerLoc < 0)
+    //    throw std::runtime_error("Unable to find Light uniform variables!");
 }
 
 
@@ -100,14 +101,14 @@ SnippetPtr Light::getVertexShaderGLSL()
     return std::make_shared<ShaderSnippet>(
         R".(
             //Light fields
-            varying vec4 fragmentPosition;
+            varying vec3 fragmentPosition;
         ).",
         R".(
             //Light methods
         ).",
         R".(
             //Light main method code
-            fragmentPosition = modelMatrix * vec4(vertex, 1);
+            fragmentPosition = (modelMatrix * vec4(vertex, 1)).xyz;
         )."
     );
 }
@@ -130,11 +131,11 @@ SnippetPtr Light::getFragmentShaderGLSL()
             struct Light
             {
                 vec3 position, color;
-                float power;
+                float power; //its maximum distance of influence
             };
 
             uniform Light lights[)." << nLights_ << R".(];
-            varying vec4 fragmentPosition;
+            varying vec3 fragmentPosition;
         ).";
 
     return std::make_shared<ShaderSnippet>(
@@ -145,16 +146,16 @@ SnippetPtr Light::getFragmentShaderGLSL()
         R".(
             //Light main method code
             colors.lightBlend = vec3(0); //see Scene::getFragmentShaderGLSL()
-            vec3 temp1 = vec3(1), temp2 = vec3(1);
 
             for (int j = 0; j < lights.length(); j++)
             {
-                vec4 pos = vec4(lights[j].position, 1);
-                float distance = length(fragmentPosition.xyz - pos.xyz);
+                float distance = length(fragmentPosition - lights[j].position);
                 float scaledDistance = distance / lights[j].power;
                 vec3 luminosity = lights[j].color * (1 - scaledDistance);
                 colors.lightBlend += clamp(luminosity, 0, 1);
             }
+
+            //colors.lightBlend = normalize(colors.lightBlend);
         )."
     );
 }

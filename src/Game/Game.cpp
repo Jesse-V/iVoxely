@@ -1,9 +1,8 @@
 
 #include "Game.hpp"
-#include "Voxels/Cube.hpp"
+#include "Voxels/Landscape.hpp"
 #include <memory>
 #include <thread>
-#include <algorithm>
 #include <iostream>
 
 
@@ -16,8 +15,8 @@ Game::Game(int screenWidth, int screenHeight):
     glCullFace(GL_BACK);
 
     reportFPS();
-    addModels();
     addLight();
+    addModels();
 
     glutSetCursor(GLUT_CURSOR_NONE); //hides the mouse
 }
@@ -49,42 +48,8 @@ void Game::addModels()
 
 void Game::addCubes()
 {
-    static std::mt19937 mersenneTwister; //Mersenne Twister PRNG. WAY better randomness!
-    static std::uniform_real_distribution<float> randomFloat(0, 1);
-
-    std::cout << "Currently " << scene_->getModelCount() <<
-        " Models in Scene. Adding Cubes... " << std::endl;
-
-    //Chunk::generateCubes(scene_, 0, 0);
-
-    const int MIN = -32;
-    const int MAX = 32;
-
-    //player should be 8 blocks tall (vs 2 in Minecraft)
-    //chunks are 64*64*64
-
-    for (int x = MIN; x < MAX; x++)
-    {
-        for (int y = MIN; y < MAX; y++)
-        {
-            for (int z = -3; z <= 0; z++)
-            {
-                auto cube = std::make_shared<Cube>(Cube::Type::STONE, x, y, z);
-                scene_->addModel(cube);
-            }
-        }
-    }
-    
-    std::cout << "... done adding cubes. Scene now has " <<
-        scene_->getModelCount() << " Models." << std::endl;
-
-    if (scene_->getModelCount() > 9000)
-        std::cout << "It's over 9000!!!" << std::endl;
-
-    if (scene_->getModelCount() > 90000)
-        std::cout << "WARNING: likely FPS issues rendering that many cubes!" << std::endl;
-
-    checkGlError();
+    auto landscape = std::make_shared<Landscape>();
+    landscape->generateChunk(scene_);
 }
 
 
@@ -99,7 +64,7 @@ void Game::addLight()
         2.0f                //power
     );
 
-    //scene_->addLight(light1);
+    scene_->addLight(light1);
 
     auto light2 = std::make_shared<Light>(
         scene_->getCamera()->getPosition(), //position
@@ -107,7 +72,7 @@ void Game::addLight()
         2.0f                                //power
     );
 
-    //scene_->addLight(light2);
+    scene_->addLight(light2);
 
     checkGlError();
 }
