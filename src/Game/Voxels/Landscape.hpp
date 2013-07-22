@@ -6,7 +6,7 @@
 #include "World/Scene.hpp"
 #include <unordered_map>
 
-typedef std::unordered_map<Cube::Type, ProgramPtr, Cube::CubeTypeHash> ProgramCache;
+typedef std::unordered_map<Cube::Type, ProgramPtr, Cube::TypeHash> ProgramCache;
 
 class Landscape
 {

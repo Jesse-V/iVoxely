@@ -23,7 +23,7 @@ class Cube : public Model
             DIRT, STONE
         };
 
-        struct CubeTypeHash
+        struct TypeHash
         {
             std::size_t operator()(const Type& myEnum) const
             {

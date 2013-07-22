@@ -59,6 +59,8 @@ void Landscape::addCube(Cube::Type type, int x, int y, int z,
     auto value = programCache_.find(type);
     if (value == programCache_.end())
     { //not in cache
+        std::cout << "Constructing Program for uncached CubeType " << (int)type
+            << " ..." << std::endl;
         auto program = ShaderManager::createProgram(cube,
             scene->getVertexShaderGLSL(), scene->getFragmentShaderGLSL(),
             scene->getLights()
@@ -66,7 +68,9 @@ void Landscape::addCube(Cube::Type type, int x, int y, int z,
 
         scene->addModel(cube, program, true); //add and saveAs
         programCache_[type] = program; //add program to cache
+        std::cout << "... done constructing Program. Cached it." << std::endl;
     }
+    else
     { //already in cache
         scene->addModel(cube, value->second, false); //add, already saved
     }

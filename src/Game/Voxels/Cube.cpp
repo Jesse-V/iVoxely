@@ -80,7 +80,7 @@ std::string Cube::getTexturePath(Type type)
 
 std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
 {
-    static std::unordered_map<Type, std::shared_ptr<TextureBuffer>, CubeTypeHash> textureCache;
+    static std::unordered_map<Type, std::shared_ptr<TextureBuffer>, TypeHash> textureCache;
 
     auto value = textureCache.find(type_);
     if (value != textureCache.end())
@@ -93,21 +93,3 @@ std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
     textureCache[type_] = textureBuffer;
     return textureBuffer;
 }
-
-
-
-/*
-void Cube::saveAs(const ProgramPtr& program)
-{
-    static std::unordered_map<Type, ProgramPtr, CubeTypeHash> programCache_;
-
-    auto value = programCache_.find(type_); //look for it in cache
-
-    //use and store it if it isn't in the cache
-    if (value == programCache_.end())
-    {
-        Model::saveAs(program);
-        programCache_[type_] = program;
-    }
-}
-*/
