@@ -4,6 +4,7 @@
 #include "Modeling/DataBuffers/NormalBuffer.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include <algorithm>
+#include <chrono>
 #include <sstream>
 #include <iostream>
 
@@ -79,8 +80,11 @@ void Scene::sync()
 
 #include "Modeling/DataBuffers/SampledBuffers/TextureBuffer.hpp"
 
-void Scene::render()
+float Scene::render()
 {
+    using namespace std::chrono;
+    auto start = steady_clock::now();
+
     sync();
 
     for_each (map_.begin(), map_.end(),
@@ -88,6 +92,8 @@ void Scene::render()
         {
             auto programHandle = pair.first->getHandle();
             auto model = pair.second;
+
+            /*
             std::cout << "Rendering " << model << " under program " << programHandle;
             
             BufferList list = model->getOptionalDataBuffers();
@@ -104,15 +110,15 @@ void Scene::render()
 
             list[1]->derp();
 
-
+            */
             model->render(glGetUniformLocation(programHandle, "modelMatrix"));
         }
     );
 
-    std::cout << std::endl;
+    //std::cout << std::endl;
 
-    //if (lights_.size() > 0)
-    //    throw std::runtime_error("DERP");
+    auto diff = duration_cast<microseconds>(steady_clock::now() - start).count();
+    return diff / 1000.0f;
 }
 
 

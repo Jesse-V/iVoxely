@@ -30,7 +30,7 @@ class Scene
         void setCamera(const std::shared_ptr<Camera>& camera);
         void setAmbientLight(const glm::vec3& rgb);
         void sync();
-        void render(); //iterate through all Programs to render
+        float render(); //iterate through all Programs to render
 
         std::shared_ptr<Camera> getCamera();
         int getModelCount();

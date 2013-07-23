@@ -18,8 +18,8 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
 
     //Chunk::generateCubes(scene, 0, 0);
 
-    const int MIN = -3;
-    const int MAX = 3;
+    const int MIN = -32;
+    const int MAX = 32;
 
     //player should be 8 blocks tall (vs 2 in Minecraft)
     //chunks are 64*64*64
@@ -28,12 +28,12 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
     {
         for (int y = MIN; y < MAX; y++)
         {
-            for (int z = 0; z <= 0; z++)
+            for (int z = -15; z <= 0; z++)
             {
                 float val = randomFloat(mersenneTwister);
 
                 auto type = val > 0.5 ? Cube::Type::DIRT : Cube::Type::STONE;
-                std::cout << "Adding Cube, type " << (int)type << " ..." << std::endl;
+                //std::cout << "Adding Cube, type " << (int)type << " ..." << std::endl;
                 auto cube = std::make_shared<Cube>(type, x, y, z);
                 addCube(cube, scene);
             }
@@ -74,8 +74,8 @@ void Landscape::addCube(const std::shared_ptr<Cube>& cube,
     }
     else
     { //already in cache
-        std::cout << "Found Program " << value->second->getHandle() << " in cache." << std::endl;
+        //std::cout << "Found Program " << value->second->getHandle() << " in cache." << std::endl;
         scene->addModel(cube, value->second, false); //add, already saved
     }
-    std::cout << "... done adding cube" << std::endl;
+    //std::cout << "... done adding cube" << std::endl;
 }

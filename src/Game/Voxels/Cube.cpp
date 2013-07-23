@@ -95,7 +95,7 @@ std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
     auto value = textureCache.find(type_);
     if (value != textureCache.end())
     {
-        std::cout << "Found TextureBuffer " << value->second << " in cache." << std::endl;
+        //std::cout << "Found TextureBuffer " << value->second << " in cache." << std::endl;
         return value->second; //if cached, return it
     }
 

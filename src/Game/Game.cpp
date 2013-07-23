@@ -8,17 +8,17 @@
 
 Game::Game(int screenWidth, int screenHeight):
     scene_(std::make_shared<Scene>(getCamera(screenWidth, screenHeight))),
-    player_(std::make_shared<Player>(scene_)), frameCount_(0)
+    player_(std::make_shared<Player>(scene_)), timeSpentRendering_(0), frameCount_(0)
 {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
-    reportFPS();
     addLight();
     addModels();
 
     glutSetCursor(GLUT_CURSOR_NONE); //hides the mouse
+    reportFPS();
 }
 
 
@@ -29,8 +29,16 @@ void Game::reportFPS()
         while (true)
         {
             sleep(1000);
-            std::cout << "FPS: " << frameCount_ << std::endl;
+
+            float msPerFrame = timeSpentRendering_ / frameCount_;
+            std::cout << frameCount_ << " FPS, spent " <<
+                timeSpentRendering_ << " ms rendering, avg " << 
+                msPerFrame << " ms/frame, avg " <<
+                (scene_->getModelCount() / msPerFrame) * 1000 << " Models/sec"
+                << std::endl;
+
             frameCount_ = 0;
+            timeSpentRendering_ = 0;
         }
     });
 
@@ -107,7 +115,7 @@ void Game::render()
     glClearColor(.39f, 0.58f, 0.93f, 0.0f); //nice blue background
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    scene_->render();
+    timeSpentRendering_ += scene_->render();
     frameCount_++;
 
     glutSwapBuffers();

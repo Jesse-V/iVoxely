@@ -43,6 +43,7 @@ class Game
 
         std::shared_ptr<Scene> scene_;
         std::shared_ptr<Player> player_;
+        float timeSpentRendering_;
         int frameCount_;
 };
 
