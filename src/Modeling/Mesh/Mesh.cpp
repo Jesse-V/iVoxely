@@ -91,7 +91,7 @@ std::vector<Triangle> Mesh::getTriangles()
 {
     if (!indexBuffer_)
         return defaultTriangles_;
-    return indexBuffer_->getTriangles();
+    return indexBuffer_->reinterpretAsTriangles();
 }
 
 
@@ -104,12 +104,9 @@ void Mesh::generateDefaultTriangles()
 
     defaultTriangles_.reserve(vCount / 3);
     unsigned int vertexIndex = 0;
-    std::generate(defaultTriangles_.begin(), defaultTriangles_.end(),
-        [&]()
-        {
-            Triangle tri(vertexIndex, vertexIndex + 1, vertexIndex + 2);
-            vertexIndex += 3;
-            return tri;
-        }
-    );
+    std::generate(defaultTriangles_.begin(), defaultTriangles_.end(), [&]() {
+        Triangle tri(vertexIndex, vertexIndex + 1, vertexIndex + 2);
+        vertexIndex += 3;
+        return tri;
+    });
 }

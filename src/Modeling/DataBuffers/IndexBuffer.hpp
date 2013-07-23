@@ -4,7 +4,9 @@
 
 #include "DataBuffer.hpp"
 #include "Modeling/Mesh/Triangle.struct"
+#include "Modeling/Mesh/Quad.struct"
 #include <vector>
+#include <iostream>
 
 /**
     A IndexBuffer defines a set of Triangles by referencing triplets of points
@@ -17,6 +19,7 @@ class IndexBuffer : public DataBuffer
 {
     public:
         IndexBuffer(const std::vector<Triangle>& triangles);
+        IndexBuffer(const std::vector<Quad>& quads);
         virtual void initialize(GLuint programHandle);
         virtual void store();
         virtual void enable();
@@ -26,10 +29,11 @@ class IndexBuffer : public DataBuffer
         virtual SnippetPtr getVertexShaderGLSL();
         virtual SnippetPtr getFragmentShaderGLSL();
 
-        std::vector<Triangle> getTriangles();
+        std::vector<Triangle> reinterpretAsTriangles();
+        std::vector<Quad> reinterpretAsQuads();
 
     private:
-        std::vector<Triangle> triangles_; //indices for triangles
+        std::vector<GLuint> indices;
         GLuint meshBuffer_;
 };
 

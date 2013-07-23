@@ -8,7 +8,8 @@
 
 Game::Game(int screenWidth, int screenHeight):
     scene_(std::make_shared<Scene>(getCamera(screenWidth, screenHeight))),
-    player_(std::make_shared<Player>(scene_)), timeSpentRendering_(0), frameCount_(0)
+    player_(std::make_shared<Player>(scene_)),
+    timeSpentRendering_(0), frameCount_(0)
 {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
