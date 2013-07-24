@@ -27,8 +27,6 @@ class NormalBuffer : public OptionalDataBuffer
         virtual void enable();
         virtual void disable();
 
-        virtual void derp() {}
-
         virtual SnippetPtr getVertexShaderGLSL();
         virtual SnippetPtr getFragmentShaderGLSL();
 

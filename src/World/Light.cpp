@@ -72,7 +72,7 @@ void Light::setEmitting(bool emitting)
     emitting_ = emitting;
 }
 
-#include <iostream>
+
 
 void Light::sync(GLuint handle, std::size_t lightID)
 {

@@ -6,7 +6,6 @@
 #include "Modeling/Mesh/Triangle.struct"
 #include "Modeling/Mesh/Quad.struct"
 #include <vector>
-#include <iostream>
 
 /**
     A IndexBuffer defines a set of Triangles by referencing triplets of points

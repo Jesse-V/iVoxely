@@ -23,8 +23,6 @@ class TextureBuffer : public SampledBuffer
         virtual void disable();
         virtual void store();
 
-        virtual void derp();
-
         virtual SnippetPtr getVertexShaderGLSL();
         virtual SnippetPtr getFragmentShaderGLSL();
 

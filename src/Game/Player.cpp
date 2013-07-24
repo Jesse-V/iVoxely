@@ -1,7 +1,6 @@
 
 #include "Player.hpp"
 #include "World/Camera.hpp"
-#include <iostream>
 
 
 Player::Player(std::shared_ptr<Scene> scene):

@@ -1,6 +1,5 @@
 
 #include "ShaderSnippet.hpp"
-#include <iostream>
 
 
 ShaderSnippet::ShaderSnippet():

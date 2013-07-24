@@ -5,9 +5,6 @@
 #include "DataBuffer.hpp"
 
 class OptionalDataBuffer : public DataBuffer
-{
-    public:
-        virtual void derp() = 0;
-};
+{}; //simply categorical
 
 #endif
