@@ -153,7 +153,7 @@ SnippetPtr Scene::getVertexShaderGLSL()
             // ********* VERTEX SHADER ********* \\
 
             //Scene fields
-            attribute vec3 vertex; //position of the vertex
+            in vec3 vertex; //position of the vertex
             uniform mat4 viewMatrix, projMatrix; //Camera view and projection matrices
             uniform mat4 modelMatrix; //matrix transforming model mesh into world space
         ).",
