@@ -90,8 +90,8 @@ void Light::sync(GLuint handle, std::size_t lightID)
 
     //std::cout << handle << " " << lightID << " " << nLights_ << " " << posLoc << " " << colorLoc << " " << powerLoc << std::endl;
 
-    //if (posLoc < 0 || colorLoc < 0 || powerLoc < 0)
-    //    throw std::runtime_error("Unable to find Light uniform variables!");
+    if (posLoc < 0 || colorLoc < 0 || powerLoc < 0)
+        throw std::runtime_error("Unable to find Light uniform variables!");
 }
 
 

@@ -20,10 +20,8 @@ MeshPtr PlyParser::getMesh(const std::string& fileName)
     VertexBufferPtr vertices;
     IndexCollection indices;
 
-    std::cout << "Loading PLY model from " << fileName << ": ";
+    std::cout << "Parsing PLY model from " << fileName << " ... ";
     auto pieces = seperatePly(readFile(fileName));
-
-    std::cout << "parsing... ";
 
     //use threading to parallelize the parsing
     std::thread t1([&]() {

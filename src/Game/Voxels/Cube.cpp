@@ -34,11 +34,7 @@ std::shared_ptr<Mesh> Cube::getMesh()
 {
     //all Cubes have the same Mesh, but if it's not there, then make it
     if (!mesh_)
-    {
-        std::cout << "Cube Mesh not initialized. Creating... " << std::endl;
         mesh_ = PlyParser::getMesh("Resources/Meshes/cube.ply");
-        std::cout << "... done loading Cube Mesh." << std::endl;
-    }
         
     return mesh_; //return the cached value
 }
@@ -53,11 +49,7 @@ std::shared_ptr<NormalBuffer> Cube::getNormalBuffer()
 
     //all Cubes have the same NormalBuffer, so we can cache it
     if (!normalBuffer_)
-    {
-        std::cout << "Cube NormalBuffer not initialized. Creating... " << std::endl;
         normalBuffer_ = std::make_shared<NormalBuffer>(NormalBuffer::calcNormalsMWE(mesh_));
-        std::cout << "... done creating Cube NormalBuffer." << std::endl;
-    }
     
     return normalBuffer_;
 }
@@ -66,11 +58,12 @@ std::shared_ptr<NormalBuffer> Cube::getNormalBuffer()
 
 std::vector<GLfloat> Cube::getCoordinateMap()
 {
-    static std::vector<GLfloat> textureCoordinateMap_;
+    static std::vector<GLfloat> texCoordMap_;
+    static const auto SOURCE = "Resources/Coordinate Maps/cube.coord";
 
-    if (!textureCoordinateMap_.size())
-        textureCoordinateMap_ = CoordinateMapReader::getMap("Resources/Coordinate Maps/cube.coord");
-    return textureCoordinateMap_; //return the cached value
+    if (!texCoordMap_.size())
+        texCoordMap_ = CoordinateMapReader::getMap(SOURCE);
+    return texCoordMap_; //return the cached value
 }
 
 
@@ -94,22 +87,16 @@ std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
 
     auto value = textureCache.find(type_);
     if (value != textureCache.end())
-    {
-        //std::cout << "Found TextureBuffer " << value->second << " in cache." << std::endl;
         return value->second; //if cached, return it
-    }
-
-    std::cout << "Generating TextureBuffer for Cube::Type " << (int)type_ << 
-        " ..." << std::endl;
 
     //if not cached, make it, and then cache it
     auto textureBuffer = std::make_shared<TextureBuffer>(
         getTexturePath(type_), getCoordinateMap()
     );
-    std::cout << "Added TextureBuffer " << textureBuffer << " to cache." << std::endl;
+    
     textureCache[type_] = textureBuffer;
 
-    std::cout << "... done creating TextureBuffer" << std::endl;
+    std::cout << "Cached TextureBuffer for " << getTypeStr() << "." << std::endl;
 
     return textureBuffer;
 }
@@ -119,4 +106,16 @@ std::shared_ptr<TextureBuffer> Cube::getTextureBuffer()
 Cube::Type Cube::getType()
 {
     return type_;
+}
+
+
+
+std::string Cube::getTypeStr()
+{
+    if (type_ == Type::DIRT)
+        return "Type::DIRT";
+    if (type_ == Type::STONE)
+        return "Type::STONE";
+
+    throw std::runtime_error("Unknown Cube::Type enum");
 }

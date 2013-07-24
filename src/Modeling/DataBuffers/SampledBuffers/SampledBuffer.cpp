@@ -20,7 +20,7 @@ SampledBuffer::SampledBuffer(
     else
         throw std::runtime_error("Unrecognized file extension for " + imagePath);
 
-    std::cout << " done" << std::endl;
+    std::cout << " done." << std::endl;
 }
 
 
@@ -121,7 +121,7 @@ void SampledBuffer::loadPNG(const std::string& imagePath)
 
     auto pixbuf = image.get_pixbuf();
 
-    imgWidth_ = (int)image.get_width();
+    imgWidth_  = (int)image.get_width();
     imgHeight_ = (int)image.get_height();
 
     int imageSize = imgWidth_ * imgHeight_ * 3;
@@ -130,11 +130,13 @@ void SampledBuffer::loadPNG(const std::string& imagePath)
 
     for (int i = 0; i < imageSize; i += 3)
     {
-        auto pix = pixbuf.get_pixel((i / 3) % imgWidth_, (i / 3) / imgWidth_);
+        int x = (i / 3) % imgWidth_;
+        int y = (i / 3) / imgWidth_;
+        auto pix = pixbuf.get_pixel((std::size_t)x, (std::size_t)y);
 
-        data_[i] = pix.blue;
-        data_[i+1] = pix.green;
-        data_[i+2] = pix.red;
+        data_[i + 0] = pix.blue;
+        data_[i + 1] = pix.green;
+        data_[i + 2] = pix.red;
     }
 
     isValid_ = true;

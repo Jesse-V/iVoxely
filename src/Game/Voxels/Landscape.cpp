@@ -33,7 +33,6 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
                 float val = randomFloat(mersenneTwister);
 
                 auto type = val > 0.5 ? Cube::Type::DIRT : Cube::Type::STONE;
-                //std::cout << "Adding Cube, type " << (int)type << " ..." << std::endl;
                 auto cube = std::make_shared<Cube>(type, x, y, z);
                 addCube(cube, scene);
             }
@@ -61,8 +60,7 @@ void Landscape::addCube(const std::shared_ptr<Cube>& cube,
     auto value = programCache_.find(cube->getType());
     if (value == programCache_.end())
     { //not in cache
-        std::cout << "No Program found in cache. Constructing... " << std::endl;
-
+        
         auto program = ShaderManager::createProgram(cube,
             scene->getVertexShaderGLSL(), scene->getFragmentShaderGLSL(),
             scene->getLights()
@@ -70,12 +68,11 @@ void Landscape::addCube(const std::shared_ptr<Cube>& cube,
         scene->addModel(cube, program, true); //add and saveAs
         programCache_[cube->getType()] = program; //add program to cache
 
-        std::cout << "... done constructing Program. Cached it." << std::endl;
+        std::cout << "Cached Program for Cube::Type " << (int)cube->getType() << 
+            "." << std::endl;
     }
     else
     { //already in cache
-        //std::cout << "Found Program " << value->second->getHandle() << " in cache." << std::endl;
         scene->addModel(cube, value->second, false); //add, already saved
     }
-    //std::cout << "... done adding cube" << std::endl;
 }

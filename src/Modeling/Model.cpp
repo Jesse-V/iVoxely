@@ -34,14 +34,12 @@ Model::Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs) :
 
 void Model::saveAs(const ProgramPtr& program)
 {
-    std::cout << "Storing mesh and model data as program #" <<
-        program->getHandle() << "... " << std::endl;
+    std::cout << "Storing Model under Program " << program->getHandle() << ": { ";
 
     mesh_->initialize(program->getHandle());
     mesh_->store();
 
-    std::cout << "Stored " << typeid(*mesh_).name() << ". ";
-    checkGlError();
+    std::cout << typeid(*mesh_).name() << " ";
 
     for_each (optionalDBs_.begin(), optionalDBs_.end(),
         [&](const std::shared_ptr<OptionalDataBuffer>& buffer)
@@ -49,11 +47,11 @@ void Model::saveAs(const ProgramPtr& program)
             buffer->initialize(program->getHandle());
             buffer->store();
 
-            std::cout << "Stored " << typeid(*buffer).name() << ": ";
-            checkGlError();
+            std::cout << typeid(*buffer).name() << " ";
         });
 
-    std::cout << "... done saving program." << std::endl;
+    std::cout << "}" << std::endl;
+    checkGlError();
 }
 
 

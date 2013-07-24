@@ -42,8 +42,6 @@ void Player::onKeyPress(unsigned char key)
     }
 
     scene_->getLights()[0]->setPosition(scene_->getCamera()->getPosition());
-
-    //std::cout << camera->toString() << std::endl;
 }
 
 
@@ -78,8 +76,6 @@ void Player::onSpecialKeyPress(int key)
             camera->constrainedRoll(ROTATION_SPEED);
             break;
     }
-
-    //std::cout << camera->toString() << std::endl;
 }
 
 

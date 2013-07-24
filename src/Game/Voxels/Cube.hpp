@@ -36,6 +36,7 @@ class Cube : public Model
         std::string getTexturePath(Type type);
         std::shared_ptr<TextureBuffer> getTextureBuffer();
         Cube::Type getType();
+        std::string getTypeStr();
 
         //virtual ProgramPtr getProgram();
         //virtual void saveAs(const ProgramPtr& program);
