@@ -156,8 +156,6 @@ SnippetPtr Scene::getVertexShaderGLSL()
             attribute vec3 vertex; //position of the vertex
             uniform mat4 viewMatrix, projMatrix; //Camera view and projection matrices
             uniform mat4 modelMatrix; //matrix transforming model mesh into world space
-
-            varying float render;
         ).",
         R".(
             //Scene methods
@@ -170,10 +168,6 @@ SnippetPtr Scene::getVertexShaderGLSL()
         R".(
             //Scene main method code
             gl_Position = projectVertex();
-            
-            render = 0;
-            if ((viewMatrix * modelMatrix * vec4(vertex, 1)).z < 0)
-                render = 1;
         )."
     );
 }
