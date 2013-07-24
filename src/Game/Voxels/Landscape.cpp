@@ -26,7 +26,7 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
     {
         for (int y = MIN; y < MAX; y++)
         {
-            for (int z = -22; z <= 0; z++)
+            for (int z = -10; z <= 0; z++)
             {
                 float val = randomFloat(mersenneTwister);
 
