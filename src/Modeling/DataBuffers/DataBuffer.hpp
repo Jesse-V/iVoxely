@@ -21,7 +21,6 @@ class DataBuffer : public ShaderUtilizer
         virtual void store() = 0;
         virtual void enable() = 0;
         virtual void disable() = 0;
-        virtual void draw(GLenum mode) = 0;
 };
 
 #endif

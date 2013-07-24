@@ -6,24 +6,17 @@
 #include <iostream>
 
 
-Model::Model(const std::shared_ptr<Mesh>& mesh):
-    mesh_(mesh), modelMatrix_(glm::mat4()),
-    isVisible_(true), renderMode_(GL_TRIANGLES)
+Model::Model(const std::shared_ptr<Mesh>& mesh) :
+    mesh_(mesh), modelMatrix_(glm::mat4()), isVisible_(true)
 {}
 
 
 
-Model::Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs):
-    Model(mesh, optionalDBs, GL_TRIANGLES)
-{}
-
-
-
-Model::Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs,
-    GLenum renderMode):
-    mesh_(mesh), optionalDBs_(optionalDBs), modelMatrix_(glm::mat4()),
-    isVisible_(true), renderMode_(renderMode)
+Model::Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs) :
+    Model(mesh)
 {
+    optionalDBs_ = optionalDBs;
+    
     /*
     std::cout << "Created a Model with { ";
     for_each (optionalDBs_.begin(), optionalDBs_.end(),
@@ -35,7 +28,7 @@ Model::Model(const std::shared_ptr<Mesh>& mesh, const BufferList& optionalDBs,
 
     std::cout << "} OptionalDataBuffers." << std::endl;
     */
-} //Scene will call saveAs
+}
 
 
 
@@ -81,13 +74,6 @@ void Model::setModelMatrix(const glm::mat4& matrix)
 
 
 
-void Model::setRenderMode(GLenum newMode)
-{
-    renderMode_ = newMode;
-}
-
-
-
 BufferList Model::getOptionalDataBuffers()
 {
     return optionalDBs_;
@@ -109,7 +95,7 @@ void Model::render(GLint modelMatrixID)
         glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, glm::value_ptr(modelMatrix_));
 
         enableDataBuffers();
-        mesh_->draw(renderMode_);
+        mesh_->draw();
         disableDataBuffers();
     }
 }

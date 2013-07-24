@@ -10,6 +10,11 @@
 #include <memory>
 #include <string>
 
+typedef std::shared_ptr<Mesh> MeshPtr;
+typedef std::shared_ptr<VertexBuffer> VertexBufferPtr;
+typedef std::shared_ptr<IndexBuffer> IndexBufferPtr;
+typedef std::pair<IndexBufferPtr, GLenum> IndexCollection;
+
 /**
     A PlyParser implements a reader for .ply files. PLY files are essentially
     defined as a list of points in space, followed by a list of sets of indices
@@ -25,13 +30,13 @@
 class PlyParser
 {
     public:
-        static std::shared_ptr<Mesh> getMesh(const std::string& fileName);
+        static MeshPtr getMesh(const std::string& fileName);
         static std::string readFile(const std::string& fileContents);
 
     private:
         static std::vector<std::string> seperatePly(const std::string& fileContents);
-        static std::vector<glm::vec3> parseVertices(const std::string& verticesData);
-        static std::vector<Triangle> parseTriangles(const std::string& triangleData);
+        static VertexBufferPtr parseVertices(const std::string& verticesStr);
+        static IndexCollection parseIndices(const std::string& facesStr);
         static std::pair<int, int> getSizes(const std::string& header);
         static int getLastWordAsInt(const std::string& str);
 };

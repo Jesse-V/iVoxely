@@ -4,17 +4,16 @@
 #include <stdexcept>
 
 
-Mesh::Mesh(const std::shared_ptr<VertexBuffer>& vertexBuffer):
-    vertexBuffer_(vertexBuffer), indexBuffer_(nullptr)
-{
-    generateDefaultTriangles();
-}
+Mesh::Mesh(const std::shared_ptr<VertexBuffer>& vertexBuffer, GLenum mode) :
+    vertexBuffer_(vertexBuffer), indexBuffer_(nullptr), renderingMode_(mode)
+{}
 
 
 
 Mesh::Mesh(const std::shared_ptr<VertexBuffer>& vertexBuffer,
-           const std::shared_ptr<IndexBuffer>& indexBuffer):
-    vertexBuffer_(vertexBuffer), indexBuffer_(indexBuffer)
+           const std::shared_ptr<IndexBuffer>& indexBuffer,
+           GLenum mode) :
+    vertexBuffer_(vertexBuffer), indexBuffer_(indexBuffer), renderingMode_(mode)
 {}
 
 
@@ -55,27 +54,13 @@ void Mesh::disable()
 
 
 
-void Mesh::draw(GLenum mode)
+void Mesh::draw()
 {
     //indexBuffer is drawn with priority iff it is available
     if (indexBuffer_)
-        indexBuffer_->draw(mode);
+        indexBuffer_->draw(renderingMode_);
     else
-        vertexBuffer_->draw(mode);
-}
-
-
-
-SnippetPtr Mesh::getVertexShaderGLSL()
-{
-    return std::make_shared<ShaderSnippet>();
-}
-
-
-
-SnippetPtr Mesh::getFragmentShaderGLSL()
-{
-    return std::make_shared<ShaderSnippet>();
+        vertexBuffer_->draw(renderingMode_);
 }
 
 
@@ -90,23 +75,40 @@ std::vector<glm::vec3> Mesh::getVertices()
 std::vector<Triangle> Mesh::getTriangles()
 {
     if (!indexBuffer_)
-        return defaultTriangles_;
-    return indexBuffer_->reinterpretAsTriangles();
+    {
+        return std::make_shared<IndexBuffer>(
+            vertexBuffer_->getVertices().size(),
+            GL_TRIANGLES
+        )->reinterpretAsTriangles();
+    }
+        
+    return indexBuffer_->castToTriangles();
 }
 
 
 
-void Mesh::generateDefaultTriangles()
+std::shared_ptr<VertexBuffer> Mesh::getVertexBuffer()
 {
-    unsigned long vCount = vertexBuffer_->getVertices().size();
-    if (vCount % 3 != 0)
-        throw std::runtime_error("VertexBuffer not divisible into triangles!");
+    return vertexBuffer_;
+}
 
-    defaultTriangles_.reserve(vCount / 3);
-    unsigned int vertexIndex = 0;
-    std::generate(defaultTriangles_.begin(), defaultTriangles_.end(), [&]() {
-        Triangle tri(vertexIndex, vertexIndex + 1, vertexIndex + 2);
-        vertexIndex += 3;
-        return tri;
-    });
+
+
+std::shared_ptr<IndexBuffer> Mesh::getIndexBuffer()
+{
+    return indexBuffer_;
+}
+
+
+
+SnippetPtr Mesh::getVertexShaderGLSL()
+{
+    return std::make_shared<ShaderSnippet>();
+}
+
+
+
+SnippetPtr Mesh::getFragmentShaderGLSL()
+{
+    return std::make_shared<ShaderSnippet>();
 }

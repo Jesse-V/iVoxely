@@ -4,32 +4,19 @@
 #include <stdexcept>
 
 
-IndexBuffer::IndexBuffer(const std::vector<Triangle>& triangles)
+IndexBuffer::IndexBuffer(std::size_t length, GLenum type) :
+    acceptedAsType_(type)
 {
-    indices.reserve(triangles.size() * 3);
-
-    for_each (triangles.begin(), triangles.end(), [&](const Triangle& triangle)
-    {
-        indices.push_back(triangle.a);
-        indices.push_back(triangle.b);
-        indices.push_back(triangle.c);
-    });
+    indices_.reserve(length);
+    for (std::size_t j = 0; j < length; j++)
+        indices_.push_back((GLuint)j);
 }
 
 
 
-IndexBuffer::IndexBuffer(const std::vector<Quad>& quads)
-{
-    indices.reserve(quads.size() * 4);
-
-    for_each (quads.begin(), quads.end(), [&](const Quad& quad)
-    {
-        indices.push_back(quad.a);
-        indices.push_back(quad.b);
-        indices.push_back(quad.c);
-        indices.push_back(quad.d);
-    });
-}
+IndexBuffer::IndexBuffer(const std::vector<GLuint>& indices, GLenum type) :
+    indices_(indices), acceptedAsType_(type)
+{}
 
 
 
@@ -43,8 +30,86 @@ void IndexBuffer::initialize(GLuint)
 void IndexBuffer::store()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffer_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint),
-        indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(GLuint),
+        indices_.data(), GL_STATIC_DRAW);
+}
+
+
+
+void IndexBuffer::draw(GLenum mode)
+{
+    glDrawElements(mode, (int)indices_.size(), GL_UNSIGNED_INT, 0);
+}
+
+
+
+bool IndexBuffer::canInterpretAs(GLenum type)
+{
+    return (type == GL_TRIANGLES && indices_.size() % 3 == 0) ||
+           (type == GL_QUADS     && indices_.size() % 4 == 0);
+}
+
+
+
+std::vector<Triangle> IndexBuffer::reinterpretAsTriangles()
+{
+    if (!canInterpretAs(GL_TRIANGLES))
+        throw std::runtime_error("Cannot reinterpret indices as Triangles!");
+
+    std::vector<Triangle> triangles;
+    triangles.reserve(indices_.size() / 3);
+
+    for (std::size_t j = 0; j < indices_.size(); j += 3)
+    {
+        Triangle triangle(indices_[j], indices_[j + 1], indices_[j + 2]);
+        triangles.push_back(triangle);
+    }
+
+    return triangles;
+}
+
+
+
+std::vector<Quad> IndexBuffer::reinterpretAsQuads()
+{
+    if (!canInterpretAs(GL_QUADS))
+        throw std::runtime_error("Cannot reinterpret indices as Quads!");
+
+    std::vector<Quad> quads;
+    quads.reserve(indices_.size() / 4);
+
+    for (std::size_t j = 0; j < indices_.size(); j += 4)
+    {
+        Quad quad(indices_[j], indices_[j + 1], indices_[j + 2], indices_[j + 3]);
+        quads.push_back(quad);
+    }
+
+    return quads;
+}
+
+
+
+std::vector<Triangle> IndexBuffer::castToTriangles()
+{
+    if (acceptedAsType_ == GL_TRIANGLES)
+        return reinterpretAsTriangles();
+
+    if (acceptedAsType_ != GL_QUADS)
+        throw std::runtime_error("Unknown face type for IndexBuffer!");
+
+    if (!canInterpretAs(GL_QUADS))
+        throw std::runtime_error("Cannot convert indices from Quads!");
+
+    std::vector<Triangle> triangles;
+    for (std::size_t j = 0; j < indices_.size(); j += 4)
+    {
+        Triangle a(indices_[j + 0], indices_[j + 1], indices_[j + 3]);
+        Triangle b(indices_[j + 1], indices_[j + 2], indices_[j + 3]);
+
+        triangles.push_back(a);
+        triangles.push_back(b);
+    }
+    return triangles;
 }
 
 
@@ -56,61 +121,6 @@ void IndexBuffer::enable()
 
 void IndexBuffer::disable()
 {}
-
-
-
-void IndexBuffer::draw(GLenum mode)
-{
-    glDrawElements(mode, (int)indices.size(), GL_UNSIGNED_INT, 0);
-}
-
-
-
-std::vector<Triangle> IndexBuffer::reinterpretAsTriangles()
-{
-    if (indices.size() % 3 != 0)
-        throw std::runtime_error("Cannot reinterpret indices as Triangles!");
-
-    static std::vector<Triangle> triangles;
-
-    if (triangles.size() != 0)
-        return triangles; //if already reinterpreted, just return it
-
-    //else, reserve the space and convert
-    triangles.reserve(indices.size() / 3);
-
-    for (std::size_t j = 0; j < indices.size(); j += 3)
-    {
-        Triangle triangle(indices[j], indices[j + 1], indices[j + 2]);
-        triangles.push_back(triangle);
-    }
-
-    return triangles;
-}
-
-
-
-std::vector<Quad> IndexBuffer::reinterpretAsQuads()
-{
-    if (indices.size() % 4 != 0)
-        throw std::runtime_error("Cannot reinterpret indices as Quads!");
-
-    static std::vector<Quad> quads;
-
-    if (quads.size() != 0)
-        return quads; //if already reinterpreted, just return it
-
-    //else, reserve the space and convert
-    quads.reserve(indices.size() / 4);
-
-    for (std::size_t j = 0; j < indices.size(); j += 4)
-    {
-        Quad quad(indices[j], indices[j + 1], indices[j + 2], indices[j + 3]);
-        quads.push_back(quad);
-    }
-
-    return quads;
-}
 
 
 

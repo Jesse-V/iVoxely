@@ -48,7 +48,7 @@ void SampledBuffer::store()
 
 
 //ideas: http://stackoverflow.com/questions/4983532/what-are-the-texture-coordinates-for-a-cube-in-opengl
-void SampledBuffer::storeImage()
+void SampledBuffer::storeImage() //TODO: THE ISSUES WITH #22 MAY BE HERE
 {
     // Give the image to OpenGL
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth_, imgHeight_, 0, GL_BGR, GL_UNSIGNED_BYTE, data_);

@@ -18,23 +18,27 @@
 class IndexBuffer : public DataBuffer
 {
     public:
-        IndexBuffer(const std::vector<Triangle>& triangles);
-        IndexBuffer(const std::vector<Quad>& quads);
+        IndexBuffer(std::size_t length, GLenum type = GL_TRIANGLES);
+        IndexBuffer(const std::vector<GLuint>& indices, GLenum type = GL_TRIANGLES);
+
+        void draw(GLenum mode);
+        bool canInterpretAs(GLenum type);
+        std::vector<Triangle> reinterpretAsTriangles();
+        std::vector<Quad> reinterpretAsQuads();
+        std::vector<Triangle> castToTriangles();
+
         virtual void initialize(GLuint programHandle);
         virtual void store();
         virtual void enable();
         virtual void disable();
-        virtual void draw(GLenum mode);
 
         virtual SnippetPtr getVertexShaderGLSL();
         virtual SnippetPtr getFragmentShaderGLSL();
 
-        std::vector<Triangle> reinterpretAsTriangles();
-        std::vector<Quad> reinterpretAsQuads();
-
     private:
-        std::vector<GLuint> indices;
+        std::vector<GLuint> indices_;
         GLuint meshBuffer_;
+        GLenum acceptedAsType_;
 };
 
 #endif

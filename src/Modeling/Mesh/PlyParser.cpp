@@ -15,10 +15,10 @@
     Nothing is returned, as the vertices and triangle are remembered internally.
     Use getVertices() and getTriangles(), respectively, to return that data.
 */
-std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
+MeshPtr PlyParser::getMesh(const std::string& fileName)
 {
-    std::vector<glm::vec3> vertices;
-    std::vector<Triangle> triangles;
+    VertexBufferPtr vertices;
+    IndexCollection indices;
 
     std::cout << "Loading PLY model from " << fileName << ": ";
     auto pieces = seperatePly(readFile(fileName));
@@ -31,7 +31,7 @@ std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
     });
 
     std::thread t2( [&]() {
-        triangles = parseTriangles(pieces[2]);
+        indices = parseIndices(pieces[2]);
     });
 
     t1.join(); //wait for both threads to complete
@@ -39,9 +39,7 @@ std::shared_ptr<Mesh> PlyParser::getMesh(const std::string& fileName)
 
     std::cout << "done." << std::endl;
 
-    auto vBuffer = std::make_shared<VertexBuffer>(vertices);
-    auto iBuffer = std::make_shared<IndexBuffer>(triangles);
-    return std::make_shared<Mesh>(vBuffer, iBuffer);
+    return std::make_shared<Mesh>(vertices, indices.first, indices.second);
 }
 
 
@@ -100,10 +98,10 @@ std::vector<std::string> PlyParser::seperatePly(const std::string& fileContents)
 /*  Accepts the raw characters that represent the vertices,
     parses the characters into a list of Points and returns the result.
 */
-std::vector<glm::vec3> PlyParser::parseVertices(const std::string& verticesData)
+VertexBufferPtr PlyParser::parseVertices(const std::string& verticesStr)
 {
     std::vector<glm::vec3> vertices;
-    std::stringstream sstream(verticesData);
+    std::stringstream sstream(verticesStr);
 
     //loop through each line, pull out and store the relevant data
     std::string line;
@@ -116,7 +114,7 @@ std::vector<glm::vec3> PlyParser::parseVertices(const std::string& verticesData)
         vertices.push_back(pt);
     }
 
-    return vertices;
+    return std::make_shared<VertexBuffer>(vertices);
 }
 
 
@@ -124,11 +122,13 @@ std::vector<glm::vec3> PlyParser::parseVertices(const std::string& verticesData)
 /*  Accepts the raw characters that represent the triangle,
     parses the characters into a list of ints and returns the result.
 */
-std::vector<Triangle> PlyParser::parseTriangles(const std::string& triangleData)
+IndexCollection PlyParser::parseIndices(const std::string& facesStr)
 {
-    int dimensionality = 3;
-    std::vector<Triangle> triangles;
-    std::stringstream sstream(triangleData);
+    std::vector<GLuint> indices;
+    std::stringstream sstream(facesStr);
+    
+    bool determinedType = false;
+    GLenum type = GL_TRIANGLES;
 
     //loop through each line, pull out and store the relevant data
     std::string line;
@@ -136,19 +136,35 @@ std::vector<Triangle> PlyParser::parseTriangles(const std::string& triangleData)
     {
         std::stringstream lineStream(line);
 
-        lineStream >> dimensionality;
-        if (dimensionality != 3)
+        int faceDimensionality; //3 for GL_TRIANGLES, 4 for GL_QUADS
+        lineStream >> faceDimensionality;
+
+        GLenum faceType;
+        if (faceDimensionality == 3)
+            faceType = GL_TRIANGLES;
+        else if (faceDimensionality == 4)
+            faceType = GL_QUADS;
+        else
+            throw std::runtime_error("Unrecognized face dimensionality.");
+
+        if (determinedType && type != faceType)
+            throw std::runtime_error("Mixed face dimensionality.");
+
+        if (!determinedType)
         {
-            std::cout << dimensionality << std::endl;
-            throw std::runtime_error(".ply file not a 3D mesh!");
+            type = faceType;
+            determinedType = true;
         }
 
-        Triangle triangle;
-        lineStream >> triangle.a >> triangle.b >> triangle.c;
-        triangles.push_back(triangle);
+        for (int j = 0; j < faceDimensionality; j++)
+        {
+            GLuint index;
+            lineStream >> index;
+            indices.push_back(index);
+        }
     }
 
-    return triangles;
+    return std::make_pair(std::make_shared<IndexBuffer>(indices), type);
 }
 
 

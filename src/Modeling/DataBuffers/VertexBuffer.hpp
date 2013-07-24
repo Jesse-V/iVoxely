@@ -22,7 +22,7 @@ class VertexBuffer : public DataBuffer
         virtual void store();
         virtual void enable();
         virtual void disable();
-        virtual void draw(GLenum mode);
+        void draw(GLenum mode);
 
         virtual SnippetPtr getVertexShaderGLSL();
         virtual SnippetPtr getFragmentShaderGLSL();

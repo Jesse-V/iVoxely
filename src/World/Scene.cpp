@@ -132,7 +132,7 @@ std::shared_ptr<Camera> Scene::getCamera()
 
 int Scene::getModelCount()
 {
-    return map_.size();
+    return (int)map_.size();
 }
 
 

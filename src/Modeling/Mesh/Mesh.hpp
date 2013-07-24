@@ -28,16 +28,19 @@
 class Mesh : public DataBuffer
 {
     public:
-        Mesh(const std::shared_ptr<VertexBuffer>& vertexBuffer);
         Mesh(const std::shared_ptr<VertexBuffer>& vertexBuffer,
-             const std::shared_ptr<IndexBuffer>& indexBuffer
+             GLenum mode = GL_TRIANGLES
+        );
+        Mesh(const std::shared_ptr<VertexBuffer>& vertexBuffer,
+             const std::shared_ptr<IndexBuffer>& indexBuffer,
+             GLenum mode = GL_TRIANGLES
         );
 
         virtual void initialize(GLuint programHandle);
         virtual void store();
         virtual void enable();
         virtual void disable();
-        virtual void draw(GLenum mode);
+        virtual void draw();
 
         virtual SnippetPtr getVertexShaderGLSL();
         virtual SnippetPtr getFragmentShaderGLSL();
@@ -45,14 +48,13 @@ class Mesh : public DataBuffer
         std::vector<glm::vec3> getVertices();
         std::vector<Triangle> getTriangles();
 
-    private:
-        void generateDefaultTriangles();
+        std::shared_ptr<VertexBuffer> getVertexBuffer();
+        std::shared_ptr<IndexBuffer> getIndexBuffer();
 
     private:
         std::shared_ptr<VertexBuffer> vertexBuffer_;
         std::shared_ptr<IndexBuffer> indexBuffer_;
-
-        std::vector<Triangle> defaultTriangles_;
+        GLenum renderingMode_;
 };
 
 #endif
