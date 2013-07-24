@@ -16,8 +16,6 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
     std::cout << "Currently " << scene->getModelCount() <<
         " Models in Scene. Adding Cubes... " << std::endl;
 
-    //Chunk::generateCubes(scene, 0, 0);
-
     const int MIN = -32;
     const int MAX = 32;
 
@@ -28,7 +26,7 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
     {
         for (int y = MIN; y < MAX; y++)
         {
-            for (int z = -15; z <= 0; z++)
+            for (int z = -22; z <= 0; z++)
             {
                 float val = randomFloat(mersenneTwister);
 
@@ -44,10 +42,7 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
 
     if (scene->getModelCount() > 9000)
         std::cout << "It's over 9000!!!" << std::endl;
-
-    if (scene->getModelCount() > 90000)
-        std::cout << "WARNING: likely FPS issues rendering that many cubes!\n";
-
+    
     checkGlError();
 }
 

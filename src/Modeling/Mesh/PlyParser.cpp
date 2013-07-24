@@ -20,7 +20,7 @@ MeshPtr PlyParser::getMesh(const std::string& fileName)
     VertexBufferPtr vertices;
     IndexCollection indices;
 
-    std::cout << "Parsing PLY model from " << fileName << " ... ";
+    std::cout << "Parsing " << fileName << " ... ";
     auto pieces = seperatePly(readFile(fileName));
 
     //use threading to parallelize the parsing
@@ -35,7 +35,14 @@ MeshPtr PlyParser::getMesh(const std::string& fileName)
     t1.join(); //wait for both threads to complete
     t2.join();
 
-    std::cout << "done." << std::endl;
+    std::cout << "done (";
+
+    if (indices.second == GL_TRIANGLES)
+        std::cout << "Triangles";
+    else if (indices.second == GL_QUADS)
+        std::cout << "Quads";
+
+    std::cout << ")" << std::endl;
 
     return std::make_shared<Mesh>(vertices, indices.first, indices.second);
 }
@@ -136,7 +143,7 @@ IndexCollection PlyParser::parseIndices(const std::string& facesStr)
 
         int faceDimensionality; //3 for GL_TRIANGLES, 4 for GL_QUADS
         lineStream >> faceDimensionality;
-
+        
         GLenum faceType;
         if (faceDimensionality == 3)
             faceType = GL_TRIANGLES;
@@ -162,7 +169,7 @@ IndexCollection PlyParser::parseIndices(const std::string& facesStr)
         }
     }
 
-    return std::make_pair(std::make_shared<IndexBuffer>(indices), type);
+    return std::make_pair(std::make_shared<IndexBuffer>(indices, type), type);
 }
 
 

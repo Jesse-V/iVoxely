@@ -79,9 +79,9 @@ std::vector<Triangle> Mesh::getTriangles()
         return std::make_shared<IndexBuffer>(
             vertexBuffer_->getVertices().size(),
             GL_TRIANGLES
-        )->reinterpretAsTriangles();
+        )->castToTriangles();
     }
-        
+
     return indexBuffer_->castToTriangles();
 }
 

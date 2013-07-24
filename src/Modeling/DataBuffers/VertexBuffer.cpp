@@ -54,7 +54,7 @@ void VertexBuffer::disable()
 
 void VertexBuffer::draw(GLenum mode)
 {
-    glDrawElements(mode, (int)vertices_.size() * 3, GL_UNSIGNED_INT, 0);
+    glDrawElements(mode, (int)vertices_.size(), GL_UNSIGNED_INT, 0);
 }
 
 

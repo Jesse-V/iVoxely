@@ -39,7 +39,7 @@ class SampledBuffer : public OptionalDataBuffer
         void storeImage();
         void storeCoordMap();
 
-        bool strHasEnding(const std::string& strng, const std::string& ending);
+        bool strHasEnding(const std::string& string, const std::string& ending);
 
     protected:
         int imgWidth_, imgHeight_;

@@ -24,7 +24,7 @@ Cube::Cube(Type type, int x, int y, int z) :
 BufferList Cube::assembleDataBuffers(Type type)
 {
     type_ = type;
-    BufferList buffers = { getNormalBuffer(), getTextureBuffer() };
+    BufferList buffers = { /*getNormalBuffer(),*/ getTextureBuffer() };
     return buffers;
 }
 

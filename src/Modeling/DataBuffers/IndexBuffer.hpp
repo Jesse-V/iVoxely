@@ -37,7 +37,7 @@ class IndexBuffer : public DataBuffer
 
     private:
         std::vector<GLuint> indices_;
-        GLuint meshBuffer_;
+        GLuint indexBuffer_;
         GLenum acceptedAsType_;
 };
 
