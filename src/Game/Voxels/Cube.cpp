@@ -3,7 +3,6 @@
 #include "Modeling/Mesh/PlyParser.hpp"
 #include "Modeling/DataBuffers/SampledBuffers/CoordinateMapReader.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-//#include "glm/gtc/type_ptr.hpp"
 #include <iostream>
 
 
@@ -14,8 +13,16 @@ std::shared_ptr<NormalBuffer> Cube::normalBuffer_;
 Cube::Cube(Type type, int x, int y, int z) :
     Model(Cube::getMesh(), Cube::assembleDataBuffers(type))
 {
-    modelMatrix_ = glm::scale(glm::mat4(), glm::vec3(1 / 8.0f));
-    modelMatrix_ = glm::translate(modelMatrix_, glm::vec3(x, y, z));
+    glm::vec3 vec(x, y, z);
+    /*glm::vec3 up(0, 0, 1);
+
+    float sign = z < 0 ? -1 : 1;
+
+    //glm::lookAt really should be used for this I think
+    
+    modelMatrix_ = glm::rotate(glm::mat4(), sign * -5.0f, glm::cross(vec, up));*/
+    modelMatrix_ = glm::scale(modelMatrix_, glm::vec3(1 / 8.0f));
+    modelMatrix_ = glm::translate(modelMatrix_, vec);
 }
 
 
@@ -74,6 +81,8 @@ std::string Cube::getTexturePath(Type type)
         return "Resources/Textures/dirt.png";
     if (type == Type::STONE)
         return "Resources/Textures/stone.png";
+    if (type == Type::TEST)
+        return "Resources/Textures/test_texture.bmp";
 
     throw std::runtime_error("Unknown texture path for cube type!");
 }
@@ -115,6 +124,8 @@ std::string Cube::getTypeStr()
         return "Type::DIRT";
     if (type_ == Type::STONE)
         return "Type::STONE";
+    if (type_ == Type::TEST)
+        return "Type::TEST";
 
     throw std::runtime_error("Unknown Cube::Type enum");
 }

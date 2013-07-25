@@ -2,8 +2,6 @@
 #ifndef CUBE
 #define CUBE
 
-#define GLM_SWIZZLE
-
 #include "Modeling/Model.hpp"
 #include "Modeling/DataBuffers/NormalBuffer.hpp"
 #include "Modeling/DataBuffers/SampledBuffers/TextureBuffer.hpp"
@@ -22,7 +20,7 @@ class Cube : public Model
     public: //structs
         enum class Type : unsigned short
         {
-            DIRT, STONE
+            DIRT, STONE, TEST
         };
 
         struct TypeHash
@@ -39,9 +37,6 @@ class Cube : public Model
         std::shared_ptr<TextureBuffer> getTextureBuffer();
         Cube::Type getType();
         std::string getTypeStr();
-
-        //virtual ProgramPtr getProgram();
-        //virtual void saveAs(const ProgramPtr& program);
 
         static std::shared_ptr<Mesh> getMesh();
         static std::shared_ptr<NormalBuffer> getNormalBuffer();

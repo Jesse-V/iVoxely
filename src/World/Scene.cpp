@@ -139,13 +139,6 @@ void Scene::syncLighting(GLuint handle)
 
 
 
-void Scene::ensureModelIsStored(const ModelPtr& model)
-{
-    
-}
-
-
-
 SnippetPtr Scene::getVertexShaderGLSL()
 {
     return std::make_shared<ShaderSnippet>(

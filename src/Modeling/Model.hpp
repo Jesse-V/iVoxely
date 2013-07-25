@@ -5,7 +5,7 @@
 #include "Modeling/Mesh/Mesh.hpp"
 #include "Modeling/DataBuffers/OptionalDataBuffer.hpp"
 #include "Modeling/Shading/Program.hpp"
-#include "glm/glm.hpp"
+#include "Renderable.hpp"
 #include <vector>
 #include <memory>
 
@@ -24,7 +24,7 @@ typedef std::vector<std::shared_ptr<OptionalDataBuffer>> BufferList;
     program on the GPU. Whether or not a Model (and all its corresponding data)
     is rendered can be toggled with the setVisible method.
 **/
-class Model
+class Model : Renderable
 {
     public:
         Model(const std::shared_ptr<Mesh>& mesh);
@@ -34,7 +34,7 @@ class Model
         void setVisible(bool visible);
         void setModelMatrix(const glm::mat4& matrix); // model -> world coords
         void setRenderMode(GLenum newMode);
-        void render(GLint modelMatrixID);
+        virtual void render(GLint modelMatrixID);
 
         BufferList getOptionalDataBuffers();
 

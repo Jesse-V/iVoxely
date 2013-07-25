@@ -92,11 +92,11 @@ std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 {
     auto camera = std::make_shared<Camera>();
     camera->setAspectRatio(screenWidth / (float)screenHeight);
-    camera->setPosition(glm::vec3(0, -5, 10.5));
+    camera->setPosition(glm::vec3(0, -2.98502f, 2.09858f));
 
     camera->lookAt(
-        glm::vec3(0, 9, 10.5),
-        glm::vec3(0, 0, 1)
+        glm::vec3(0, 11.7493f, -0.712136f),
+        glm::vec3(0, 0.187381f, 0.982287f)
     );
 
     return camera;

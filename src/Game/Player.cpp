@@ -1,6 +1,7 @@
 
 #include "Player.hpp"
 #include "World/Camera.hpp"
+//#include <iostream>
 
 
 Player::Player(std::shared_ptr<Scene> scene):
@@ -41,6 +42,7 @@ void Player::onKeyPress(unsigned char key)
     }
 
     scene_->getLights()[0]->setPosition(scene_->getCamera()->getPosition());
+    //std::cout << scene_->getCamera()->toString() << std::endl;
 }
 
 
@@ -51,22 +53,6 @@ void Player::onSpecialKeyPress(int key)
 
     switch(key)
     {
-        case GLUT_KEY_UP:
-            camera->constrainedPitch(ROTATION_SPEED);
-            break;
-
-        case GLUT_KEY_DOWN:
-            camera->constrainedPitch(-ROTATION_SPEED);
-            break;
-
-        case GLUT_KEY_LEFT:
-            camera->yaw(ROTATION_SPEED);
-            break;
-
-        case GLUT_KEY_RIGHT:
-            camera->yaw(-ROTATION_SPEED);
-            break;
-
         case GLUT_KEY_PAGE_UP:
             camera->constrainedRoll(-ROTATION_SPEED);
             break;
@@ -88,7 +74,21 @@ void Player::onMouseClick(int button, int state, int x, int y)
 
 void Player::onMouseMotion(int x, int y)
 {
+    static int lastX, lastY;
+    static bool set = false;
 
+    if (!set)
+    {
+        lastX = x;
+        lastY = y;
+        set = true;
+        return;
+    }
+
+    scene_->getCamera()->constrainedPitch((lastY - y) * PITCH_COEFFICIENT);
+    scene_->getCamera()->yaw((lastX - x) * YAW_COEFFICIENT);
+    lastX = x;
+    lastY = y;
 }
 
 

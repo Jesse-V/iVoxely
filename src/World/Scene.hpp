@@ -45,7 +45,6 @@ class Scene
 
     private:
         void syncLighting(GLuint handle);
-        void ensureModelIsStored(const ModelPtr& model);
         void assertModelsContainNormalBuffers();
 
     private:

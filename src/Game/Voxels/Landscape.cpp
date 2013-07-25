@@ -16,7 +16,7 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
     std::cout << "Currently " << scene->getModelCount() <<
         " Models in Scene. Adding Cubes... " << std::endl;
 
-    const int RADIUS = 80; //as big as possible? 500 is a pretty good size, 0.005f
+    const int RADIUS = 64; //as big as possible? 500 is a pretty good size, 0.005f
     for (int x = -RADIUS; x < RADIUS; x++)
     {
         for (int y = -RADIUS; y < RADIUS; y++)
@@ -29,7 +29,7 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
 
                 if (distance < 0 && distance > -RADIUS * 2) //1 layer thick
                 {
-                    auto type = Cube::Type::STONE;
+                    auto type = Cube::Type::TEST;
                     auto cube = std::make_shared<Cube>(type, x, y, z);
                     addCube(cube, scene);
                 }
@@ -60,11 +60,12 @@ void Landscape::addCube(const std::shared_ptr<Cube>& cube,
             scene->getVertexShaderGLSL(), scene->getFragmentShaderGLSL(),
             scene->getLights()
         );
+        std::cout << "Done generating Program for " << cube->getTypeStr() << 
+            "." << std::endl;
+
         scene->addModel(cube, program, true); //add and saveAs
         programCache_[cube->getType()] = program; //add program to cache
-
-        std::cout << "Cached Program for Cube::Type " << (int)cube->getType() << 
-            "." << std::endl;
+        std::cout << "Saved Model and cached Program." << std::endl;
     }
     else
     { //already in cache
