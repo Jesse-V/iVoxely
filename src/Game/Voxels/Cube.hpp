@@ -2,6 +2,8 @@
 #ifndef CUBE
 #define CUBE
 
+#define GLM_SWIZZLE
+
 #include "Modeling/Model.hpp"
 #include "Modeling/DataBuffers/NormalBuffer.hpp"
 #include "Modeling/DataBuffers/SampledBuffers/TextureBuffer.hpp"

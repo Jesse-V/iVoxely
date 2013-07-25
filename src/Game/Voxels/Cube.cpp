@@ -2,8 +2,8 @@
 #include "Cube.hpp"
 #include "Modeling/Mesh/PlyParser.hpp"
 #include "Modeling/DataBuffers/SampledBuffers/CoordinateMapReader.hpp"
-#include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+//#include "glm/gtc/type_ptr.hpp"
 #include <iostream>
 
 
@@ -14,8 +14,7 @@ std::shared_ptr<NormalBuffer> Cube::normalBuffer_;
 Cube::Cube(Type type, int x, int y, int z) :
     Model(Cube::getMesh(), Cube::assembleDataBuffers(type))
 {
-    modelMatrix_ = glm::mat4();
-    modelMatrix_ = glm::scale(modelMatrix_, glm::vec3(1 / 8.0f));
+    modelMatrix_ = glm::scale(glm::mat4(), glm::vec3(1 / 8.0f));
     modelMatrix_ = glm::translate(modelMatrix_, glm::vec3(x, y, z));
 }
 

@@ -35,8 +35,8 @@ void Game::reportFPS()
             std::cout << frameCount_ << " FPS, spent " <<
                 timeSpentRendering_ << " ms rendering, avg " << 
                 msPerFrame << " ms/frame, avg " <<
-                (scene_->getModelCount() / msPerFrame) * 1000 << " Models/sec"
-                << std::endl;
+                (int)(scene_->getModelCount() * 1000 / msPerFrame) << 
+                " Models/sec" << std::endl;
 
             frameCount_ = 0;
             timeSpentRendering_ = 0;
@@ -67,18 +67,18 @@ void Game::addLight()
 {
     scene_->setAmbientLight(glm::vec3(1));
 
-    auto light1 = std::make_shared<Light>(
+    /*auto light1 = std::make_shared<Light>(
         glm::vec3(0),       //position
         glm::vec3(0, 0, 1), //green
         2.0f                //power
     );
 
-    scene_->addLight(light1);
+    scene_->addLight(light1);*/
 
     auto light2 = std::make_shared<Light>(
         scene_->getCamera()->getPosition(), //position
-        glm::vec3(1, 0, 0),                 //red
-        2.0f                                //power
+        glm::vec3(1),                       //white
+        5.0f                                //power
     );
 
     scene_->addLight(light2);
@@ -92,10 +92,10 @@ std::shared_ptr<Camera> Game::getCamera(int screenWidth, int screenHeight)
 {
     auto camera = std::make_shared<Camera>();
     camera->setAspectRatio(screenWidth / (float)screenHeight);
-    camera->setPosition(glm::vec3(0, -2, 0.5f));
+    camera->setPosition(glm::vec3(0, -5, 10.5));
 
     camera->lookAt(
-        glm::vec3(0, 0, 0.5),
+        glm::vec3(0, 9, 10.5),
         glm::vec3(0, 0, 1)
     );
 

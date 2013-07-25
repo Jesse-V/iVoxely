@@ -16,23 +16,23 @@ void Landscape::generateChunk(const std::shared_ptr<Scene>& scene)
     std::cout << "Currently " << scene->getModelCount() <<
         " Models in Scene. Adding Cubes... " << std::endl;
 
-    const int MIN = -32;
-    const int MAX = 32;
-
-    //player should be 8 blocks tall (vs 2 in Minecraft)
-    //chunks are 64*64*64
-
-    for (int x = MIN; x < MAX; x++)
+    const int RADIUS = 80; //as big as possible? 500 is a pretty good size, 0.005f
+    for (int x = -RADIUS; x < RADIUS; x++)
     {
-        for (int y = MIN; y < MAX; y++)
+        for (int y = -RADIUS; y < RADIUS; y++)
         {
-            for (int z = -10; z <= 0; z++)
+            for (int z = -RADIUS; z < RADIUS; z++)
             {
-                float val = randomFloat(mersenneTwister);
+                glm::vec3 position(x, y, z);
+                float magnitudeSqr = glm::dot(position, position);
+                float distance = magnitudeSqr - RADIUS * RADIUS;
 
-                auto type = val > 0.5 ? Cube::Type::DIRT : Cube::Type::STONE;
-                auto cube = std::make_shared<Cube>(type, x, y, z);
-                addCube(cube, scene);
+                if (distance < 0 && distance > -RADIUS * 2) //1 layer thick
+                {
+                    auto type = Cube::Type::STONE;
+                    auto cube = std::make_shared<Cube>(type, x, y, z);
+                    addCube(cube, scene);
+                }
             }
         }
     }

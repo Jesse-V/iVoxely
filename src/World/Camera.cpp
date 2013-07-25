@@ -24,7 +24,7 @@ void Camera::reset()
     fieldOfView_   = 45.0f;         // frustrum viewing aperture
     aspectRatio_   = 4.0f / 3.0f;   // frustrum view angling
     nearFieldClip_ = 0.005f;        // clip anything closer than this
-    farFieldClip_  = 20.0f;         // clip anything farther than this
+    farFieldClip_  = 200.0f;         // clip anything farther than this
     updateProjectionMatrix();
 }
 
