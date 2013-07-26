@@ -199,7 +199,7 @@ bool Camera::constrainedPitch(float theta)
     {
         upVector_ = oldUpVector;
         lookingAt_ = oldLookingAt;
-        std::cout << "Camera pitch constrained. Reverted request." << std::endl;
+        //std::cout << "Camera pitch constrained. Reverted request." << std::endl;
         return true;
     }
 

@@ -17,8 +17,8 @@ Game::Game(int screenWidth, int screenHeight):
 
     addLight();
     addModels();
-
-    glutSetCursor(GLUT_CURSOR_NONE); //hides the mouse
+    
+    player_->grabPointer();
     reportFPS();
 }
 

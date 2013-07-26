@@ -15,12 +15,18 @@
 class Player
 {
     public:
+        const float TRANSLATION_SPEED = 0.08f;
         const float PITCH_COEFFICIENT = 0.20f;
         const float YAW_COEFFICIENT = 0.1f;
         const float ROLL_SPEED = 1.8f;
 
+        const int CENTER_X, CENTER_Y;
+
     public:
         Player(std::shared_ptr<Scene> scene);
+        void grabPointer();
+        void releasePointer();
+        void recenterCursor();
 
         void onKeyPress(unsigned char key);
         void onSpecialKeyPress(int key);
@@ -30,6 +36,7 @@ class Player
 
     private:
         std::shared_ptr<Scene> scene_;
+        bool mouseControlsCamera_;
 };
 
 #endif

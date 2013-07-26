@@ -220,7 +220,10 @@ int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-    initializeGlutWindow(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT), "iVoxely");
+    initializeGlutWindow(glutGet(GLUT_SCREEN_WIDTH),
+                         glutGet(GLUT_SCREEN_HEIGHT),
+                         "iVoxely"
+    );
 
     try
     {

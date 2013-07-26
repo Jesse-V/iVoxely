@@ -63,6 +63,9 @@ void SampledBuffer::storeImage() //TODO: THE ISSUES WITH #22 MAY BE HERE
 
     // Generate mipmaps, by the way.
     glGenerateMipmap(GL_TEXTURE_2D);
+
+    /*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+   85:  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);*/
 }
 
 
@@ -78,7 +81,6 @@ void SampledBuffer::storeCoordMap()
 
 void SampledBuffer::loadBMP(const std::string& imagePath)
 {
-    std::cout << "Loading image file from " << imagePath << "... ";
     unsigned char header[54];
 
     FILE * file = fopen(imagePath.c_str(), "rb"); //read binary .bmp file
