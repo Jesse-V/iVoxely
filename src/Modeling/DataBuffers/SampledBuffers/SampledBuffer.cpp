@@ -1,7 +1,8 @@
 
 #include "SampledBuffer.hpp"
-#include <png++/image.hpp>
-#include <png++/rgb_pixel.hpp>
+#include <png.h>
+//#include <png++/image.hpp>
+//#include <png++/rgb_pixel.hpp>
 #include <stdexcept>
 #include <iostream>
 
@@ -90,6 +91,7 @@ void SampledBuffer::loadBMP(const std::string& imagePath)
     if(fread(header, 1, 54, file) != 54)
         throw std::runtime_error(imagePath + " is not a valid .bmp image");
 
+    // Merge this with last if?
     if (header[0] != 'B' || header[1] != 'M')
         throw std::runtime_error(imagePath + " is not a valid .bmp image");
 
@@ -119,6 +121,37 @@ void SampledBuffer::loadBMP(const std::string& imagePath)
 
 void SampledBuffer::loadPNG(const std::string& imagePath)
 {
+  /*
+    Open the .png file.
+  */
+  FILE* file = fopen (imagePath.c_str(), "rb");
+
+  /*
+    Make sure the file is actually open. If the file is not open, throw an error.
+  */
+  if ( !file )
+    throw std::runtime_error ("Unable to open image at " + imagePath + " .");
+
+  /*
+    Read the first eight bytes of the alleged .png file, and use the bytes to determine whether the file is actually in the .png format. 
+    Make sure the file is actually using the png file format, and tell libpng that we did this.
+  */
+  unsigned char* file_header = NULL;
+  fread (header, 1, 8, file);
+  if ( ! png_sig_cmp (file_header, 0, 8))
+    throw std:runtime_error (imagePath + " is not a valid .png image.");
+  png_set_sig_bytes_read (8);
+
+  /*
+    Close the png file, as we are done with it.
+  */
+  fclose (file);
+
+  /*
+    If we got this far, we know that the SampledBuffer is valid, so set isValid_ to true.
+  */
+  isValid_ = true;
+    
     png::image<png::rgb_pixel> image(imagePath);
 
     auto pixbuf = image.get_pixbuf();
