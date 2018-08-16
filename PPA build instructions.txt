@@ -1,0 +1,32 @@
+http://www.webupd8.org/2010/01/how-to-create-deb-package-ubuntu-debian.html
+http://developer.ubuntu.com/packaging/html/packaging-new-software.html
+https://help.launchpad.net/Packaging/PPA/BuildingASourcePackage
+https://help.launchpad.net/Packaging/PPA/Uploading
+http://developer.ubuntu.com/packaging/html/
+http://askubuntu.com/questions/155410/how-do-i-add-create-a-source-changes-file
+
+
+wrap up to .tar.gz
+dh_make -e jvictors@jessevictors.com -f ../ivoxely.tar.gz (creates /debian)
+copy over files, modify as necessary
+dpkg-buildpackage -rfakeroot -k6826C68D (builds package)
+debuild -S -sa
+dput ppa:jvictors/testing ../ivoxely_0.05-1_source.changes
+
+
+dh_make -e jvictors@jessevictors.com -f ../ivoxely.tar.gz
+debuild
+
+
+ivoxely-0.05-0ubuntu1
+
+ivoxely_0.05-1ubuntu5_amd64.deb
+
+(package-name)_(source version)-(package-version)_(architecture).deb 
+ivoxely_0.05-0.05_amd64.deb
+
+
+<Jesse_V> which would turn into "derp-0.05-0jessev1_amd64.deb"
+<Jesse_V> but anyway, is "derp-0.05-0jessev1" -> "derp-0.05-0jessev1_amd64.deb" good for a package named "derp", of version "0.05", built for Quantal?
+<Jesse_V> maintained only by me, and which does not exist in Debian or Ubuntu?
+derp-0.05-0ppa1
